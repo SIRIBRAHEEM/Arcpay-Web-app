@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222 47% 5%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 42% 7%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 42% 7%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 158 72% 48%;
+    --primary-foreground: 222 47% 5%;
+
+    --secondary: 221 28% 13%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 220 25% 12%;
+    --muted-foreground: 215 20% 68%;
+
+    --accent: 188 85% 44%;
+    --accent-foreground: 222 47% 5%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217 24% 18%;
+    --input: 217 24% 18%;
+    --ring: 158 72% 48%;
+
+    --radius: 1.25rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    color-scheme: dark;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(32, 213, 159, 0.16), transparent 32rem),
+      radial-gradient(circle at 90% 0%, rgba(15, 183, 215, 0.14), transparent 28rem),
+      linear-gradient(180deg, #050914 0%, #07111f 45%, #050914 100%);
+  }
+
+  ::selection {
+    background: rgba(32, 213, 159, 0.35);
+    color: white;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply border border-white/10 bg-white/[0.045] backdrop-blur-2xl;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
