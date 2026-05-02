@@ -7,9 +7,13 @@ import { useWalletStore } from "@/store/wallet-store";
 
 function parseChainId(value: unknown): number | undefined {
   if (typeof value === "number") return value;
+
   if (typeof value === "string") {
-    return value.startsWith("0x") ? Number.parseInt(value, 16) : Number(value);
+    return value.startsWith("0x")
+      ? Number.parseInt(value, 16)
+      : Number(value);
   }
+
   return undefined;
 }
 
@@ -19,25 +23,34 @@ export function WalletBootstrap() {
   const setChainId = useWalletStore((state) => state.setChainId);
 
   useEffect(() => {
-    const provider = window.ethereum;
-    if (!provider) return;
+    const currentProvider = window.ethereum;
+
+    if (!currentProvider) {
+      setChainId(undefined);
+      return;
+    }
 
     let mounted = true;
 
-    async function bootstrap() {
+    async function bootstrap(provider: NonNullable<typeof window.ethereum>) {
       try {
         const accounts = (await provider.request({
           method: "eth_accounts"
         })) as Address[];
 
         const chainId = parseChainId(
-          await provider.request({ method: "eth_chainId" })
+          await provider.request({
+            method: "eth_chainId"
+          })
         );
 
         if (!mounted) return;
 
-        if (accounts?.[0]) {
+        if (accounts[0]) {
           const adapter = await createBrowserAdapter(provider);
+
+          if (!mounted) return;
+
           setConnected({
             address: accounts[0],
             provider,
@@ -48,21 +61,26 @@ export function WalletBootstrap() {
           setChainId(chainId);
         }
       } catch {
-        // Silent bootstrap failure keeps the app usable until the user clicks connect.
+        if (mounted) {
+          setChainId(undefined);
+        }
       }
     }
 
     const onAccountsChanged = async (accounts: Address[]) => {
-      if (!accounts?.[0]) {
+      const nextAddress = accounts[0];
+
+      if (!nextAddress) {
         disconnect();
         return;
       }
 
       try {
-        const adapter = await createBrowserAdapter(provider);
+        const adapter = await createBrowserAdapter(currentProvider);
+
         setConnected({
-          address: accounts[0],
-          provider,
+          address: nextAddress,
+          provider: currentProvider,
           adapter
         });
       } catch {
@@ -74,15 +92,15 @@ export function WalletBootstrap() {
       setChainId(parseChainId(chainId));
     };
 
-    void bootstrap();
+    void bootstrap(currentProvider);
 
-    provider.on?.("accountsChanged", onAccountsChanged);
-    provider.on?.("chainChanged", onChainChanged);
+    currentProvider.on?.("accountsChanged", onAccountsChanged);
+    currentProvider.on?.("chainChanged", onChainChanged);
 
     return () => {
       mounted = false;
-      provider.removeListener?.("accountsChanged", onAccountsChanged);
-      provider.removeListener?.("chainChanged", onChainChanged);
+      currentProvider.removeListener?.("accountsChanged", onAccountsChanged);
+      currentProvider.removeListener?.("chainChanged", onChainChanged);
     };
   }, [disconnect, setChainId, setConnected]);
 
