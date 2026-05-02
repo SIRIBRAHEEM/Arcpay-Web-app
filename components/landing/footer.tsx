@@ -14,7 +14,7 @@ export function Footer() {
             rel="noreferrer"
             className="text-primary hover:underline"
           >
-            Built by SIRIBRAHEEM
+            Built by ᏕᎥᏒᎥᏰᏒᏗᏂᏋᏋᎷ
           </a>
         </div>
 
