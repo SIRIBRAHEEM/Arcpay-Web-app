@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { createPublicClient, formatUnits, http, type Address } from "viem";
-import { ARC_TESTNET, ARC_USDC_ADDRESS, ARC_BLOCK_EXPLORER } from "@/lib/arc";
+import { ARC_BLOCK_EXPLORER, ARC_TESTNET, ARC_USDC_ADDRESS } from "@/lib/arc";
 import { ERC20_TRANSFER_ABI } from "@/lib/erc20";
 import { saveTransaction } from "@/lib/transactions";
 import { useWalletStore } from "@/store/wallet-store";
@@ -18,12 +18,14 @@ export function EventWatcher() {
   useEffect(() => {
     if (!address) return;
 
+    const currentAddress = address;
+
     const unwatchSent = publicClient.watchContractEvent({
       address: ARC_USDC_ADDRESS,
       abi: ERC20_TRANSFER_ABI,
       eventName: "Transfer",
       args: {
-        from: address as Address
+        from: currentAddress as Address
       },
       onLogs: (logs) => {
         for (const log of logs) {
@@ -32,7 +34,7 @@ export function EventWatcher() {
 
           if (!value || !to || !log.transactionHash) continue;
 
-          saveTransaction(address, {
+          saveTransaction(currentAddress, {
             id: `sent-${log.transactionHash}`,
             type: "send",
             token: "USDC",
@@ -48,7 +50,7 @@ export function EventWatcher() {
         }
       },
       onError: () => {
-        // Event watching is optional; ignore RPC subscription failures.
+        // Event watching is optional. Ignore RPC subscription failures.
       }
     });
 
@@ -57,7 +59,7 @@ export function EventWatcher() {
       abi: ERC20_TRANSFER_ABI,
       eventName: "Transfer",
       args: {
-        to: address as Address
+        to: currentAddress as Address
       },
       onLogs: (logs) => {
         for (const log of logs) {
@@ -65,7 +67,7 @@ export function EventWatcher() {
 
           if (!value || !log.transactionHash) continue;
 
-          saveTransaction(address, {
+          saveTransaction(currentAddress, {
             id: `received-${log.transactionHash}`,
             type: "receive",
             token: "USDC",
@@ -80,7 +82,7 @@ export function EventWatcher() {
         }
       },
       onError: () => {
-        // Optional watcher.
+        // Event watching is optional. Ignore RPC subscription failures.
       }
     });
 
