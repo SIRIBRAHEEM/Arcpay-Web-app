@@ -20,10 +20,15 @@ export function TxHistory() {
   const [transactions, setTransactions] = useState<LocalTransaction[]>([]);
 
   useEffect(() => {
-    if (!address) return;
+    if (!address) {
+      setTransactions([]);
+      return;
+    }
+
+    const currentAddress = address;
 
     function refresh() {
-      setTransactions(loadTransactions(address));
+      setTransactions(loadTransactions(currentAddress));
     }
 
     refresh();
@@ -61,11 +66,14 @@ export function TxHistory() {
                     <div
                       className={cn(
                         "grid size-10 shrink-0 place-items-center rounded-2xl",
-                        tx.type === "send" ? "bg-cyan-400/10 text-cyan-300" : "bg-primary/10 text-primary"
+                        tx.type === "send"
+                          ? "bg-cyan-400/10 text-cyan-300"
+                          : "bg-primary/10 text-primary"
                       )}
                     >
                       <Icon className="size-4" />
                     </div>
+
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold capitalize">
                         {tx.type} {tx.amount} {tx.token}
@@ -81,6 +89,7 @@ export function TxHistory() {
                     <Badge variant="outline" className="rounded-full">
                       {tx.state}
                     </Badge>
+
                     {tx.explorerUrl ? (
                       <a
                         href={tx.explorerUrl}
