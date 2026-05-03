@@ -1,18 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import {
-  ArrowLeftRight,
-  ExternalLink,
-  Repeat2,
-  Sparkles,
-  Waypoints
-} from "lucide-react";
+import { useState } from "react";
+import { ArrowRight, Repeat2, Send } from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
-import { BridgeRouteAnimation } from "@/components/visuals/bridge-route-animation";
-import { LottieSuccess } from "@/components/visuals/lottie-success";
-import { SwapOrbitAnimation } from "@/components/visuals/swap-orbit-animation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -25,63 +16,33 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 import {
-  bridgeUsdc,
   extractTransaction,
-  swapStablecoins,
-  type ArcStableToken
+  sendArcToken,
+  spendUnifiedUsdc,
+  swapUsdcToEurc
 } from "@/lib/appkit-actions";
-import {
-  CHAIN_PARAMS_BY_APPKIT_CHAIN,
-  requestSwitchChain,
-  type AppKitChain
-} from "@/lib/arc";
+import { ARC_TESTNET_PARAMS, requestSwitchChain } from "@/lib/arc";
 import { saveTransaction } from "@/lib/transactions";
-import { validateAmount } from "@/lib/validators";
+import { validateAddress, validateAmount } from "@/lib/validators";
 import { useWalletStore } from "@/store/wallet-store";
 
-type Mode = "swap" | "bridge";
+type SendToken = "USDC" | "EURC";
 
-const chainLabels: Record<AppKitChain, string> = {
-  Arc_Testnet: "Arc Testnet",
-  Base_Sepolia: "Base Sepolia",
-  Ethereum_Sepolia: "Ethereum Sepolia"
-};
-
-export function BridgeSwapPanel() {
+export function SendPanel() {
   const adapter = useWalletStore((state) => state.adapter);
   const provider = useWalletStore((state) => state.provider);
   const address = useWalletStore((state) => state.address);
 
-  const [mode, setMode] = useState<Mode>("swap");
+  const [token, setToken] = useState<SendToken>("USDC");
   const [amount, setAmount] = useState("");
-  const [tokenIn, setTokenIn] = useState<ArcStableToken>("USDC");
-  const [tokenOut, setTokenOut] = useState<ArcStableToken>("EURC");
-  const [fromChain, setFromChain] = useState<AppKitChain>("Arc_Testnet");
-  const [toChain, setToChain] = useState<AppKitChain>("Ethereum_Sepolia");
-  const [loading, setLoading] = useState(false);
+  const [recipient, setRecipient] = useState("");
+  const [memo, setMemo] = useState("");
+  const [swapFirst, setSwapFirst] = useState(true);
+  const [sending, setSending] = useState(false);
   const [txOpen, setTxOpen] = useState(false);
   const [tx, setTx] = useState<ReturnType<typeof extractTransaction> | null>(null);
-
-  const title = mode === "swap" ? "Swap stablecoins" : "Bridge USDC";
-
-  const description = useMemo(() => {
-    if (mode === "swap") {
-      return `${tokenIn} → ${tokenOut} on ${chainLabels[fromChain]}`;
-    }
-
-    return `Move USDC from ${chainLabels[fromChain]} to ${chainLabels[toChain]}`;
-  }, [fromChain, mode, toChain, tokenIn, tokenOut]);
-
-  function flipSwapTokens() {
-    setTokenIn(tokenOut);
-    setTokenOut(tokenIn);
-  }
-
-  function flipBridgeChains() {
-    setFromChain(toChain);
-    setToChain(fromChain);
-  }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -92,322 +53,207 @@ export function BridgeSwapPanel() {
       return;
     }
 
+    const addressError = validateAddress(recipient);
+    if (addressError) {
+      toast.error(addressError);
+      return;
+    }
+
     if (!adapter || !provider || !address) {
       toast.error("Connect your wallet first.");
       return;
     }
 
-    if (mode === "swap" && tokenIn === tokenOut) {
-      toast.error("Choose two different tokens.");
-      return;
-    }
-
-    if (mode === "bridge" && fromChain === toChain) {
-      toast.error("Choose two different chains.");
-      return;
-    }
-
-    setLoading(true);
+    setSending(true);
 
     try {
-      await requestSwitchChain(provider, CHAIN_PARAMS_BY_APPKIT_CHAIN[fromChain]);
+      await requestSwitchChain(provider, ARC_TESTNET_PARAMS);
 
-      if (mode === "swap") {
-        const result = await swapStablecoins({
+      let result: unknown;
+
+      if (token === "USDC") {
+        result = await spendUnifiedUsdc({
           adapter,
           amount,
-          tokenIn,
-          tokenOut,
-          chain: fromChain
-        });
-
-        const txDetails = extractTransaction(result);
-
-        setTx(txDetails);
-        setTxOpen(true);
-
-        saveTransaction(address, {
-          id: crypto.randomUUID(),
-          type: "swap",
-          token: tokenOut,
-          amount,
-          chain: fromChain,
-          state: "success",
-          hash: txDetails.hash,
-          explorerUrl: txDetails.explorerUrl,
-          memo: `${tokenIn} → ${tokenOut}`,
-          createdAt: Date.now()
-        });
-
-        toast.success("Swap submitted", {
-          description: `${tokenIn} → ${tokenOut} on ${chainLabels[fromChain]}`
+          recipient
         });
       } else {
-        const result = await bridgeUsdc({
+        if (swapFirst) {
+          const swapResult = await swapUsdcToEurc({
+            adapter,
+            amount
+          });
+
+          const swapTx = extractTransaction(swapResult);
+
+          saveTransaction(address, {
+            id: crypto.randomUUID(),
+            type: "swap",
+            token: "EURC",
+            amount,
+            chain: "Arc_Testnet",
+            state: "success",
+            hash: swapTx.hash,
+            explorerUrl: swapTx.explorerUrl,
+            memo: "USDC → EURC before send",
+            createdAt: Date.now()
+          });
+        }
+
+        result = await sendArcToken({
           adapter,
           amount,
-          fromChain,
-          toChain
-        });
-
-        const txDetails = extractTransaction(result);
-
-        setTx(txDetails);
-        setTxOpen(true);
-
-        saveTransaction(address, {
-          id: crypto.randomUUID(),
-          type: "bridge",
-          token: "USDC",
-          amount,
-          chain: `${fromChain} → ${toChain}`,
-          state: "success",
-          hash: txDetails.hash,
-          explorerUrl: txDetails.explorerUrl,
-          memo: `Bridge USDC to ${chainLabels[toChain]}`,
-          createdAt: Date.now()
-        });
-
-        toast.success("Bridge submitted", {
-          description: `USDC is moving to ${chainLabels[toChain]}`
+          recipient,
+          token: "EURC"
         });
       }
 
+      const txDetails = extractTransaction(result);
+      setTx(txDetails);
+      setTxOpen(true);
+
+      saveTransaction(address, {
+        id: crypto.randomUUID(),
+        type: "send",
+        token,
+        amount,
+        recipient,
+        chain: "Arc_Testnet",
+        state: "success",
+        hash: txDetails.hash,
+        explorerUrl: txDetails.explorerUrl,
+        memo: memo.trim() || undefined,
+        createdAt: Date.now()
+      });
+
+      toast.success("Payment submitted", {
+        description:
+          token === "USDC"
+            ? "USDC was spent from your Unified Balance."
+            : "EURC payment was submitted on Arc Testnet."
+      });
+
       setAmount("");
+      setRecipient("");
+      setMemo("");
     } catch (error) {
-      toast.error(mode === "swap" ? "Swap failed" : "Bridge failed", {
+      toast.error("Payment failed", {
         description: error instanceof Error ? error.message : "Please try again."
       });
     } finally {
-      setLoading(false);
+      setSending(false);
     }
   }
 
   return (
     <>
-      <Card className="glass overflow-hidden rounded-[2rem] shadow-card">
-        <CardHeader className="space-y-4 p-6">
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="size-5 text-primary" />
-              Bridge & Swap
-            </CardTitle>
+      <Card className="glass rounded-[2rem] shadow-card">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6">
+          <CardTitle>Send</CardTitle>
 
-            <Badge variant="secondary" className="rounded-full">
-              Premium
-            </Badge>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
-            <button
-              type="button"
-              onClick={() => setMode("swap")}
-              className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
-                mode === "swap"
-                  ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
-              }`}
-            >
-              <Repeat2 className="size-4" />
-              Swap
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setMode("bridge")}
-              className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
-                mode === "bridge"
-                  ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
-              }`}
-            >
-              <Waypoints className="size-4" />
-              Bridge
-            </button>
-          </div>
+          <Badge variant="secondary" className="rounded-full">
+            Non-custodial
+          </Badge>
         </CardHeader>
 
         <CardContent className="p-6 pt-0">
-          <form onSubmit={submit} className="grid gap-5">
-            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.025] p-5">
-              <p className="text-sm text-muted-foreground">{title}</p>
-              <p className="mt-2 text-xl font-black tracking-tight">
-                {description}
+          <form className="grid gap-4" onSubmit={submit}>
+            <div className="grid gap-2">
+              <Label htmlFor="amount">Amount</Label>
+
+              <div className="grid grid-cols-[1fr_132px] gap-2">
+                <Input
+                  id="amount"
+                  inputMode="decimal"
+                  placeholder="25.00"
+                  value={amount}
+                  onChange={(event) => setAmount(event.target.value)}
+                />
+
+                <Select
+                  value={token}
+                  onValueChange={(value) => setToken(value as SendToken)}
+                >
+                  <SelectTrigger aria-label="Token">
+                    <SelectValue />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="USDC">USDC</SelectItem>
+                    <SelectItem value="EURC">EURC</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {token === "EURC" ? (
+              <button
+                type="button"
+                onClick={() => setSwapFirst((value) => !value)}
+                className="flex items-start gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-left"
+              >
+                <div className="mt-0.5 grid size-8 place-items-center rounded-xl bg-primary/10 text-primary">
+                  <Repeat2 className="size-4" />
+                </div>
+
+                <div>
+                  <p className="text-sm font-semibold">
+                    {swapFirst ? "Swap USDC to EURC before sending" : "Send existing EURC"}
+                  </p>
+
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                    Arc Testnet swap supports USDC/EURC. Turn this off if your
+                    wallet already has EURC on Arc.
+                  </p>
+                </div>
+              </button>
+            ) : null}
+
+            <div className="grid gap-2">
+              <Label htmlFor="recipient">Recipient address</Label>
+
+              <Input
+                id="recipient"
+                placeholder="0x..."
+                autoComplete="off"
+                value={recipient}
+                onChange={(event) => setRecipient(event.target.value)}
+              />
+
+              <p className="text-xs text-muted-foreground">
+                ArcPay validates EVM addresses. ENS resolution is not enabled for this testnet app.
               </p>
             </div>
 
-            {loading ? (
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-4">
-                <LottieSuccess variant="processing" className="h-24 w-full" />
-                <p className="text-center text-sm font-semibold">
-                  {mode === "swap" ? "Preparing swap route..." : "Preparing bridge route..."}
-                </p>
-              </div>
-            ) : mode === "swap" ? (
-              <SwapOrbitAnimation tokenIn={tokenIn} tokenOut={tokenOut} />
-            ) : (
-              <BridgeRouteAnimation
-                fromLabel={chainLabels[fromChain]}
-                toLabel={chainLabels[toChain]}
-              />
-            )}
-
             <div className="grid gap-2">
-              <Label htmlFor="bridge-swap-amount">Amount</Label>
-              <Input
-                id="bridge-swap-amount"
-                inputMode="decimal"
-                placeholder="10.00"
-                value={amount}
-                onChange={(event) => setAmount(event.target.value)}
+              <Label htmlFor="memo">Memo optional</Label>
+
+              <Textarea
+                id="memo"
+                placeholder="Lunch, invoice #42, thanks..."
+                value={memo}
+                onChange={(event) => setMemo(event.target.value)}
+                maxLength={160}
               />
-            </div>
 
-            {mode === "swap" ? (
-              <div className="grid gap-3">
-                <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
-                  <div className="grid gap-2">
-                    <Label>From token</Label>
-                    <Select
-                      value={tokenIn}
-                      onValueChange={(value) => setTokenIn(value as ArcStableToken)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="USDC">USDC</SelectItem>
-                        <SelectItem value="EURC">EURC</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="icon"
-                    className="mx-auto rounded-2xl"
-                    onClick={flipSwapTokens}
-                    aria-label="Flip swap tokens"
-                  >
-                    <ArrowLeftRight className="size-4" />
-                  </Button>
-
-                  <div className="grid gap-2">
-                    <Label>To token</Label>
-                    <Select
-                      value={tokenOut}
-                      onValueChange={(value) => setTokenOut(value as ArcStableToken)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="USDC">USDC</SelectItem>
-                        <SelectItem value="EURC">EURC</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="grid gap-2">
-                  <Label>Swap chain</Label>
-                  <Select
-                    value={fromChain}
-                    onValueChange={(value) => setFromChain(value as AppKitChain)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-            ) : (
-              <div className="grid gap-3">
-                <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
-                  <div className="grid gap-2">
-                    <Label>From chain</Label>
-                    <Select
-                      value={fromChain}
-                      onValueChange={(value) => setFromChain(value as AppKitChain)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
-                        <SelectItem value="Ethereum_Sepolia">Ethereum Sepolia</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    size="icon"
-                    className="mx-auto rounded-2xl"
-                    onClick={flipBridgeChains}
-                    aria-label="Flip bridge chains"
-                  >
-                    <ArrowLeftRight className="size-4" />
-                  </Button>
-
-                  <div className="grid gap-2">
-                    <Label>To chain</Label>
-                    <Select
-                      value={toChain}
-                      onValueChange={(value) => setToChain(value as AppKitChain)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
-                        <SelectItem value="Ethereum_Sepolia">Ethereum Sepolia</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-primary">
-                  Bridge supports USDC transfers. Make sure your wallet has test
-                  USDC and enough gas on the source chain.
-                </div>
-              </div>
-            )}
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
-              Need test funds?{" "}
-              <a
-                href="https://faucet.circle.com"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-1 text-primary hover:underline"
-              >
-                Open Circle faucet <ExternalLink className="size-3" />
-              </a>
+              <p className="text-xs text-muted-foreground">
+                Memo is stored locally only and is not written onchain.
+              </p>
             </div>
 
             <Button
               type="submit"
               size="lg"
-              disabled={loading}
+              disabled={sending}
               className="h-12 rounded-2xl"
             >
-              {loading ? (
-                mode === "swap" ? "Swapping..." : "Bridging..."
-              ) : mode === "swap" ? (
-                <>
-                  <Repeat2 className="mr-2 size-4" />
-                  Swap now
-                </>
+              {sending ? (
+                "Sending..."
               ) : (
                 <>
-                  <Waypoints className="mr-2 size-4" />
-                  Bridge USDC
+                  <Send className="mr-2 size-4" />
+                  Send payment
+                  <ArrowRight className="ml-2 size-4" />
                 </>
               )}
             </Button>
@@ -418,12 +264,8 @@ export function BridgeSwapPanel() {
       <TransactionDialog
         open={txOpen}
         onOpenChange={setTxOpen}
-        title={mode === "swap" ? "Swap submitted" : "Bridge submitted"}
-        description={
-          mode === "swap"
-            ? "Your swap transaction was submitted."
-            : "Your bridge transaction was submitted. Cross-chain transfers may take time to complete."
-        }
+        title="Payment submitted"
+        description="Your payment transaction was submitted to Arc Testnet."
         tx={tx}
       />
     </>
