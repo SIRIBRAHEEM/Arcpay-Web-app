@@ -4,35 +4,43 @@
 
 @layer base {
   :root {
-    --background: 222 47% 5%;
-    --foreground: 210 40% 98%;
+    /*
+      ArcSilver-inspired premium dark theme
+      Background: deep black / navy
+      Primary: silver-white
+      Accent: Arc blue
+      Success: soft emerald
+    */
 
-    --card: 222 42% 7%;
-    --card-foreground: 210 40% 98%;
+    --background: 222 47% 4%;
+    --foreground: 220 23% 96%;
 
-    --popover: 222 42% 7%;
-    --popover-foreground: 210 40% 98%;
+    --card: 222 34% 7%;
+    --card-foreground: 220 23% 96%;
 
-    --primary: 158 72% 48%;
+    --popover: 222 34% 7%;
+    --popover-foreground: 220 23% 96%;
+
+    --primary: 214 32% 91%;
     --primary-foreground: 222 47% 5%;
 
-    --secondary: 221 28% 13%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 221 27% 12%;
+    --secondary-foreground: 220 23% 96%;
 
-    --muted: 220 25% 12%;
-    --muted-foreground: 215 20% 68%;
+    --muted: 221 24% 12%;
+    --muted-foreground: 217 20% 67%;
 
-    --accent: 188 85% 44%;
+    --accent: 210 100% 65%;
     --accent-foreground: 222 47% 5%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 80% 58%;
+    --destructive-foreground: 220 23% 96%;
 
-    --border: 217 24% 18%;
-    --input: 217 24% 18%;
-    --ring: 158 72% 48%;
+    --border: 220 20% 18%;
+    --input: 220 20% 18%;
+    --ring: 210 100% 65%;
 
-    --radius: 1.25rem;
+    --radius: 1.35rem;
   }
 
   * {
@@ -47,13 +55,14 @@
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
     background:
-      radial-gradient(circle at 10% 10%, rgba(32, 213, 159, 0.16), transparent 32rem),
-      radial-gradient(circle at 90% 0%, rgba(15, 183, 215, 0.14), transparent 28rem),
-      linear-gradient(180deg, #050914 0%, #07111f 45%, #050914 100%);
+      radial-gradient(circle at 12% 4%, rgba(96, 165, 250, 0.16), transparent 28rem),
+      radial-gradient(circle at 88% 8%, rgba(203, 213, 225, 0.1), transparent 30rem),
+      radial-gradient(circle at 50% 100%, rgba(14, 165, 233, 0.1), transparent 34rem),
+      linear-gradient(180deg, #030712 0%, #070b14 42%, #020617 100%);
   }
 
   ::selection {
-    background: rgba(32, 213, 159, 0.35);
+    background: rgba(96, 165, 250, 0.35);
     color: white;
   }
 }
@@ -61,10 +70,46 @@
 @layer components {
   .glass {
     @apply border border-white/10 bg-white/[0.045] backdrop-blur-2xl;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 24px 80px rgba(0, 0, 0, 0.38);
   }
 
-  .text-balance {
-    text-wrap: balance;
+  .silver-card {
+    @apply rounded-[2rem] border border-white/10 bg-white/[0.045] backdrop-blur-2xl;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 20px 70px rgba(0, 0, 0, 0.4);
+  }
+
+  .silver-panel {
+    @apply rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.025];
+  }
+
+  .silver-pill {
+    @apply rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs font-semibold text-slate-200;
+  }
+
+  .silver-blue-glow {
+    box-shadow:
+      0 0 0 1px rgba(96, 165, 250, 0.18),
+      0 0 40px rgba(96, 165, 250, 0.12);
+  }
+
+  .silver-text-gradient {
+    @apply bg-gradient-to-r from-white via-slate-200 to-blue-300 bg-clip-text text-transparent;
+  }
+
+  .arc-blue-text {
+    @apply text-blue-300;
+  }
+
+  .arc-blue-bg {
+    @apply bg-blue-400/10 text-blue-300;
+  }
+
+  .reserve-green-bg {
+    @apply bg-emerald-400/10 text-emerald-300;
   }
 
   .safe-bottom {
