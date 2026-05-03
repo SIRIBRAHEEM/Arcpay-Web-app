@@ -1,7 +1,13 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { ArrowLeftRight, Bridge, ExternalLink, Repeat2, Sparkles } from "lucide-react";
+import {
+  ArrowLeftRight,
+  ExternalLink,
+  Repeat2,
+  Sparkles,
+  Waypoints
+} from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -55,6 +61,7 @@ export function BridgeSwapPanel() {
   const [tx, setTx] = useState<ReturnType<typeof extractTransaction> | null>(null);
 
   const title = mode === "swap" ? "Swap stablecoins" : "Bridge USDC";
+
   const description = useMemo(() => {
     if (mode === "swap") {
       return `${tokenIn} → ${tokenOut} on ${chainLabels[fromChain]}`;
@@ -112,6 +119,7 @@ export function BridgeSwapPanel() {
         });
 
         const txDetails = extractTransaction(result);
+
         setTx(txDetails);
         setTxOpen(true);
 
@@ -140,6 +148,7 @@ export function BridgeSwapPanel() {
         });
 
         const txDetails = extractTransaction(result);
+
         setTx(txDetails);
         setTxOpen(true);
 
@@ -209,7 +218,7 @@ export function BridgeSwapPanel() {
                   : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
               }`}
             >
-              <Bridge className="size-4" />
+              <Waypoints className="size-4" />
               Bridge
             </button>
           </div>
@@ -219,7 +228,9 @@ export function BridgeSwapPanel() {
           <form onSubmit={submit} className="grid gap-5">
             <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.025] p-5">
               <p className="text-sm text-muted-foreground">{title}</p>
-              <p className="mt-2 text-xl font-black tracking-tight">{description}</p>
+              <p className="mt-2 text-xl font-black tracking-tight">
+                {description}
+              </p>
             </div>
 
             <div className="grid gap-2">
@@ -238,7 +249,10 @@ export function BridgeSwapPanel() {
                 <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
                   <div className="grid gap-2">
                     <Label>From token</Label>
-                    <Select value={tokenIn} onValueChange={(value) => setTokenIn(value as ArcStableToken)}>
+                    <Select
+                      value={tokenIn}
+                      onValueChange={(value) => setTokenIn(value as ArcStableToken)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -262,7 +276,10 @@ export function BridgeSwapPanel() {
 
                   <div className="grid gap-2">
                     <Label>To token</Label>
-                    <Select value={tokenOut} onValueChange={(value) => setTokenOut(value as ArcStableToken)}>
+                    <Select
+                      value={tokenOut}
+                      onValueChange={(value) => setTokenOut(value as ArcStableToken)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -276,7 +293,10 @@ export function BridgeSwapPanel() {
 
                 <div className="grid gap-2">
                   <Label>Swap chain</Label>
-                  <Select value={fromChain} onValueChange={(value) => setFromChain(value as AppKitChain)}>
+                  <Select
+                    value={fromChain}
+                    onValueChange={(value) => setFromChain(value as AppKitChain)}
+                  >
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
@@ -284,8 +304,9 @@ export function BridgeSwapPanel() {
                       <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
                     </SelectContent>
                   </Select>
+
                   <p className="text-xs text-muted-foreground">
-                    Testnet stablecoin swap is designed around supported App Kit token pairs.
+                    Swap supports stablecoin pairs available through Circle App Kit on Arc Testnet.
                   </p>
                 </div>
               </div>
@@ -294,7 +315,10 @@ export function BridgeSwapPanel() {
                 <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
                   <div className="grid gap-2">
                     <Label>From chain</Label>
-                    <Select value={fromChain} onValueChange={(value) => setFromChain(value as AppKitChain)}>
+                    <Select
+                      value={fromChain}
+                      onValueChange={(value) => setFromChain(value as AppKitChain)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -318,7 +342,10 @@ export function BridgeSwapPanel() {
 
                   <div className="grid gap-2">
                     <Label>To chain</Label>
-                    <Select value={toChain} onValueChange={(value) => setToChain(value as AppKitChain)}>
+                    <Select
+                      value={toChain}
+                      onValueChange={(value) => setToChain(value as AppKitChain)}
+                    >
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
@@ -349,7 +376,12 @@ export function BridgeSwapPanel() {
               </a>
             </div>
 
-            <Button type="submit" size="lg" disabled={loading} className="h-12 rounded-2xl">
+            <Button
+              type="submit"
+              size="lg"
+              disabled={loading}
+              className="h-12 rounded-2xl"
+            >
               {loading ? (
                 mode === "swap" ? "Swapping..." : "Bridging..."
               ) : mode === "swap" ? (
@@ -359,7 +391,7 @@ export function BridgeSwapPanel() {
                 </>
               ) : (
                 <>
-                  <Bridge className="mr-2 size-4" />
+                  <Waypoints className="mr-2 size-4" />
                   Bridge USDC
                 </>
               )}
