@@ -1,7 +1,7 @@
 "use client";
-import { ArrowRight, Repeat2, Send } from "lucide-react";
+
 import { useState } from "react";
-import { ArrowLeftRight, ExternalLink, Repeat2, Sparkles, Waypoints } from "lucide-react";
+import { ArrowRight, Repeat2, Send } from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +34,7 @@ export function SendPanel() {
   const adapter = useWalletStore((state) => state.adapter);
   const provider = useWalletStore((state) => state.provider);
   const address = useWalletStore((state) => state.address);
+
   const [token, setToken] = useState<SendToken>("USDC");
   const [amount, setAmount] = useState("");
   const [recipient, setRecipient] = useState("");
@@ -84,6 +85,7 @@ export function SendPanel() {
           });
 
           const swapTx = extractTransaction(swapResult);
+
           saveTransaction(address, {
             id: crypto.randomUUID(),
             type: "swap",
@@ -148,6 +150,7 @@ export function SendPanel() {
       <Card className="glass rounded-[2rem] shadow-card">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6">
           <CardTitle>Send</CardTitle>
+
           <Badge variant="secondary" className="rounded-full">
             Non-custodial
           </Badge>
@@ -157,6 +160,7 @@ export function SendPanel() {
           <form className="grid gap-4" onSubmit={submit}>
             <div className="grid gap-2">
               <Label htmlFor="amount">Amount</Label>
+
               <div className="grid grid-cols-[1fr_132px] gap-2">
                 <Input
                   id="amount"
@@ -165,10 +169,15 @@ export function SendPanel() {
                   value={amount}
                   onChange={(event) => setAmount(event.target.value)}
                 />
-                <Select value={token} onValueChange={(value) => setToken(value as SendToken)}>
+
+                <Select
+                  value={token}
+                  onValueChange={(value) => setToken(value as SendToken)}
+                >
                   <SelectTrigger aria-label="Token">
                     <SelectValue />
                   </SelectTrigger>
+
                   <SelectContent>
                     <SelectItem value="USDC">USDC</SelectItem>
                     <SelectItem value="EURC">EURC</SelectItem>
@@ -186,10 +195,12 @@ export function SendPanel() {
                 <div className="mt-0.5 grid size-8 place-items-center rounded-xl bg-primary/10 text-primary">
                   <Repeat2 className="size-4" />
                 </div>
+
                 <div>
                   <p className="text-sm font-semibold">
                     {swapFirst ? "Swap USDC to EURC before sending" : "Send existing EURC"}
                   </p>
+
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
                     Arc Testnet swap supports USDC/EURC. Turn this off if your
                     wallet already has EURC on Arc.
@@ -200,6 +211,7 @@ export function SendPanel() {
 
             <div className="grid gap-2">
               <Label htmlFor="recipient">Recipient address</Label>
+
               <Input
                 id="recipient"
                 placeholder="0x..."
@@ -207,6 +219,7 @@ export function SendPanel() {
                 value={recipient}
                 onChange={(event) => setRecipient(event.target.value)}
               />
+
               <p className="text-xs text-muted-foreground">
                 ArcPay validates EVM addresses. ENS resolution is not enabled for this testnet app.
               </p>
@@ -214,6 +227,7 @@ export function SendPanel() {
 
             <div className="grid gap-2">
               <Label htmlFor="memo">Memo optional</Label>
+
               <Textarea
                 id="memo"
                 placeholder="Lunch, invoice #42, thanks..."
@@ -221,12 +235,18 @@ export function SendPanel() {
                 onChange={(event) => setMemo(event.target.value)}
                 maxLength={160}
               />
+
               <p className="text-xs text-muted-foreground">
                 Memo is stored locally only and is not written onchain.
               </p>
             </div>
 
-            <Button type="submit" size="lg" disabled={sending} className="h-12 rounded-2xl">
+            <Button
+              type="submit"
+              size="lg"
+              disabled={sending}
+              className="h-12 rounded-2xl"
+            >
               {sending ? (
                 "Sending..."
               ) : (
