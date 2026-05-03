@@ -2,7 +2,7 @@
 
 export type LocalTransaction = {
   id: string;
-  type: "send" | "deposit" | "swap" | "receive";
+  type: "send" | "deposit" | "swap" | "bridge" | "receive";
   token: "USDC" | "EURC";
   amount: string;
   recipient?: string;
