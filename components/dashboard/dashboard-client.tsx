@@ -8,7 +8,6 @@ import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { KitKeyCard } from "@/components/dashboard/kit-key-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
-import { SendPanel } from "@/components/dashboard/send-panel";
 import { SilverStatusCard } from "@/components/dashboard/silver-status-card";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
@@ -65,21 +64,20 @@ export function DashboardClient() {
       <div className="mx-auto max-w-7xl">
         <DashboardHeader />
 
-        <div className="mt-6 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
+        <section className="mt-6 grid gap-5 lg:grid-cols-[1.12fr_0.88fr]">
           <div className="grid gap-5">
-            <BalanceCard />
-            <SilverStatusCard />
-            <KitKeyCard />
-            <BridgeSwapPanel />
             <ArcNetworkAnimation className="min-h-64" />
-            <ReceivePanel />
+            <BridgeSwapPanel />
           </div>
 
           <div className="grid gap-5">
-            <SendPanel />
+            <BalanceCard />
+            <KitKeyCard />
+            <SilverStatusCard />
+            <ReceivePanel />
             <TxHistory />
           </div>
-        </div>
+        </section>
       </div>
     </main>
   );
