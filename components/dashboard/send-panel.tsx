@@ -1,5 +1,5 @@
 "use client";
-
+import { ArrowRight, Repeat2, Send } from "lucide-react";
 import { useState } from "react";
 import { ArrowLeftRight, ExternalLink, Repeat2, Sparkles, Waypoints } from "lucide-react";
 import { toast } from "sonner";
