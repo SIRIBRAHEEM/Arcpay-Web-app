@@ -6,6 +6,7 @@ import { BalanceCard } from "@/components/dashboard/balance-card";
 import { BridgeSwapPanel } from "@/components/dashboard/bridge-swap-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
+import { KitKeyCard } from "@/components/dashboard/kit-key-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
 import { SendPanel } from "@/components/dashboard/send-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
@@ -66,6 +67,7 @@ export function DashboardClient() {
         <div className="mt-6 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="grid gap-5">
             <BalanceCard />
+            <KitKeyCard />
             <BridgeSwapPanel />
             <ArcNetworkAnimation className="min-h-64" />
             <ReceivePanel />
