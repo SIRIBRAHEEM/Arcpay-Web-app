@@ -109,6 +109,7 @@ export function SendPanel() {
       }
 
       const txDetails = extractTransaction(result);
+
       setTx(txDetails);
       setTxOpen(true);
 
