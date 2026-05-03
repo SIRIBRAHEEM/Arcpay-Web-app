@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BalanceCard } from "@/components/dashboard/balance-card";
+import { BridgeSwapPanel } from "@/components/dashboard/bridge-swap-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
@@ -57,14 +58,17 @@ export function DashboardClient() {
   return (
     <main className="min-h-screen px-4 pb-20 pt-4 sm:px-6 lg:px-8">
       <EventWatcher />
+
       <div className="mx-auto max-w-7xl">
         <DashboardHeader />
 
         <div className="mt-6 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="grid gap-5">
             <BalanceCard />
+            <BridgeSwapPanel />
             <ReceivePanel />
           </div>
+
           <div className="grid gap-5">
             <SendPanel />
             <TxHistory />
