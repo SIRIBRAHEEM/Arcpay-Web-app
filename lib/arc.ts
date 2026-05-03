@@ -5,6 +5,7 @@ export const ARC_RPC_URL = "https://rpc.testnet.arc.network";
 export const ARC_BLOCK_EXPLORER = "https://testnet.arcscan.app";
 export const ARC_USDC_ADDRESS = "0x3600000000000000000000000000000000000000" as const;
 
+export type AppKitChain = "Arc_Testnet" | "Base_Sepolia" | "Ethereum_Sepolia";
 export type SupportedDepositChain = "Base_Sepolia" | "Arc_Testnet";
 
 export const ARC_TESTNET = defineChain({
@@ -66,6 +67,30 @@ export const BASE_SEPOLIA_PARAMS: WalletAddEthereumChainParameter = {
   },
   rpcUrls: ["https://sepolia.base.org"],
   blockExplorerUrls: ["https://sepolia.basescan.org"]
+};
+
+export const ETHEREUM_SEPOLIA_PARAMS: WalletAddEthereumChainParameter = {
+  chainId: "0xaa36a7",
+  chainName: "Ethereum Sepolia",
+  nativeCurrency: {
+    name: "Sepolia Ether",
+    symbol: "ETH",
+    decimals: 18
+  },
+  rpcUrls: ["https://ethereum-sepolia-rpc.publicnode.com"],
+  blockExplorerUrls: ["https://sepolia.etherscan.io"]
+};
+
+export const CHAIN_PARAMS_BY_APPKIT_CHAIN: Record<AppKitChain, WalletAddEthereumChainParameter> = {
+  Arc_Testnet: ARC_TESTNET_PARAMS,
+  Base_Sepolia: BASE_SEPOLIA_PARAMS,
+  Ethereum_Sepolia: ETHEREUM_SEPOLIA_PARAMS
+};
+
+export const EXPLORER_BY_APPKIT_CHAIN: Record<AppKitChain, string> = {
+  Arc_Testnet: ARC_BLOCK_EXPLORER,
+  Base_Sepolia: "https://sepolia.basescan.org",
+  Ethereum_Sepolia: "https://sepolia.etherscan.io"
 };
 
 export async function requestSwitchChain(
