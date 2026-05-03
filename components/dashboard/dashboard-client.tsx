@@ -67,6 +67,7 @@ export function DashboardClient() {
         <div className="mt-6 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="grid gap-5">
             <BalanceCard />
+            import { SilverStatusCard } from "@/components/dashboard/silver-status-card";
             <KitKeyCard />
             <BridgeSwapPanel />
             <ArcNetworkAnimation className="min-h-64" />
