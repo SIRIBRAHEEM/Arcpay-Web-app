@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Repeat2, Send } from "lucide-react";
+import { ArrowLeftRight, ExternalLink, Repeat2, Sparkles, Waypoints } from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
 import { Badge } from "@/components/ui/badge";
