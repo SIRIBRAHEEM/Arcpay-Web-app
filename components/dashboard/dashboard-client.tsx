@@ -9,6 +9,7 @@ import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { KitKeyCard } from "@/components/dashboard/kit-key-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
 import { SendPanel } from "@/components/dashboard/send-panel";
+import { SilverStatusCard } from "@/components/dashboard/silver-status-card";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -67,7 +68,7 @@ export function DashboardClient() {
         <div className="mt-6 grid gap-5 lg:grid-cols-[0.95fr_1.05fr]">
           <div className="grid gap-5">
             <BalanceCard />
-            import { SilverStatusCard } from "@/components/dashboard/silver-status-card";
+            <SilverStatusCard />
             <KitKeyCard />
             <BridgeSwapPanel />
             <ArcNetworkAnimation className="min-h-64" />
