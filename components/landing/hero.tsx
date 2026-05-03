@@ -1,5 +1,6 @@
 "use client";
 
+import { GsapLandingAura } from "@/components/visuals/gsap-landing-aura";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, BadgeCheck, LockKeyhole, Sparkles, Zap } from "lucide-react";
@@ -12,6 +13,8 @@ const supportedAssets = ["USDC", "EURC", "Arc Testnet", "Unified Balance"];
 export function Hero() {
   return (
     <section className="relative px-4 pb-16 pt-6 sm:px-6 lg:px-8">
+      <GsapLandingAura />
+      
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link href="/" className="flex items-center gap-3" aria-label="ArcPay home">
           <div className="grid size-10 place-items-center rounded-2xl border border-white/10 bg-white/10 shadow-glow">
