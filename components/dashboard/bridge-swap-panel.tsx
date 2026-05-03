@@ -10,6 +10,9 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
+import { BridgeRouteAnimation } from "@/components/visuals/bridge-route-animation";
+import { LottieSuccess } from "@/components/visuals/lottie-success";
+import { SwapOrbitAnimation } from "@/components/visuals/swap-orbit-animation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -29,6 +32,8 @@ import {
   type ArcStableToken
 } from "@/lib/appkit-actions";
 import {
+  APPKIT_CHAIN_LABELS,
+  BRIDGE_CHAINS,
   CHAIN_PARAMS_BY_APPKIT_CHAIN,
   requestSwitchChain,
   type AppKitChain
@@ -38,12 +43,6 @@ import { validateAmount } from "@/lib/validators";
 import { useWalletStore } from "@/store/wallet-store";
 
 type Mode = "swap" | "bridge";
-
-const chainLabels: Record<AppKitChain, string> = {
-  Arc_Testnet: "Arc Testnet",
-  Base_Sepolia: "Base Sepolia",
-  Ethereum_Sepolia: "Ethereum Sepolia"
-};
 
 export function BridgeSwapPanel() {
   const adapter = useWalletStore((state) => state.adapter);
@@ -55,7 +54,7 @@ export function BridgeSwapPanel() {
   const [tokenIn, setTokenIn] = useState<ArcStableToken>("USDC");
   const [tokenOut, setTokenOut] = useState<ArcStableToken>("EURC");
   const [fromChain, setFromChain] = useState<AppKitChain>("Arc_Testnet");
-  const [toChain, setToChain] = useState<AppKitChain>("Ethereum_Sepolia");
+  const [toChain, setToChain] = useState<AppKitChain>("Base_Sepolia");
   const [loading, setLoading] = useState(false);
   const [txOpen, setTxOpen] = useState(false);
   const [tx, setTx] = useState<ReturnType<typeof extractTransaction> | null>(null);
@@ -64,10 +63,10 @@ export function BridgeSwapPanel() {
 
   const description = useMemo(() => {
     if (mode === "swap") {
-      return `${tokenIn} → ${tokenOut} on ${chainLabels[fromChain]}`;
+      return `${tokenIn} → ${tokenOut} on ${APPKIT_CHAIN_LABELS[fromChain]}`;
     }
 
-    return `Move USDC from ${chainLabels[fromChain]} to ${chainLabels[toChain]}`;
+    return `Move USDC from ${APPKIT_CHAIN_LABELS[fromChain]} to ${APPKIT_CHAIN_LABELS[toChain]}`;
   }, [fromChain, mode, toChain, tokenIn, tokenOut]);
 
   function flipSwapTokens() {
@@ -137,7 +136,7 @@ export function BridgeSwapPanel() {
         });
 
         toast.success("Swap submitted", {
-          description: `${tokenIn} → ${tokenOut} on ${chainLabels[fromChain]}`
+          description: `${tokenIn} → ${tokenOut} on ${APPKIT_CHAIN_LABELS[fromChain]}`
         });
       } else {
         const result = await bridgeUsdc({
@@ -161,12 +160,12 @@ export function BridgeSwapPanel() {
           state: "success",
           hash: txDetails.hash,
           explorerUrl: txDetails.explorerUrl,
-          memo: `Bridge USDC to ${chainLabels[toChain]}`,
+          memo: `Bridge USDC to ${APPKIT_CHAIN_LABELS[toChain]}`,
           createdAt: Date.now()
         });
 
         toast.success("Bridge submitted", {
-          description: `USDC is moving to ${chainLabels[toChain]}`
+          description: `USDC is moving to ${APPKIT_CHAIN_LABELS[toChain]}`
         });
       }
 
@@ -191,7 +190,7 @@ export function BridgeSwapPanel() {
             </CardTitle>
 
             <Badge variant="secondary" className="rounded-full">
-              App Kit
+              Multi-chain
             </Badge>
           </div>
 
@@ -232,6 +231,22 @@ export function BridgeSwapPanel() {
                 {description}
               </p>
             </div>
+
+            {loading ? (
+              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-4">
+                <LottieSuccess variant="processing" className="h-24 w-full" />
+                <p className="text-center text-sm font-semibold">
+                  {mode === "swap" ? "Preparing swap route..." : "Preparing bridge route..."}
+                </p>
+              </div>
+            ) : mode === "swap" ? (
+              <SwapOrbitAnimation tokenIn={tokenIn} tokenOut={tokenOut} />
+            ) : (
+              <BridgeRouteAnimation
+                fromLabel={APPKIT_CHAIN_LABELS[fromChain]}
+                toLabel={APPKIT_CHAIN_LABELS[toChain]}
+              />
+            )}
 
             <div className="grid gap-2">
               <Label htmlFor="bridge-swap-amount">Amount</Label>
@@ -301,12 +316,13 @@ export function BridgeSwapPanel() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
+                      <SelectItem value="Arc_Testnet">
+                        Arc Testnet
+                      </SelectItem>
                     </SelectContent>
                   </Select>
-
                   <p className="text-xs text-muted-foreground">
-                    Swap supports stablecoin pairs available through Circle App Kit on Arc Testnet.
+                    Testnet swaps are safest on Arc Testnet for USDC and EURC.
                   </p>
                 </div>
               </div>
@@ -323,8 +339,11 @@ export function BridgeSwapPanel() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
-                        <SelectItem value="Ethereum_Sepolia">Ethereum Sepolia</SelectItem>
+                        {BRIDGE_CHAINS.map((chain) => (
+                          <SelectItem key={chain} value={chain}>
+                            {APPKIT_CHAIN_LABELS[chain]}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
@@ -350,16 +369,19 @@ export function BridgeSwapPanel() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="Arc_Testnet">Arc Testnet</SelectItem>
-                        <SelectItem value="Ethereum_Sepolia">Ethereum Sepolia</SelectItem>
+                        {BRIDGE_CHAINS.map((chain) => (
+                          <SelectItem key={chain} value={chain}>
+                            {APPKIT_CHAIN_LABELS[chain]}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
                 <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-primary">
-                  Bridge supports USDC transfers. Make sure your wallet has test
-                  USDC and enough gas on the source chain.
+                  Bridge supports USDC transfers. Your wallet must have test
+                  USDC and native gas on the selected source chain.
                 </div>
               </div>
             )}
