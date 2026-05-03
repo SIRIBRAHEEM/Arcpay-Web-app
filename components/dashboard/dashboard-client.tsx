@@ -9,6 +9,7 @@ import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
 import { SendPanel } from "@/components/dashboard/send-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
+import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
 import { useWalletStore } from "@/store/wallet-store";
@@ -66,7 +67,7 @@ export function DashboardClient() {
           <div className="grid gap-5">
             <BalanceCard />
             <BridgeSwapPanel />
-            import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
+            <ArcNetworkAnimation className="min-h-64" />
             <ReceivePanel />
           </div>
 
