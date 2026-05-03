@@ -66,6 +66,7 @@ export function DashboardClient() {
           <div className="grid gap-5">
             <BalanceCard />
             <BridgeSwapPanel />
+            import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
             <ReceivePanel />
           </div>
 
