@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { ArrowDownToLine, ExternalLink, Repeat2, Send } from "lucide-react";
+import { ArrowDownToLine, ArrowLeftRight, ExternalLink, Repeat2, Send } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { loadTransactions, type LocalTransaction } from "@/lib/transactions";
@@ -12,6 +12,7 @@ const iconByType = {
   send: Send,
   deposit: ArrowDownToLine,
   swap: Repeat2,
+  bridge: ArrowLeftRight,
   receive: ArrowDownToLine
 };
 
@@ -68,7 +69,11 @@ export function TxHistory() {
                         "grid size-10 shrink-0 place-items-center rounded-2xl",
                         tx.type === "send"
                           ? "bg-cyan-400/10 text-cyan-300"
-                          : "bg-primary/10 text-primary"
+                          : tx.type === "bridge"
+                            ? "bg-purple-400/10 text-purple-300"
+                            : tx.type === "swap"
+                              ? "bg-amber-400/10 text-amber-300"
+                              : "bg-primary/10 text-primary"
                       )}
                     >
                       <Icon className="size-4" />
@@ -110,7 +115,7 @@ export function TxHistory() {
           <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center">
             <p className="font-semibold">No local activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Sends, deposits, swaps, and detected transfers will appear here.
+              Sends, deposits, swaps, bridges, and detected transfers will appear here.
             </p>
           </div>
         )}
