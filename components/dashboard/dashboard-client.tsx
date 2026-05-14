@@ -7,8 +7,9 @@ import { BridgeSwapPanel } from "@/components/dashboard/bridge-swap-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { KitKeyCard } from "@/components/dashboard/kit-key-card";
+import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
+import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
-import { SilverStatusCard } from "@/components/dashboard/silver-status-card";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -64,18 +65,22 @@ export function DashboardClient() {
       <div className="mx-auto max-w-7xl">
         <DashboardHeader />
 
-        <section className="mt-6 grid gap-5 lg:grid-cols-[1.12fr_0.88fr]">
+        <div className="mt-6">
+          <PremiumDashboardHero />
+        </div>
+
+        <section className="mt-5 grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="grid gap-5">
-            <ArcNetworkAnimation className="min-h-64" />
             <BridgeSwapPanel />
+            <ArcNetworkAnimation className="min-h-64" />
+            <TxHistory />
           </div>
 
-          <div className="grid gap-5">
+          <div className="grid content-start gap-5">
             <BalanceCard />
             <KitKeyCard />
-            <SilverStatusCard />
+            <ProtocolStatusCard />
             <ReceivePanel />
-            <TxHistory />
           </div>
         </section>
       </div>
