@@ -68,6 +68,20 @@
 }
 
 @layer components {
+  .premium-dashboard-bg {
+    background:
+      radial-gradient(circle at 15% 0%, rgba(96, 165, 250, 0.16), transparent 30rem),
+      radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.11), transparent 28rem),
+      radial-gradient(circle at 45% 100%, rgba(148, 163, 184, 0.08), transparent 34rem),
+      linear-gradient(180deg, #030712 0%, #050816 45%, #020617 100%);
+  }
+
+  .premium-card {
+    @apply rounded-[2rem] border border-white/10 bg-white/[0.045] backdrop-blur-2xl;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
+      0 24px 80px rgba(0, 0, 0, 0.38);
+  }
   .glass {
     @apply border border-white/10 bg-white/[0.045] backdrop-blur-2xl;
     box-shadow:
