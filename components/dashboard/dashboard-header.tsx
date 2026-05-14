@@ -47,10 +47,10 @@ export function DashboardHeader() {
 
           <div>
             <p className="font-black leading-none tracking-tight text-slate-100">
-              ArcPay DEX
+              ArcPay
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              Swap, bridge, and move stablecoins on Arc
+              Stablecoin payments on ARC
             </p>
           </div>
         </Link>
