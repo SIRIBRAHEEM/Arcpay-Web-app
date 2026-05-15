@@ -6,7 +6,6 @@ import { BalanceCard } from "@/components/dashboard/balance-card";
 import { BridgeSwapPanel } from "@/components/dashboard/bridge-swap-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
-import { KitKeyCard } from "@/components/dashboard/kit-key-card";
 import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
 import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
@@ -78,7 +77,6 @@ export function DashboardClient() {
 
           <div className="grid content-start gap-5">
             <BalanceCard />
-            <KitKeyCard />
             <ProtocolStatusCard />
             <ReceivePanel />
           </div>
