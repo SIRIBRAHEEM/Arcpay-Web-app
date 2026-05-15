@@ -170,13 +170,23 @@ export function BridgeSwapPanel() {
       }
 
       setAmount("");
-    } catch (error) {
-      toast.error(mode === "swap" ? "Swap failed" : "Bridge failed", {
-        description: error instanceof Error ? error.message : "Please try again."
-      });
-    } finally {
-      setLoading(false);
-    }
+   } catch (error) {
+  const message =
+    error instanceof Error ? error.message : "Please try again.";
+
+  const isFetchError =
+    message.toLowerCase().includes("failed to fetch") ||
+    message.toLowerCase().includes("could not be reached") ||
+    message.toLowerCase().includes("maximum retry");
+
+  toast.error(mode === "swap" ? "Swap failed" : "Bridge failed", {
+    description: isFetchError
+      ? "Circle quote service could not be reached. Turn off Brave Shields/ad blocker, disable VPN, refresh, or try Chrome."
+      : message
+  });
+} finally {
+  setLoading(false);
+}
   }
 
   return (
