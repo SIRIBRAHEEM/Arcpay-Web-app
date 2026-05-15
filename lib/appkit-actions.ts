@@ -170,6 +170,10 @@ export async function swapStablecoins({
     throw new Error("Choose two different tokens to swap.");
   }
 
+  if (chain !== "Arc_Testnet") {
+    throw new Error("Swap Beta is currently available only on Arc Testnet.");
+  }
+
   if (typeof navigator !== "undefined" && !navigator.onLine) {
     throw new Error("You are offline. Check your internet connection and try again.");
   }
@@ -198,16 +202,19 @@ export async function swapStablecoins({
 
     if (
       lowerMessage.includes("failed to fetch") ||
-      lowerMessage.includes("maximum retry")
+      lowerMessage.includes("maximum retry") ||
+      lowerMessage.includes("quoteswap") ||
+      lowerMessage.includes("quote")
     ) {
       throw new Error(
-        "Circle swap quote service could not be reached. Turn off Brave Shields/ad blocker, disable VPN, refresh the page, or try Chrome. If it still fails, the selected swap route may be temporarily unavailable."
+        "Swap Beta is temporarily unavailable because Circle testnet quote service could not return a route. Your Kit Key is valid. Please try again later or use Bridge/Receive instead."
       );
     }
 
     if (
       lowerMessage.includes("route") ||
-      lowerMessage.includes("not supported")
+      lowerMessage.includes("not supported") ||
+      lowerMessage.includes("unsupported")
     ) {
       throw new Error(
         "This swap route is not supported right now. Try USDC to EURC on Arc Testnet again later."
