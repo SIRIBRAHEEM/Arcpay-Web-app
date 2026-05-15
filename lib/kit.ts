@@ -7,6 +7,7 @@ import type { EIP1193Provider } from "viem";
 const LOCAL_KIT_KEY_STORAGE_KEY = "arcpay:circle-kit-key";
 
 let kit: AppKit | null = null;
+let cachedRuntimeKitKey = "";
 
 export function getAppKit() {
   if (!kit) {
@@ -33,11 +34,40 @@ export function getStoredKitKey() {
 }
 
 export function getKitKey() {
-  return getBuildTimeKitKey() || getStoredKitKey();
+  return getBuildTimeKitKey() || getStoredKitKey() || cachedRuntimeKitKey;
+}
+
+export async function getRuntimeKitKey() {
+  if (cachedRuntimeKitKey) return cachedRuntimeKitKey;
+
+  if (typeof window === "undefined") return "";
+
+  try {
+    const response = await fetch("/api/kit-key", {
+      method: "GET",
+      cache: "no-store"
+    });
+
+    if (!response.ok) return "";
+
+    const data = (await response.json()) as {
+      hasKey?: boolean;
+      kitKey?: string;
+    };
+
+    cachedRuntimeKitKey = data.kitKey?.trim() ?? "";
+    return cachedRuntimeKitKey;
+  } catch {
+    return "";
+  }
+}
+
+export async function getResolvedKitKey() {
+  return getKitKey() || (await getRuntimeKitKey());
 }
 
 export function hasCloudKitKey() {
-  return Boolean(getBuildTimeKitKey());
+  return Boolean(getBuildTimeKitKey() || cachedRuntimeKitKey);
 }
 
 export function saveStoredKitKey(value: string) {
