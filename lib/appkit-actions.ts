@@ -1,145 +1,3 @@
-"use client";
-
-import {
-  ARC_BLOCK_EXPLORER,
-  EXPLORER_BY_APPKIT_CHAIN,
-  type AppKitChain,
-  type SupportedDepositChain
-} from "@/lib/arc";
-import { getAppKit, getKitKey } from "@/lib/kit";
-
-export type WalletAdapter = unknown;
-
-export type ArcStableToken = "USDC" | "EURC";
-
-export type UnifiedBalanceResult = {
-  token: "USDC";
-  totalConfirmedBalance: string;
-  totalPendingBalance?: string;
-  breakdown: Array<Record<string, string | number | undefined>>;
-};
-
-export type ExtractedTransaction = {
-  hash?: string;
-  explorerUrl?: string;
-  raw: unknown;
-};
-
-export type SwapResult = {
-  tokenIn?: ArcStableToken;
-  tokenOut?: ArcStableToken;
-  amountIn?: string;
-  amountOut?: string;
-  txHash?: string;
-  hash?: string;
-  transactionHash?: string;
-  explorerUrl?: string;
-  steps?: Array<{
-    txHash?: string;
-    hash?: string;
-    transactionHash?: string;
-    explorerUrl?: string;
-    chain?: {
-      chain?: AppKitChain;
-    };
-  }>;
-};
-
-export async function fetchUnifiedBalance(adapter: WalletAdapter) {
-  const kit = getAppKit() as unknown as {
-    unifiedBalance: {
-      getBalances: (params: unknown) => Promise<UnifiedBalanceResult>;
-    };
-  };
-
-  return kit.unifiedBalance.getBalances({
-    sources: { adapter },
-    networkType: "testnet",
-    includePending: true,
-    token: "USDC"
-  });
-}
-
-export async function depositUnifiedBalance({
-  adapter,
-  amount,
-  chain
-}: {
-  adapter: WalletAdapter;
-  amount: string;
-  chain: SupportedDepositChain;
-}) {
-  const kit = getAppKit() as unknown as {
-    unifiedBalance: {
-      deposit: (params: unknown) => Promise<unknown>;
-    };
-  };
-
-  return kit.unifiedBalance.deposit({
-    from: {
-      adapter,
-      chain
-    },
-    amount,
-    token: "USDC"
-  });
-}
-
-export async function spendUnifiedUsdc({
-  adapter,
-  amount,
-  recipient
-}: {
-  adapter: WalletAdapter;
-  amount: string;
-  recipient: string;
-}) {
-  const kit = getAppKit() as unknown as {
-    unifiedBalance: {
-      spend: (params: unknown) => Promise<unknown>;
-    };
-  };
-
-  return kit.unifiedBalance.spend({
-    amount,
-    token: "USDC",
-    from: {
-      adapter
-    },
-    to: {
-      adapter,
-      chain: "Arc_Testnet",
-      recipientAddress: recipient
-    }
-  });
-}
-
-export async function sendArcToken({
-  adapter,
-  amount,
-  recipient,
-  token
-}: {
-  adapter: WalletAdapter;
-  amount: string;
-  recipient: string;
-  token: ArcStableToken;
-}) {
-  const kit = getAppKit() as unknown as {
-    send: (params: unknown) => Promise<unknown>;
-  };
-
-  return kit.send({
-    from: {
-      adapter,
-      chain: "Arc_Testnet"
-    },
-    to: recipient,
-    amount,
-    token
-  });
-}
-
 export async function swapStablecoins({
   adapter,
   amount,
@@ -155,11 +13,11 @@ export async function swapStablecoins({
   chain?: AppKitChain;
   slippageBps?: number;
 }) {
-  const kitKey = getKitKey();
+  const kitKey = await getResolvedKitKey();
 
   if (!kitKey) {
     throw new Error(
-      "Swap is not configured yet. The app owner needs to add NEXT_PUBLIC_KIT_KEY in Vercel environment variables and redeploy."
+      "Swap is not configured yet. The app owner needs to add CIRCLE_KIT_KEY or NEXT_PUBLIC_KIT_KEY in Vercel environment variables and redeploy."
     );
   }
 
@@ -167,121 +25,49 @@ export async function swapStablecoins({
     throw new Error("Choose two different tokens to swap.");
   }
 
+  if (typeof navigator !== "undefined" && !navigator.onLine) {
+    throw new Error("You are offline. Check your internet connection and try again.");
+  }
+
   const kit = getAppKit() as unknown as {
     swap: (params: unknown) => Promise<SwapResult>;
   };
 
-  return kit.swap({
-    from: {
-      adapter,
-      chain
-    },
-    tokenIn,
-    tokenOut,
-    amountIn: amount,
-    config: {
-      kitKey,
-      slippageBps
+  try {
+    return await kit.swap({
+      from: {
+        adapter,
+        chain
+      },
+      tokenIn,
+      tokenOut,
+      amountIn: amount,
+      config: {
+        kitKey,
+        slippageBps
+      }
+    });
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (
+      message.toLowerCase().includes("failed to fetch") ||
+      message.toLowerCase().includes("maximum retry")
+    ) {
+      throw new Error(
+        "Circle swap quote service could not be reached. Turn off Brave Shields/ad blocker, disable VPN, refresh the page, or try Chrome. If it still fails, the selected swap route may be temporarily unavailable."
+      );
     }
-  });
-}
 
-export async function swapUsdcToEurc({
-  adapter,
-  amount
-}: {
-  adapter: WalletAdapter;
-  amount: string;
-}) {
-  return swapStablecoins({
-    adapter,
-    amount,
-    tokenIn: "USDC",
-    tokenOut: "EURC",
-    chain: "Arc_Testnet"
-  });
-}
+    if (
+      message.toLowerCase().includes("route") ||
+      message.toLowerCase().includes("not supported")
+    ) {
+      throw new Error(
+        "This swap route is not supported right now. Try USDC to EURC on Arc Testnet again later."
+      );
+    }
 
-export async function bridgeUsdc({
-  adapter,
-  amount,
-  fromChain,
-  toChain
-}: {
-  adapter: WalletAdapter;
-  amount: string;
-  fromChain: AppKitChain;
-  toChain: AppKitChain;
-}) {
-  if (fromChain === toChain) {
-    throw new Error("Choose two different chains to bridge.");
+    throw error;
   }
-
-  const kit = getAppKit() as unknown as {
-    bridge: (params: unknown) => Promise<unknown>;
-  };
-
-  return kit.bridge({
-    from: {
-      adapter,
-      chain: fromChain
-    },
-    to: {
-      adapter,
-      chain: toChain
-    },
-    amount,
-    token: "USDC"
-  });
-}
-
-export function extractTransaction(result: unknown): ExtractedTransaction {
-  const value = result as {
-    txHash?: string;
-    hash?: string;
-    transactionHash?: string;
-    explorerUrl?: string;
-    chain?: {
-      chain?: AppKitChain;
-    };
-    steps?: Array<{
-      txHash?: string;
-      hash?: string;
-      transactionHash?: string;
-      explorerUrl?: string;
-      chain?: {
-        chain?: AppKitChain;
-      };
-    }>;
-  };
-
-  const directHash = value.txHash ?? value.hash ?? value.transactionHash;
-  const directExplorerUrl = value.explorerUrl;
-
-  if (directHash || directExplorerUrl) {
-    const chain = value.chain?.chain;
-    const explorer = chain ? EXPLORER_BY_APPKIT_CHAIN[chain] : ARC_BLOCK_EXPLORER;
-
-    return {
-      hash: directHash,
-      explorerUrl:
-        directExplorerUrl ?? (directHash ? `${explorer}/tx/${directHash}` : undefined),
-      raw: result
-    };
-  }
-
-  const step = value.steps?.find(
-    (item) => item.txHash || item.hash || item.transactionHash || item.explorerUrl
-  );
-
-  const hash = step?.txHash ?? step?.hash ?? step?.transactionHash;
-  const stepExplorerUrl = step?.explorerUrl;
-  const chain = step?.chain?.chain;
-  const explorer = chain ? EXPLORER_BY_APPKIT_CHAIN[chain] : ARC_BLOCK_EXPLORER;
-
-  return {
-    hash,
-    explorerUrl: stepExplorerUrl ?? (hash ? `${explorer}/tx/${hash}` : undefined),
-    raw: result
-  };
 }
