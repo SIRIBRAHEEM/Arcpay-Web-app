@@ -2,14 +2,34 @@ import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
-  const kitKey =
-    process.env.CIRCLE_KIT_KEY?.trim() ||
-    process.env.NEXT_PUBLIC_KIT_KEY?.trim() ||
-    "";
+function normalizeKitKey(value: string) {
+  const cleaned = value.trim();
 
-  return NextResponse.json({
-    hasKey: Boolean(kitKey),
-    kitKey
-  });
+  if (!cleaned) return "";
+
+  if (cleaned.startsWith("KIT_KEY:")) {
+    return cleaned;
+  }
+
+  return `KIT_KEY:${cleaned}`;
+}
+
+export async function GET() {
+  const kitKey = normalizeKitKey(
+    process.env.CIRCLE_KIT_KEY?.trim() ||
+      process.env.NEXT_PUBLIC_KIT_KEY?.trim() ||
+      ""
+  );
+
+  return NextResponse.json(
+    {
+      hasKey: Boolean(kitKey),
+      kitKey
+    },
+    {
+      headers: {
+        "Cache-Control": "no-store"
+      }
+    }
+  );
 }
