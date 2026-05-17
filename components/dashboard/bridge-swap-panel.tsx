@@ -364,7 +364,6 @@ export function BridgeSwapPanel() {
                       <SelectContent>
                         <SelectItem value="USDC">USDC</SelectItem>
                         <SelectItem value="EURC">EURC</SelectItem>
-                        <SelectItem value="cirBTC">cirBTC</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
