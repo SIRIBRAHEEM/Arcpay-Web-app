@@ -10,7 +10,7 @@ import { getAppKit, getResolvedKitKey } from "@/lib/kit";
 
 export type WalletAdapter = unknown;
 
-export type ArcStableToken = "USDC" | "EURC" | "cirBTC";
+export type ArcStableToken = "USDC" | "EURC";
 
 export type UnifiedBalanceResult = {
   token: "USDC";
