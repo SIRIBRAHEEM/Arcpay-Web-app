@@ -10,7 +10,7 @@ import { getAppKit, getResolvedKitKey } from "@/lib/kit";
 
 export type WalletAdapter = unknown;
 
-export type ArcStableToken = "USDC" | "EURC";
+export type ArcStableToken = "USDC" | "EURC" | "cirBTC";
 
 export type UnifiedBalanceResult = {
   token: "USDC";
@@ -23,6 +23,13 @@ export type ExtractedTransaction = {
   hash?: string;
   explorerUrl?: string;
   raw: unknown;
+};
+
+export type SwapEstimateResult = {
+  estimatedOutput?: string;
+  amountOut?: string;
+  tokenOut?: ArcStableToken;
+  raw?: unknown;
 };
 
 export type SwapResult = {
@@ -47,6 +54,62 @@ export type SwapResult = {
     };
   }>;
 };
+
+function normalizeAmount(value: string) {
+  const cleaned = value.trim();
+
+  if (!cleaned) {
+    throw new Error("Enter an amount first.");
+  }
+
+  const numberValue = Number(cleaned);
+
+  if (!Number.isFinite(numberValue) || numberValue <= 0) {
+    throw new Error("Enter a valid amount greater than 0.");
+  }
+
+  return numberValue.toFixed(2);
+}
+
+function normalizeKitKey(value: string) {
+  const cleaned = value.trim();
+
+  if (!cleaned) return "";
+
+  if (cleaned.startsWith("KIT_KEY:")) {
+    return cleaned;
+  }
+
+  return `KIT_KEY:${cleaned}`;
+}
+
+function formatSwapError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  const lowerMessage = message.toLowerCase();
+
+  if (
+    lowerMessage.includes("failed to fetch") ||
+    lowerMessage.includes("maximum retry") ||
+    lowerMessage.includes("quoteswap") ||
+    lowerMessage.includes("quote")
+  ) {
+    return new Error(
+      "Circle testnet quote service could not return a swap route right now. Your Kit Key can be valid and this can still happen. Try again later, try Chrome, or use Bridge/Receive."
+    );
+  }
+
+  if (
+    lowerMessage.includes("route") ||
+    lowerMessage.includes("not supported") ||
+    lowerMessage.includes("unsupported")
+  ) {
+    return new Error(
+      "This swap route is not supported right now. On testnet, use USDC ↔ EURC on Arc Testnet."
+    );
+  }
+
+  return error;
+}
 
 export async function fetchUnifiedBalance(adapter: WalletAdapter) {
   const kit = getAppKit() as unknown as {
@@ -83,7 +146,7 @@ export async function depositUnifiedBalance({
       adapter,
       chain
     },
-    amount,
+    amount: normalizeAmount(amount),
     token: "USDC"
   });
 }
@@ -104,7 +167,7 @@ export async function spendUnifiedUsdc({
   };
 
   return kit.unifiedBalance.spend({
-    amount,
+    amount: normalizeAmount(amount),
     token: "USDC",
     from: {
       adapter
@@ -138,9 +201,56 @@ export async function sendArcToken({
       chain: "Arc_Testnet"
     },
     to: recipient,
-    amount,
+    amount: normalizeAmount(amount),
     token
   });
+}
+
+export async function estimateSwapStablecoins({
+  adapter,
+  amount,
+  tokenIn,
+  tokenOut
+}: {
+  adapter: WalletAdapter;
+  amount: string;
+  tokenIn: ArcStableToken;
+  tokenOut: ArcStableToken;
+}) {
+  const kitKey = normalizeKitKey(await getResolvedKitKey());
+
+  if (!kitKey) {
+    throw new Error(
+      "Swap is not configured. Add CIRCLE_KIT_KEY and NEXT_PUBLIC_KIT_KEY in Vercel, then redeploy without cache."
+    );
+  }
+
+  if (tokenIn === tokenOut) {
+    throw new Error("Choose two different tokens to swap.");
+  }
+
+  const safeAmount = normalizeAmount(amount);
+
+  const kit = getAppKit() as unknown as {
+    estimateSwap: (params: unknown) => Promise<SwapEstimateResult>;
+  };
+
+  try {
+    return await kit.estimateSwap({
+      from: {
+        adapter,
+        chain: "Arc_Testnet"
+      },
+      tokenIn,
+      tokenOut,
+      amountIn: safeAmount,
+      config: {
+        kitKey
+      }
+    });
+  } catch (error) {
+    throw formatSwapError(error);
+  }
 }
 
 export async function swapStablecoins({
@@ -149,7 +259,7 @@ export async function swapStablecoins({
   tokenIn,
   tokenOut,
   chain = "Arc_Testnet",
-  slippageBps = 50
+  slippageBps = 300
 }: {
   adapter: WalletAdapter;
   amount: string;
@@ -158,11 +268,11 @@ export async function swapStablecoins({
   chain?: AppKitChain;
   slippageBps?: number;
 }) {
-  const kitKey = await getResolvedKitKey();
+  const kitKey = normalizeKitKey(await getResolvedKitKey());
 
   if (!kitKey) {
     throw new Error(
-      "Swap is not configured yet. Add CIRCLE_KIT_KEY or NEXT_PUBLIC_KIT_KEY in Vercel environment variables and redeploy."
+      "Swap is not configured. Add CIRCLE_KIT_KEY and NEXT_PUBLIC_KIT_KEY in Vercel, then redeploy without cache."
     );
   }
 
@@ -171,57 +281,39 @@ export async function swapStablecoins({
   }
 
   if (chain !== "Arc_Testnet") {
-    throw new Error("Swap Beta is currently available only on Arc Testnet.");
+    throw new Error("Swap is currently available only on Arc Testnet.");
   }
 
   if (typeof navigator !== "undefined" && !navigator.onLine) {
     throw new Error("You are offline. Check your internet connection and try again.");
   }
 
+  const safeAmount = normalizeAmount(amount);
+
   const kit = getAppKit() as unknown as {
+    estimateSwap: (params: unknown) => Promise<SwapEstimateResult>;
     swap: (params: unknown) => Promise<SwapResult>;
   };
 
+  const params = {
+    from: {
+      adapter,
+      chain: "Arc_Testnet"
+    },
+    tokenIn,
+    tokenOut,
+    amountIn: safeAmount,
+    config: {
+      kitKey,
+      slippageBps
+    }
+  };
+
   try {
-    return await kit.swap({
-      from: {
-        adapter,
-        chain
-      },
-      tokenIn,
-      tokenOut,
-      amountIn: amount,
-      config: {
-        kitKey,
-        slippageBps
-      }
-    });
+    await kit.estimateSwap(params);
+    return await kit.swap(params);
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    const lowerMessage = message.toLowerCase();
-
-    if (
-      lowerMessage.includes("failed to fetch") ||
-      lowerMessage.includes("maximum retry") ||
-      lowerMessage.includes("quoteswap") ||
-      lowerMessage.includes("quote")
-    ) {
-      throw new Error(
-        "Swap Beta is temporarily unavailable because Circle testnet quote service could not return a route. Your Kit Key is valid. Please try again later or use Bridge/Receive instead."
-      );
-    }
-
-    if (
-      lowerMessage.includes("route") ||
-      lowerMessage.includes("not supported") ||
-      lowerMessage.includes("unsupported")
-    ) {
-      throw new Error(
-        "This swap route is not supported right now. Try USDC to EURC on Arc Testnet again later."
-      );
-    }
-
-    throw error;
+    throw formatSwapError(error);
   }
 }
 
@@ -269,7 +361,7 @@ export async function bridgeUsdc({
       adapter,
       chain: toChain
     },
-    amount,
+    amount: normalizeAmount(amount),
     token: "USDC"
   });
 }
