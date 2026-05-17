@@ -10,9 +10,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
-import { BridgeRouteAnimation } from "@/components/visuals/bridge-route-animation";
-import { LottieSuccess } from "@/components/visuals/lottie-success";
-import { SwapOrbitAnimation } from "@/components/visuals/swap-orbit-animation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -51,24 +48,22 @@ export function BridgeSwapPanel() {
   const provider = useWalletStore((state) => state.provider);
   const address = useWalletStore((state) => state.address);
 
-  const [mode, setMode] = useState<Mode>("swap");
+  const [mode, setMode] = useState<Mode>("bridge");
   const [amount, setAmount] = useState("");
   const [tokenIn, setTokenIn] = useState<ArcStableToken>("USDC");
   const [tokenOut, setTokenOut] = useState<ArcStableToken>("EURC");
-  const [fromChain, setFromChain] = useState<AppKitChain>("Arc_Testnet");
-  const [toChain, setToChain] = useState<AppKitChain>("Base_Sepolia");
+  const [fromChain, setFromChain] = useState<AppKitChain>("Base_Sepolia");
+  const [toChain, setToChain] = useState<AppKitChain>("Arc_Testnet");
   const [loading, setLoading] = useState(false);
   const [txOpen, setTxOpen] = useState(false);
   const [tx, setTx] = useState<ReturnType<typeof extractTransaction> | null>(null);
 
-  const title = mode === "swap" ? "Swap Beta" : "Bridge USDC";
-
-  const description = useMemo(() => {
+  const routeTitle = useMemo(() => {
     if (mode === "swap") {
-      return `${tokenIn} → ${tokenOut} on ${APPKIT_CHAIN_LABELS.Arc_Testnet}`;
+      return `${tokenIn} → ${tokenOut} on Arc Testnet`;
     }
 
-    return `Move USDC from ${APPKIT_CHAIN_LABELS[fromChain]} to ${APPKIT_CHAIN_LABELS[toChain]}`;
+    return `${APPKIT_CHAIN_LABELS[fromChain]} → ${APPKIT_CHAIN_LABELS[toChain]}`;
   }, [fromChain, mode, toChain, tokenIn, tokenOut]);
 
   function flipSwapTokens() {
@@ -108,13 +103,9 @@ export function BridgeSwapPanel() {
     setLoading(true);
 
     try {
-      const activeSourceChain: AppKitChain =
-        mode === "swap" ? "Arc_Testnet" : fromChain;
+      const sourceChain: AppKitChain = mode === "swap" ? "Arc_Testnet" : fromChain;
 
-      await requestSwitchChain(
-        provider,
-        CHAIN_PARAMS_BY_APPKIT_CHAIN[activeSourceChain]
-      );
+      await requestSwitchChain(provider, CHAIN_PARAMS_BY_APPKIT_CHAIN[sourceChain]);
 
       if (mode === "swap") {
         await estimateSwapStablecoins({
@@ -153,7 +144,9 @@ export function BridgeSwapPanel() {
         toast.success("Swap submitted", {
           description: `${tokenIn} → ${tokenOut} on Arc Testnet`
         });
-      } else {
+      }
+
+      if (mode === "bridge") {
         const result = await bridgeUsdc({
           adapter,
           amount,
@@ -186,9 +179,7 @@ export function BridgeSwapPanel() {
 
       setAmount("");
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Please try again.";
-
+      const message = error instanceof Error ? error.message : "Please try again.";
       const lowerMessage = message.toLowerCase();
 
       const isSwapQuoteError =
@@ -201,7 +192,7 @@ export function BridgeSwapPanel() {
       toast.error(mode === "swap" ? "Swap Beta unavailable" : "Bridge failed", {
         description:
           mode === "swap" && isSwapQuoteError
-            ? "Circle testnet quote route is unavailable right now. Your Kit Key is valid. Use Bridge/Receive and try Swap again later."
+            ? "Circle testnet quote route is unavailable right now. Your Kit Key is valid. Use Bridge or Receive and try Swap again later."
             : message
       });
     } finally {
@@ -256,7 +247,9 @@ export function BridgeSwapPanel() {
         <CardContent className="p-6 pt-0">
           <form onSubmit={submit} className="grid gap-5">
             <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.025] p-5">
-              <p className="text-sm text-muted-foreground">{title}</p>
+              <p className="text-sm text-muted-foreground">
+                {mode === "swap" ? "Swap Beta" : "Bridge USDC"}
+              </p>
 
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {mode === "swap" ? (
@@ -287,26 +280,44 @@ export function BridgeSwapPanel() {
                 )}
               </div>
 
-              <p className="mt-3 text-lg font-black tracking-tight">
-                {description}
-              </p>
+              <p className="mt-3 text-lg font-black tracking-tight">{routeTitle}</p>
             </div>
 
-            {loading ? (
-              <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-4">
-                <LottieSuccess variant="processing" className="h-24 w-full" />
-                <p className="text-center text-sm font-semibold">
-                  {mode === "swap" ? "Checking quote..." : "Preparing bridge route..."}
-                </p>
+            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+              <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+                <div className="rounded-2xl border border-white/10 bg-background/70 p-4">
+                  {mode === "swap" ? (
+                    <>
+                      <p className="text-xs text-muted-foreground">From token</p>
+                      <p className="mt-2 font-bold">{tokenIn}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xs text-muted-foreground">From chain</p>
+                      <p className="mt-2 font-bold">{APPKIT_CHAIN_LABELS[fromChain]}</p>
+                    </>
+                  )}
+                </div>
+
+                <div className="grid size-12 place-items-center rounded-2xl border border-white/10 bg-primary/10 text-primary">
+                  <ArrowLeftRight className="size-5" />
+                </div>
+
+                <div className="rounded-2xl border border-white/10 bg-background/70 p-4">
+                  {mode === "swap" ? (
+                    <>
+                      <p className="text-xs text-muted-foreground">To token</p>
+                      <p className="mt-2 font-bold">{tokenOut}</p>
+                    </>
+                  ) : (
+                    <>
+                      <p className="text-xs text-muted-foreground">To chain</p>
+                      <p className="mt-2 font-bold">{APPKIT_CHAIN_LABELS[toChain]}</p>
+                    </>
+                  )}
+                </div>
               </div>
-            ) : mode === "swap" ? (
-              <SwapOrbitAnimation tokenIn={tokenIn} tokenOut={tokenOut} />
-            ) : (
-              <BridgeRouteAnimation
-                fromLabel={APPKIT_CHAIN_LABELS[fromChain]}
-                toLabel={APPKIT_CHAIN_LABELS[toChain]}
-              />
-            )}
+            </div>
 
             <div className="grid gap-2">
               <Label htmlFor="bridge-swap-amount">Amount</Label>
@@ -335,7 +346,6 @@ export function BridgeSwapPanel() {
                       <SelectContent>
                         <SelectItem value="USDC">USDC</SelectItem>
                         <SelectItem value="EURC">EURC</SelectItem>
-                        <SelectItem value="cirBTC">cirBTC</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -369,23 +379,9 @@ export function BridgeSwapPanel() {
                   </div>
                 </div>
 
-                <div className="grid gap-2">
-                  <Label>Swap chain</Label>
-                  <Select value="Arc_Testnet">
-                    <SelectTrigger>
-                      <SelectedChain chain="Arc_Testnet" />
-                    </SelectTrigger>
-
-                    <SelectContent>
-                      <SelectItem value="Arc_Testnet">
-                        <ChainOption chain="Arc_Testnet" />
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-
-                  <p className="text-xs text-muted-foreground">
-                    Swap Beta currently uses Arc Testnet routes only.
-                  </p>
+                <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-200">
+                  Swap Beta uses Arc Testnet only. If Circle quote service is unavailable,
+                  use Bridge or Receive and try Swap again later.
                 </div>
               </div>
             ) : (
@@ -444,8 +440,8 @@ export function BridgeSwapPanel() {
                 </div>
 
                 <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-primary">
-                  Bridge supports USDC transfers. Your wallet must have test
-                  USDC and native gas on the selected source chain.
+                  Bridge supports USDC transfers. Your wallet must have test USDC
+                  and native gas on the selected source chain.
                 </div>
               </div>
             )}
@@ -461,13 +457,6 @@ export function BridgeSwapPanel() {
                 Open Circle faucet <ExternalLink className="size-3" />
               </a>
             </div>
-
-            {mode === "swap" ? (
-              <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-200">
-                Swap is currently beta on Arc Testnet. If Circle quote service is unavailable,
-                your Kit Key is still valid. Use Bridge or Receive and try Swap again later.
-              </div>
-            ) : null}
 
             <Button
               type="submit"
