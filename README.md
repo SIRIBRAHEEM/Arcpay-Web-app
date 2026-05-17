@@ -1,6 +1,6 @@
 # ArcPay
 
-ArcPay is a production-ready, non-custodial Next.js 15 App Router payment app inspired by AnomaPay's simple payments UX, rebuilt for **Arc Testnet** using **Circle App Kit**.
+ArcPay is a production-ready, non-custodial Next.js 15 App Router payment app built for Easy Stablecoin Payments **Arc Testnet** using **Circle App Kit**.
 
 **Tagline:** Easy Stablecoin Payments on ARC
 
