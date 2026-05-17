@@ -9,6 +9,18 @@ const LOCAL_KIT_KEY_STORAGE_KEY = "arcpay:circle-kit-key";
 let kit: AppKit | null = null;
 let cachedRuntimeKitKey = "";
 
+function normalizeKitKey(value: string) {
+  const cleaned = value.trim();
+
+  if (!cleaned) return "";
+
+  if (cleaned.startsWith("KIT_KEY:")) {
+    return cleaned;
+  }
+
+  return `KIT_KEY:${cleaned}`;
+}
+
 export function getAppKit() {
   if (!kit) {
     kit = new AppKit();
@@ -24,21 +36,23 @@ export async function createBrowserAdapter(provider: EIP1193Provider) {
 }
 
 export function getBuildTimeKitKey() {
-  return process.env.NEXT_PUBLIC_KIT_KEY?.trim() ?? "";
+  return normalizeKitKey(process.env.NEXT_PUBLIC_KIT_KEY ?? "");
 }
 
 export function getStoredKitKey() {
   if (typeof window === "undefined") return "";
 
-  return window.localStorage.getItem(LOCAL_KIT_KEY_STORAGE_KEY)?.trim() ?? "";
+  return normalizeKitKey(
+    window.localStorage.getItem(LOCAL_KIT_KEY_STORAGE_KEY) ?? ""
+  );
 }
 
 export function getKitKey() {
-  return getBuildTimeKitKey() || getStoredKitKey() || cachedRuntimeKitKey;
+  return getBuildTimeKitKey() || getStoredKitKey() || normalizeKitKey(cachedRuntimeKitKey);
 }
 
 export async function getRuntimeKitKey() {
-  if (cachedRuntimeKitKey) return cachedRuntimeKitKey;
+  if (cachedRuntimeKitKey) return normalizeKitKey(cachedRuntimeKitKey);
 
   if (typeof window === "undefined") return "";
 
@@ -55,7 +69,7 @@ export async function getRuntimeKitKey() {
       kitKey?: string;
     };
 
-    cachedRuntimeKitKey = data.kitKey?.trim() ?? "";
+    cachedRuntimeKitKey = normalizeKitKey(data.kitKey ?? "");
     return cachedRuntimeKitKey;
   } catch {
     return "";
@@ -73,7 +87,7 @@ export function hasCloudKitKey() {
 export function saveStoredKitKey(value: string) {
   if (typeof window === "undefined") return;
 
-  const cleaned = value.trim();
+  const cleaned = normalizeKitKey(value);
 
   if (!cleaned) {
     window.localStorage.removeItem(LOCAL_KIT_KEY_STORAGE_KEY);
