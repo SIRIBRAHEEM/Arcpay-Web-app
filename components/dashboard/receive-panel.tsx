@@ -37,7 +37,7 @@ export function ReceivePanel() {
 
       <CardContent className="p-6 pt-0">
         <div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:items-center">
-          <div className="grid place-items-center rounded-3xl border border-white/10 bg-white p-4">
+          <div className="grid place-items-center rounded-3xl border border-emerald-950/10 bg-white p-4">
             <QRCodeSVG value={requestUri} size={148} bgColor="#ffffff" fgColor="#050914" />
           </div>
 

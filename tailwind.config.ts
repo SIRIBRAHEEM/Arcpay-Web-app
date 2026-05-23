@@ -62,8 +62,8 @@ const config: Config = {
         sm: "calc(var(--radius) - 0.5rem)"
       },
       boxShadow: {
-        glow: "0 0 80px rgba(32, 213, 159, 0.18)",
-        card: "0 24px 80px rgba(0, 0, 0, 0.32)"
+        glow: "0 0 80px rgba(14, 92, 67, 0.14)",
+        card: "0 24px 80px rgba(36, 82, 56, 0.12)"
       },
       keyframes: {
         float: {

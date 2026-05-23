@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 export function shortAddress(address?: string | null, chars = 4) {
   if (!address) return "Not connected";
-  return `${address.slice(0, chars + 2)}…${address.slice(-chars)}`;
+  return `${address.slice(0, chars + 2)}...${address.slice(-chars)}`;
 }
 
 export function formatUsdLike(value: string | number) {

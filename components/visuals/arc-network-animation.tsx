@@ -10,11 +10,11 @@ export function ArcNetworkAnimation({ className }: ArcNetworkAnimationProps) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.035]",
+        "relative overflow-hidden rounded-[2rem] border border-emerald-950/10 bg-white/80",
         className
       )}
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(32,213,159,0.22),transparent_28%),radial-gradient(circle_at_80%_30%,rgba(34,211,238,0.18),transparent_30%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:56px_56px]" />
 
       <svg
         viewBox="0 0 720 360"
@@ -50,7 +50,7 @@ export function ArcNetworkAnimation({ className }: ArcNetworkAnimationProps) {
         <path
           d="M55 155 C180 270 310 270 430 145 S590 55 680 210"
           fill="none"
-          stroke="rgba(255,255,255,0.18)"
+          stroke="rgba(14,92,67,0.22)"
           strokeWidth="1.5"
           strokeDasharray="6 14"
           className="animate-[dashReverse_15s_linear_infinite]"
@@ -80,15 +80,15 @@ export function ArcNetworkAnimation({ className }: ArcNetworkAnimationProps) {
         ))}
 
         <g className="animate-[float_7s_ease-in-out_infinite]">
-          <rect x="260" y="118" width="200" height="124" rx="28" fill="rgba(5,9,20,0.82)" stroke="rgba(255,255,255,0.14)" />
-          <text x="360" y="160" textAnchor="middle" fill="white" fontSize="24" fontWeight="800">
+          <rect x="260" y="118" width="200" height="124" rx="28" fill="rgba(255,255,255,0.88)" stroke="rgba(14,92,67,0.14)" />
+          <text x="360" y="160" textAnchor="middle" fill="#052e22" fontSize="24" fontWeight="800">
             ArcPay
           </text>
-          <text x="360" y="190" textAnchor="middle" fill="#94A3B8" fontSize="13">
+          <text x="360" y="190" textAnchor="middle" fill="#4d6b5e" fontSize="13">
             Stablecoin payment rail
           </text>
-          <rect x="309" y="207" width="102" height="26" rx="13" fill="rgba(32,213,159,0.16)" />
-          <text x="360" y="225" textAnchor="middle" fill="#20D59F" fontSize="12" fontWeight="700">
+          <rect x="309" y="207" width="102" height="26" rx="13" fill="rgba(190,242,100,0.62)" />
+          <text x="360" y="225" textAnchor="middle" fill="#052e22" fontSize="12" fontWeight="700">
             ARC TESTNET
           </text>
         </g>

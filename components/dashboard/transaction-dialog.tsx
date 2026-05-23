@@ -30,9 +30,9 @@ export function TransactionDialog({
 }: TransactionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-hidden rounded-[2rem] border-white/10 bg-[#07111f] p-0 shadow-card sm:max-w-md">
+      <DialogContent className="overflow-hidden rounded-[2rem] border-emerald-950/10 bg-[#fbfff4] p-0 shadow-card sm:max-w-md">
         <div className="relative p-6">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(32,213,159,0.2),transparent_34%),radial-gradient(circle_at_85%_20%,rgba(34,211,238,0.14),transparent_28%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:48px_48px]" />
 
           <div className="relative">
             <LottieSuccess className="size-32" />
@@ -52,7 +52,7 @@ export function TransactionDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <div className="mt-6 rounded-3xl border border-white/10 bg-white/[0.04] p-4">
+            <div className="mt-6 rounded-3xl border border-emerald-950/10 bg-white/80 p-4">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Transaction hash
               </p>

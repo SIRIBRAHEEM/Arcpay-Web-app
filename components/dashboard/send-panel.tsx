@@ -113,13 +113,13 @@ export function SendPanel() {
               Pay
             </CardTitle>
 
-            <Badge className="gap-2 rounded-full border-lime-300/20 bg-lime-300/10 text-lime-100">
+            <Badge className="gap-2 rounded-full border-emerald-950/10 bg-lime-200 text-emerald-950">
               <ShieldCheck className="size-3.5" />
               Wallet signed
             </Badge>
           </div>
 
-          <div className="rounded-[1.25rem] border border-white/10 bg-white/[0.05] p-4">
+          <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4">
             <p className="text-sm text-muted-foreground">Fast payment route</p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
               <WalletCards className="size-4 text-primary" />

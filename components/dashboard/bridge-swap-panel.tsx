@@ -156,7 +156,7 @@ export function BridgeSwapPanel() {
           type: "bridge",
           token: "USDC",
           amount,
-          chain: `${fromChain} → ${toChain}`,
+          chain: `${fromChain} -> ${toChain}`,
           state: "success",
           hash: txDetails.hash,
           explorerUrl: txDetails.explorerUrl,
@@ -196,14 +196,14 @@ export function BridgeSwapPanel() {
             </Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-white/[0.04] p-1">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-emerald-950/10 bg-emerald-950/[0.035] p-1">
             <button
               type="button"
               onClick={() => setMode("swap")}
               className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                 mode === "swap"
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground"
               }`}
             >
               <Repeat2 className="size-4" />
@@ -216,7 +216,7 @@ export function BridgeSwapPanel() {
               className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                 mode === "bridge"
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground"
               }`}
             >
               <Waypoints className="size-4" />
@@ -227,7 +227,7 @@ export function BridgeSwapPanel() {
 
         <CardContent className="p-6 pt-0">
           <form onSubmit={submit} className="grid gap-5">
-            <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.025] p-5">
+            <div className="rounded-3xl border border-emerald-950/10 bg-emerald-950/[0.035] p-5">
               <p className="text-sm text-muted-foreground">
                 {mode === "swap" ? "Swap on Arc" : "Bridge USDC"}
               </p>
@@ -235,7 +235,7 @@ export function BridgeSwapPanel() {
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {mode === "swap" ? (
                   <>
-                    <Badge className="rounded-full bg-cyan-400/15 text-cyan-300">
+                    <Badge className="rounded-full bg-teal-100 text-teal-900">
                       {tokenIn}
                     </Badge>
                     <ArrowLeftRight className="size-4 text-muted-foreground" />
@@ -264,9 +264,9 @@ export function BridgeSwapPanel() {
               <p className="mt-3 text-lg font-black tracking-tight">{routeTitle}</p>
             </div>
 
-            <div className="rounded-3xl border border-white/10 bg-white/[0.04] p-5">
+            <div className="rounded-3xl border border-emerald-950/10 bg-white/70 p-5">
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-                <div className="rounded-2xl border border-white/10 bg-background/70 p-4">
+                <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4">
                   {mode === "swap" ? (
                     <>
                       <p className="text-xs text-muted-foreground">From token</p>
@@ -280,11 +280,11 @@ export function BridgeSwapPanel() {
                   )}
                 </div>
 
-                <div className="grid size-12 place-items-center rounded-2xl border border-white/10 bg-primary/10 text-primary">
+                <div className="grid size-12 place-items-center rounded-2xl border border-emerald-950/10 bg-primary/10 text-primary">
                   <ArrowLeftRight className="size-5" />
                 </div>
 
-                <div className="rounded-2xl border border-white/10 bg-background/70 p-4">
+                <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4">
                   {mode === "swap" ? (
                     <>
                       <p className="text-xs text-muted-foreground">To token</p>
@@ -362,9 +362,9 @@ export function BridgeSwapPanel() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-200">
+                <div className="rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900">
                   Swap uses Arc Testnet only and supports USDC, EURC, and cirBTC.
-                  Keep USDC available for gas before submitting.
+                  Keep enough {tokenIn} for the swap and USDC for gas before submitting.
                 </div>
               </div>
             ) : (
@@ -429,7 +429,7 @@ export function BridgeSwapPanel() {
               </div>
             )}
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
+            <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 text-sm text-muted-foreground">
               Need test funds?{" "}
               <a
                 href="https://faucet.circle.com"

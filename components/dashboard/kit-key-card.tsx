@@ -111,10 +111,10 @@ export function KitKeyCard() {
   }
 
   return (
-    <Card className="glass rounded-[2rem] border-amber-400/20 bg-amber-400/[0.035]">
+    <Card className="glass rounded-[2rem] border-amber-500/20 bg-amber-50">
       <CardHeader className="p-5 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
-          <KeyRound className="size-5 text-amber-300" />
+          <KeyRound className="size-5 text-amber-700" />
           Enable Swap
         </CardTitle>
       </CardHeader>

@@ -33,7 +33,7 @@ export function ProtocolStatusCard() {
         <CardTitle className="flex items-center justify-between">
           <span>Protocol Status</span>
 
-          <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+          <span className="rounded-full border border-emerald-950/10 bg-lime-200 px-3 py-1 text-xs font-semibold text-emerald-950">
             Live
           </span>
         </CardTitle>
@@ -43,11 +43,11 @@ export function ProtocolStatusCard() {
         {stats.map((stat) => (
           <div
             key={stat.label}
-            className="rounded-2xl border border-white/10 bg-white/[0.04] p-4"
+            className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4"
           >
-            <stat.icon className="size-5 text-blue-300" />
-            <p className="mt-3 text-xs text-slate-400">{stat.label}</p>
-            <p className="mt-1 font-bold text-slate-100">{stat.value}</p>
+            <stat.icon className="size-5 text-emerald-800" />
+            <p className="mt-3 text-xs text-emerald-950/50">{stat.label}</p>
+            <p className="mt-1 font-bold text-emerald-950">{stat.value}</p>
           </div>
         ))}
       </CardContent>
