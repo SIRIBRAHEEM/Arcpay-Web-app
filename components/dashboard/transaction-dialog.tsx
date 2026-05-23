@@ -30,9 +30,9 @@ export function TransactionDialog({
 }: TransactionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-hidden rounded-[2rem] border-emerald-950/10 bg-[#fbfff4] p-0 shadow-card sm:max-w-md">
+      <DialogContent className="overflow-hidden rounded-[1.5rem] border-emerald-950/10 bg-white p-0 shadow-card dark:border-white/10 dark:bg-[#06130f] sm:max-w-md">
         <div className="relative p-6">
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:48px_48px]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:48px_48px] dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(190,242,100,0.045)_1px,transparent_1px)]" />
 
           <div className="relative">
             <LottieSuccess className="size-32" />
@@ -52,7 +52,7 @@ export function TransactionDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <div className="mt-6 rounded-3xl border border-emerald-950/10 bg-white/80 p-4">
+            <div className="mt-6 rounded-2xl border border-emerald-950/10 bg-white/80 p-4 dark:border-white/10 dark:bg-white/[0.055]">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Transaction hash
               </p>

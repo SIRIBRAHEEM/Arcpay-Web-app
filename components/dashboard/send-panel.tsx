@@ -106,20 +106,20 @@ export function SendPanel() {
   return (
     <>
       <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-        <CardHeader className="space-y-4 p-6">
+        <CardHeader className="space-y-3 p-5">
           <div className="flex items-center justify-between gap-4">
             <CardTitle className="flex items-center gap-2">
               <Send className="size-5 text-primary" />
               Pay
             </CardTitle>
 
-            <Badge className="gap-2 rounded-full border-emerald-950/10 bg-lime-200 text-emerald-950">
+            <Badge className="gap-2 rounded-full border-emerald-950/10 bg-lime-200 text-emerald-950 dark:border-lime-200/20 dark:bg-lime-200/12 dark:text-lime-100">
               <ShieldCheck className="size-3.5" />
               Wallet signed
             </Badge>
           </div>
 
-          <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4">
+          <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.055]">
             <p className="text-sm text-muted-foreground">Fast payment route</p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
               <WalletCards className="size-4 text-primary" />
@@ -130,7 +130,7 @@ export function SendPanel() {
           </div>
         </CardHeader>
 
-        <CardContent className="p-6 pt-0">
+        <CardContent className="p-5 pt-0">
           <form onSubmit={submit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="send-amount">Amount</Label>
@@ -167,7 +167,7 @@ export function SendPanel() {
               />
             </div>
 
-            <Button type="submit" size="lg" disabled={loading} className="h-12 rounded-2xl">
+            <Button type="submit" size="lg" disabled={loading} className="h-11 rounded-2xl">
               {loading ? (
                 "Submitting payment..."
               ) : (

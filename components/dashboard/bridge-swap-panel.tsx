@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import {
   ArrowLeftRight,
+  CheckCircle2,
   ExternalLink,
   Repeat2,
   Sparkles,
@@ -33,6 +34,7 @@ import {
   APPKIT_CHAIN_LABELS,
   BRIDGE_CHAINS,
   CHAIN_PARAMS_BY_APPKIT_CHAIN,
+  getNativeGasBalance,
   requestSwitchChain,
   type AppKitChain
 } from "@/lib/arc";
@@ -47,7 +49,7 @@ export function BridgeSwapPanel() {
   const provider = useWalletStore((state) => state.provider);
   const address = useWalletStore((state) => state.address);
 
-  const [mode, setMode] = useState<Mode>("bridge");
+  const [mode, setMode] = useState<Mode>("swap");
   const [amount, setAmount] = useState("");
   const [tokenIn, setTokenIn] = useState<ArcStableToken>("USDC");
   const [tokenOut, setTokenOut] = useState<ArcStableToken>("EURC");
@@ -107,6 +109,14 @@ export function BridgeSwapPanel() {
       await requestSwitchChain(provider, CHAIN_PARAMS_BY_APPKIT_CHAIN[sourceChain]);
 
       if (mode === "swap") {
+        const gasBalance = await getNativeGasBalance(provider, address);
+
+        if (gasBalance <= 0n) {
+          throw new Error(
+            "Arc Testnet gas is paid in native USDC. Add Arc Testnet USDC for gas, then try swap again."
+          );
+        }
+
         const result = await swapStablecoins({
           adapter,
           amount,
@@ -183,8 +193,8 @@ export function BridgeSwapPanel() {
 
   return (
     <>
-      <Card className="glass overflow-hidden rounded-[2rem] shadow-card">
-        <CardHeader className="space-y-4 p-6">
+      <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
+        <CardHeader className="space-y-3 p-5">
           <div className="flex items-center justify-between">
             <CardTitle className="flex items-center gap-2">
               <Sparkles className="size-5 text-primary" />
@@ -196,14 +206,14 @@ export function BridgeSwapPanel() {
             </Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-emerald-950/10 bg-emerald-950/[0.035] p-1">
+          <div className="grid grid-cols-2 gap-2 rounded-2xl border border-emerald-950/10 bg-emerald-950/[0.035] p-1 dark:border-white/10 dark:bg-white/[0.055]">
             <button
               type="button"
               onClick={() => setMode("swap")}
               className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                 mode === "swap"
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground dark:hover:bg-white/10"
               }`}
             >
               <Repeat2 className="size-4" />
@@ -216,7 +226,7 @@ export function BridgeSwapPanel() {
               className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                 mode === "bridge"
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground"
+                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground dark:hover:bg-white/10"
               }`}
             >
               <Waypoints className="size-4" />
@@ -225,9 +235,9 @@ export function BridgeSwapPanel() {
           </div>
         </CardHeader>
 
-        <CardContent className="p-6 pt-0">
-          <form onSubmit={submit} className="grid gap-5">
-            <div className="rounded-3xl border border-emerald-950/10 bg-emerald-950/[0.035] p-5">
+        <CardContent className="p-5 pt-0">
+          <form onSubmit={submit} className="grid gap-4">
+            <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.055]">
               <p className="text-sm text-muted-foreground">
                 {mode === "swap" ? "Swap on Arc" : "Bridge USDC"}
               </p>
@@ -235,7 +245,7 @@ export function BridgeSwapPanel() {
               <div className="mt-3 flex flex-wrap items-center gap-2">
                 {mode === "swap" ? (
                   <>
-                    <Badge className="rounded-full bg-teal-100 text-teal-900">
+                    <Badge className="rounded-full bg-teal-100 text-teal-900 dark:bg-teal-300/15 dark:text-teal-100">
                       {tokenIn}
                     </Badge>
                     <ArrowLeftRight className="size-4 text-muted-foreground" />
@@ -244,17 +254,17 @@ export function BridgeSwapPanel() {
                     </Badge>
                     <span className="text-sm text-muted-foreground">on</span>
                     <ChainLogo chain="Arc_Testnet" />
-                    <span className="text-sm font-semibold">Arc Testnet</span>
+                    <span className="text-sm font-semibold text-foreground">Arc Testnet</span>
                   </>
                 ) : (
                   <>
                     <ChainLogo chain={fromChain} />
-                    <span className="text-sm font-semibold">
+                    <span className="text-sm font-semibold text-foreground">
                       {APPKIT_CHAIN_LABELS[fromChain]}
                     </span>
                     <ArrowLeftRight className="size-4 text-muted-foreground" />
                     <ChainLogo chain={toChain} />
-                    <span className="text-sm font-semibold">
+                    <span className="text-sm font-semibold text-foreground">
                       {APPKIT_CHAIN_LABELS[toChain]}
                     </span>
                   </>
@@ -264,9 +274,9 @@ export function BridgeSwapPanel() {
               <p className="mt-3 text-lg font-black tracking-tight">{routeTitle}</p>
             </div>
 
-            <div className="rounded-3xl border border-emerald-950/10 bg-white/70 p-5">
+            <div className="rounded-[1.25rem] border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
-                <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4">
+                <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4 dark:border-white/10 dark:bg-white/[0.06]">
                   {mode === "swap" ? (
                     <>
                       <p className="text-xs text-muted-foreground">From token</p>
@@ -280,11 +290,11 @@ export function BridgeSwapPanel() {
                   )}
                 </div>
 
-                <div className="grid size-12 place-items-center rounded-2xl border border-emerald-950/10 bg-primary/10 text-primary">
+                <div className="grid size-11 place-items-center rounded-2xl border border-emerald-950/10 bg-primary/10 text-primary dark:border-white/10">
                   <ArrowLeftRight className="size-5" />
                 </div>
 
-                <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4">
+                <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4 dark:border-white/10 dark:bg-white/[0.06]">
                   {mode === "swap" ? (
                     <>
                       <p className="text-xs text-muted-foreground">To token</p>
@@ -362,9 +372,15 @@ export function BridgeSwapPanel() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900">
-                  Swap uses Arc Testnet only and supports USDC, EURC, and cirBTC.
-                  Keep enough {tokenIn} for the swap and USDC for gas before submitting.
+                <div className="grid gap-2 rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100">
+                  <div className="flex gap-2">
+                    <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
+                    <span>Swap works on Arc Testnet with USDC, EURC, and cirBTC.</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <CheckCircle2 className="mt-0.5 size-4 shrink-0" />
+                    <span>Keep enough {tokenIn} for the swap and native USDC for gas.</span>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -429,7 +445,7 @@ export function BridgeSwapPanel() {
               </div>
             )}
 
-            <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 text-sm text-muted-foreground">
+            <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 text-sm text-muted-foreground dark:border-white/10 dark:bg-white/[0.055]">
               Need test funds?{" "}
               <a
                 href="https://faucet.circle.com"

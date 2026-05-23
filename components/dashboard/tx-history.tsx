@@ -79,8 +79,8 @@ export function TxHistory() {
   }
 
   return (
-    <Card className="glass rounded-[2rem] shadow-card">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6">
+    <Card className="glass rounded-[1.5rem] shadow-card">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
         <div>
           <CardTitle>Activity</CardTitle>
           {transactions.length ? (
@@ -95,7 +95,7 @@ export function TxHistory() {
         </Badge>
       </CardHeader>
 
-      <CardContent className="p-6 pt-0">
+      <CardContent className="p-5 pt-0">
         {transactions.length ? (
           <>
             <div className="grid gap-3">
@@ -105,18 +105,18 @@ export function TxHistory() {
                 return (
                   <div
                     key={tx.id}
-                    className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-950/10 bg-white/70 p-4"
+                    className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]"
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       <div
                         className={cn(
                           "grid size-10 shrink-0 place-items-center rounded-2xl",
                           tx.type === "send"
-                            ? "bg-emerald-100 text-emerald-800"
+                            ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
                             : tx.type === "bridge"
-                              ? "bg-violet-100 text-violet-700"
+                              ? "bg-violet-100 text-violet-700 dark:bg-violet-400/10 dark:text-violet-200"
                               : tx.type === "swap"
-                                ? "bg-amber-100 text-amber-800"
+                                ? "bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-200"
                                 : "bg-primary/10 text-primary"
                         )}
                       >
@@ -146,7 +146,7 @@ export function TxHistory() {
                           target="_blank"
                           rel="noreferrer"
                           aria-label="Open transaction on explorer"
-                          className="rounded-full p-2 text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground"
+                          className="rounded-full p-2 text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground dark:hover:bg-white/10"
                         >
                           <ExternalLink className="size-4" />
                         </a>
@@ -189,7 +189,7 @@ export function TxHistory() {
             ) : null}
           </>
         ) : (
-          <div className="rounded-2xl border border-dashed border-emerald-950/15 bg-white/50 p-8 text-center">
+          <div className="rounded-2xl border border-dashed border-emerald-950/15 bg-white/50 p-6 text-center dark:border-white/10 dark:bg-white/[0.035]">
             <p className="font-semibold">No local activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
               Sends, deposits, swaps, bridges, and detected transfers will appear here.

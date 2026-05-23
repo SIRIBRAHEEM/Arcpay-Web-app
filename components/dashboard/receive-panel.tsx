@@ -29,16 +29,16 @@ export function ReceivePanel() {
   if (!address) return null;
 
   return (
-    <Card className="glass rounded-[2rem] shadow-card">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-6">
+    <Card className="glass rounded-[1.5rem] shadow-card">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
         <CardTitle>Receive</CardTitle>
         <QrCode className="size-5 text-primary" />
       </CardHeader>
 
-      <CardContent className="p-6 pt-0">
-        <div className="grid gap-5 sm:grid-cols-[180px_1fr] sm:items-center">
-          <div className="grid place-items-center rounded-3xl border border-emerald-950/10 bg-white p-4">
-            <QRCodeSVG value={requestUri} size={148} bgColor="#ffffff" fgColor="#050914" />
+      <CardContent className="p-5 pt-0">
+        <div className="grid gap-4 sm:grid-cols-[164px_1fr] sm:items-center">
+          <div className="grid place-items-center rounded-2xl border border-emerald-950/10 bg-white p-3 dark:border-white/10">
+            <QRCodeSVG value={requestUri} size={132} bgColor="#ffffff" fgColor="#050914" />
           </div>
 
           <div className="grid gap-4">

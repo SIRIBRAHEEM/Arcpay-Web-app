@@ -241,7 +241,7 @@ export async function estimateSwapStablecoins({
 
   if (!kitKey) {
     throw new Error(
-      "Swap is not configured. Add CIRCLE_KIT_KEY and NEXT_PUBLIC_KIT_KEY in Vercel, then redeploy without cache."
+      "Swap is not configured. Add CIRCLE_KIT_KEY in Vercel or save a Circle App Kit key in the dashboard, then redeploy or refresh."
     );
   }
 
@@ -292,7 +292,7 @@ export async function swapStablecoins({
 
   if (!kitKey) {
     throw new Error(
-      "Swap is not configured. Add CIRCLE_KIT_KEY and NEXT_PUBLIC_KIT_KEY in Vercel, then redeploy without cache."
+      "Swap is not configured. Add CIRCLE_KIT_KEY in Vercel or save a Circle App Kit key in the dashboard, then redeploy or refresh."
     );
   }
 

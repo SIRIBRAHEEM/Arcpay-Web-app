@@ -17,14 +17,14 @@ export function SwapOrbitAnimation({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-emerald-950/10 bg-white/80 p-5",
+        "relative overflow-hidden rounded-[1.25rem] border border-emerald-950/10 bg-white/80 p-4 dark:border-white/10 dark:bg-white/[0.055]",
         className
       )}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.07)_1px,transparent_1px)] bg-[size:44px_44px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.07)_1px,transparent_1px)] bg-[size:44px_44px] dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(190,242,100,0.045)_1px,transparent_1px)]" />
 
       <div className="relative mx-auto grid h-44 max-w-sm place-items-center">
-        <div className="absolute size-36 rounded-full border border-dashed border-emerald-950/15 animate-[spin_12s_linear_infinite]" />
+        <div className="absolute size-36 rounded-full border border-dashed border-emerald-950/15 animate-[spin_12s_linear_infinite] dark:border-white/15" />
         <div className="absolute size-24 rounded-full border border-dashed border-primary/25 animate-[spinReverse_10s_linear_infinite]" />
 
         <div className="absolute left-2 top-8 grid size-20 place-items-center rounded-full border border-teal-700/20 bg-teal-100 text-center shadow-glow">
@@ -35,7 +35,7 @@ export function SwapOrbitAnimation({
           <span className="text-sm font-black text-primary">{tokenOut}</span>
         </div>
 
-        <div className="grid size-16 place-items-center rounded-3xl border border-emerald-950/10 bg-white/85">
+        <div className="grid size-16 place-items-center rounded-3xl border border-emerald-950/10 bg-white/85 dark:border-white/10 dark:bg-white/[0.08]">
           <Repeat2 className="size-7 animate-pulse text-primary" />
         </div>
       </div>
