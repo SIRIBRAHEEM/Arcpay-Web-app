@@ -31,7 +31,6 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#f2f8e9",
-  colorScheme: "light",
   width: "device-width",
   initialScale: 1,
   maximumScale: 1
@@ -43,7 +42,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <Providers>{children}</Providers>
       </body>

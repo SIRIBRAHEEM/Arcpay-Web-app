@@ -10,11 +10,11 @@ export function ArcNetworkAnimation({ className }: ArcNetworkAnimationProps) {
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-[2rem] border border-emerald-950/10 bg-white/80",
+        "relative overflow-hidden rounded-[1.5rem] border border-emerald-950/10 bg-white/80 dark:border-white/10 dark:bg-white/[0.055]",
         className
       )}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:56px_56px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:56px_56px] dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(190,242,100,0.045)_1px,transparent_1px)]" />
 
       <svg
         viewBox="0 0 720 360"

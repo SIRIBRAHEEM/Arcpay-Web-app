@@ -255,6 +255,18 @@ export async function requestSwitchChain(
   }
 }
 
+export async function getNativeGasBalance(
+  provider: EIP1193Provider,
+  address: `0x${string}`
+) {
+  const balance = (await provider.request({
+    method: "eth_getBalance",
+    params: [address, "latest"]
+  })) as `0x${string}`;
+
+  return BigInt(balance);
+}
+
 function getProviderErrorCode(error: unknown) {
   if (typeof error === "object" && error && "code" in error) {
     const code = (error as { code?: unknown }).code;

@@ -73,7 +73,7 @@ export function KitKeyCard() {
 
   if (kitKey) {
     return (
-      <Card className="glass rounded-[2rem] border-primary/20">
+      <Card className="glass rounded-[1.5rem] border-primary/20">
         <CardContent className="flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="grid size-10 place-items-center rounded-2xl bg-primary/10 text-primary">
@@ -111,10 +111,10 @@ export function KitKeyCard() {
   }
 
   return (
-    <Card className="glass rounded-[2rem] border-amber-500/20 bg-amber-50">
+    <Card className="glass rounded-[1.5rem] border-amber-500/20 bg-amber-50 dark:bg-amber-400/10">
       <CardHeader className="p-5 pb-2">
         <CardTitle className="flex items-center gap-2 text-base">
-          <KeyRound className="size-5 text-amber-700" />
+          <KeyRound className="size-5 text-amber-700 dark:text-amber-200" />
           Enable Swap
         </CardTitle>
       </CardHeader>

@@ -30,7 +30,7 @@ export function DashboardClient() {
 
   if (!hydrated) {
     return (
-      <main className="grid min-h-screen place-items-center px-4">
+      <main className="premium-dashboard-bg grid min-h-screen place-items-center px-4">
         <Card className="glass w-full max-w-md rounded-3xl">
           <CardContent className="p-6 text-center">
             <p className="text-lg font-bold">Loading ArcPay...</p>
@@ -45,7 +45,7 @@ export function DashboardClient() {
 
   if (!address) {
     return (
-      <main className="grid min-h-screen place-items-center px-4">
+      <main className="premium-dashboard-bg grid min-h-screen place-items-center px-4">
         <Card className="glass w-full max-w-md rounded-3xl">
           <CardContent className="p-6 text-center">
             <p className="text-lg font-bold">Connect to continue</p>
@@ -60,25 +60,25 @@ export function DashboardClient() {
   }
 
   return (
-    <main className="premium-dashboard-bg min-h-screen px-4 pb-20 pt-4 text-foreground sm:px-6 lg:px-8">
+    <main className="premium-dashboard-bg min-h-screen px-4 pb-14 pt-3 text-foreground sm:px-6 lg:px-8">
       <EventWatcher />
 
       <div className="mx-auto max-w-7xl">
         <DashboardHeader />
 
-        <div className="mt-6">
+        <div className="mt-4">
           <PremiumDashboardHero />
         </div>
 
-        <section className="mt-5 grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
-          <div className="grid gap-5">
+        <section className="mt-4 grid gap-4 xl:grid-cols-[1.12fr_0.88fr]">
+          <div className="grid gap-4">
             <SendPanel />
             <KitKeyCard />
             <BridgeSwapPanel />
             <TxHistory />
           </div>
 
-          <div className="grid content-start gap-5">
+          <div className="grid content-start gap-4">
             <BalanceCard />
             <ReceivePanel />
             <ProtocolStatusCard />

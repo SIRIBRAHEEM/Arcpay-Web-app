@@ -4,23 +4,23 @@
 
 @layer base {
   :root {
-    --background: 78 45% 96%;
-    --foreground: 158 61% 12%;
+    --background: 165 35% 97%;
+    --foreground: 160 50% 10%;
 
-    --card: 80 60% 98%;
-    --card-foreground: 158 61% 12%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 50% 10%;
 
-    --popover: 80 60% 98%;
-    --popover-foreground: 158 61% 12%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 50% 10%;
 
     --primary: 157 61% 14%;
     --primary-foreground: 82 90% 94%;
 
-    --secondary: 84 51% 91%;
-    --secondary-foreground: 158 61% 12%;
+    --secondary: 164 30% 92%;
+    --secondary-foreground: 160 50% 10%;
 
-    --muted: 86 42% 90%;
-    --muted-foreground: 157 18% 38%;
+    --muted: 162 22% 90%;
+    --muted-foreground: 158 17% 38%;
 
     --accent: 82 78% 72%;
     --accent-foreground: 158 61% 12%;
@@ -28,8 +28,8 @@
     --destructive: 0 80% 58%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 157 22% 82%;
-    --input: 157 22% 82%;
+    --border: 164 22% 82%;
+    --input: 164 22% 82%;
     --ring: 157 61% 22%;
 
     --radius: 1.15rem;
@@ -39,15 +39,51 @@
     @apply border-border;
   }
 
+  .dark {
+    --background: 164 45% 5%;
+    --foreground: 156 35% 94%;
+
+    --card: 165 40% 7%;
+    --card-foreground: 156 35% 94%;
+
+    --popover: 165 40% 7%;
+    --popover-foreground: 156 35% 94%;
+
+    --primary: 82 78% 72%;
+    --primary-foreground: 158 61% 12%;
+
+    --secondary: 166 30% 13%;
+    --secondary-foreground: 156 35% 94%;
+
+    --muted: 165 24% 12%;
+    --muted-foreground: 160 10% 67%;
+
+    --accent: 173 63% 47%;
+    --accent-foreground: 164 45% 5%;
+
+    --destructive: 0 73% 56%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 165 22% 18%;
+    --input: 165 22% 18%;
+    --ring: 82 78% 72%;
+  }
+
   html {
-    color-scheme: light;
     scroll-behavior: smooth;
   }
 
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
     background:
-      linear-gradient(180deg, #f2f8e9 0%, #fbfff4 38%, #f5f8ec 100%);
+      linear-gradient(180deg, #f5fbf8 0%, #ffffff 42%, #edf7f1 100%);
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at 18% 0%, rgba(190, 242, 100, 0.1), transparent 28rem),
+      radial-gradient(circle at 88% 18%, rgba(20, 184, 166, 0.12), transparent 26rem),
+      linear-gradient(180deg, #03130f 0%, #061814 44%, #020806 100%);
   }
 
   ::selection {
@@ -58,28 +94,54 @@
 
 @layer components {
   .premium-dashboard-bg {
-    --background: 78 45% 96%;
-    --foreground: 158 61% 12%;
-    --card: 80 60% 98%;
-    --card-foreground: 158 61% 12%;
-    --popover: 80 60% 98%;
-    --popover-foreground: 158 61% 12%;
+    --background: 165 35% 97%;
+    --foreground: 160 50% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 50% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 50% 10%;
     --primary: 157 61% 14%;
     --primary-foreground: 82 90% 94%;
-    --secondary: 84 51% 91%;
-    --secondary-foreground: 158 61% 12%;
-    --muted: 86 42% 90%;
+    --secondary: 164 30% 92%;
+    --secondary-foreground: 160 50% 10%;
+    --muted: 162 22% 90%;
     --muted-foreground: 157 18% 38%;
     --accent: 82 78% 72%;
     --accent-foreground: 158 61% 12%;
-    --border: 157 22% 82%;
-    --input: 157 22% 82%;
+    --border: 164 22% 82%;
+    --input: 164 22% 82%;
     --ring: 157 61% 22%;
     background:
-      linear-gradient(90deg, rgba(14, 92, 67, 0.08) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(14, 92, 67, 0.08) 1px, transparent 1px),
-      linear-gradient(180deg, #eff8e8 0%, #fbfff4 44%, #f5f8ec 100%);
-    background-size: 72px 72px, 72px 72px, auto;
+      linear-gradient(90deg, rgba(14, 92, 67, 0.07) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(14, 92, 67, 0.07) 1px, transparent 1px),
+      radial-gradient(circle at 16% 0%, rgba(190, 242, 100, 0.26), transparent 26rem),
+      linear-gradient(180deg, #eefaf5 0%, #ffffff 44%, #edf7f1 100%);
+    background-size: 68px 68px, 68px 68px, auto, auto;
+  }
+
+  .dark .premium-dashboard-bg {
+    --background: 164 45% 5%;
+    --foreground: 156 35% 94%;
+    --card: 165 40% 7%;
+    --card-foreground: 156 35% 94%;
+    --popover: 165 40% 7%;
+    --popover-foreground: 156 35% 94%;
+    --primary: 82 78% 72%;
+    --primary-foreground: 158 61% 12%;
+    --secondary: 166 30% 13%;
+    --secondary-foreground: 156 35% 94%;
+    --muted: 165 24% 12%;
+    --muted-foreground: 160 10% 67%;
+    --accent: 173 63% 47%;
+    --accent-foreground: 164 45% 5%;
+    --border: 165 22% 18%;
+    --input: 165 22% 18%;
+    --ring: 82 78% 72%;
+    background:
+      linear-gradient(90deg, rgba(190, 242, 100, 0.06) 1px, transparent 1px),
+      linear-gradient(180deg, rgba(190, 242, 100, 0.05) 1px, transparent 1px),
+      radial-gradient(circle at 16% 0%, rgba(190, 242, 100, 0.12), transparent 26rem),
+      linear-gradient(180deg, #03130f 0%, #061814 44%, #020806 100%);
   }
 
   .premium-card {
@@ -89,11 +151,19 @@
       0 24px 80px rgba(36, 82, 56, 0.12);
   }
 
+  .dark .premium-card {
+    @apply border-white/10 bg-white/[0.055];
+  }
+
   .glass {
-    @apply border border-emerald-950/10 bg-white/85 backdrop-blur-2xl;
+    @apply border border-emerald-950/10 bg-white/90 backdrop-blur-2xl;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.82),
       0 22px 70px rgba(36, 82, 56, 0.12);
+  }
+
+  .dark .glass {
+    @apply border-white/10 bg-white/[0.055];
   }
 
   .silver-card {
@@ -103,12 +173,24 @@
       0 20px 70px rgba(36, 82, 56, 0.12);
   }
 
+  .dark .silver-card {
+    @apply border-white/10 bg-white/[0.055];
+  }
+
   .silver-panel {
-    @apply rounded-3xl border border-emerald-950/10 bg-gradient-to-br from-white/90 to-lime-50/80;
+    @apply rounded-3xl border border-emerald-950/10 bg-gradient-to-br from-white/90 to-emerald-50/80;
+  }
+
+  .dark .silver-panel {
+    @apply border-white/10 from-white/[0.08] to-white/[0.025];
   }
 
   .silver-pill {
     @apply rounded-full border border-emerald-950/10 bg-lime-100 px-3 py-1 text-xs font-semibold text-emerald-950;
+  }
+
+  .dark .silver-pill {
+    @apply border-white/10 bg-white/[0.07] text-lime-100;
   }
 
   .silver-blue-glow {
@@ -119,6 +201,10 @@
 
   .silver-text-gradient {
     @apply bg-gradient-to-r from-emerald-950 via-emerald-800 to-lime-700 bg-clip-text text-transparent;
+  }
+
+  .dark .silver-text-gradient {
+    @apply from-white via-lime-100 to-emerald-200;
   }
 
   .arc-blue-text {
