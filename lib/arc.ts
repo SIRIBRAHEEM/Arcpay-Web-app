@@ -13,7 +13,7 @@ export type AppKitChain =
   | "Arbitrum_Sepolia"
   | "Ethereum_Sepolia"
   | "Linea_Sepolia"
-  | "Polygon_Amoy"
+  | "Polygon_Amoy_Testnet"
   | "Sonic_Testnet"
   | "Unichain_Sepolia";
 
@@ -187,7 +187,7 @@ export const CHAIN_PARAMS_BY_APPKIT_CHAIN: Record<
   Arbitrum_Sepolia: ARBITRUM_SEPOLIA_PARAMS,
   Ethereum_Sepolia: ETHEREUM_SEPOLIA_PARAMS,
   Linea_Sepolia: LINEA_SEPOLIA_PARAMS,
-  Polygon_Amoy: POLYGON_AMOY_PARAMS,
+  Polygon_Amoy_Testnet: POLYGON_AMOY_PARAMS,
   Sonic_Testnet: SONIC_TESTNET_PARAMS,
   Unichain_Sepolia: UNICHAIN_SEPOLIA_PARAMS
 };
@@ -200,7 +200,7 @@ export const EXPLORER_BY_APPKIT_CHAIN: Record<AppKitChain, string> = {
   Arbitrum_Sepolia: "https://sepolia.arbiscan.io",
   Ethereum_Sepolia: "https://sepolia.etherscan.io",
   Linea_Sepolia: "https://sepolia.lineascan.build",
-  Polygon_Amoy: "https://amoy.polygonscan.com",
+  Polygon_Amoy_Testnet: "https://amoy.polygonscan.com",
   Sonic_Testnet: "https://testnet.sonicscan.org",
   Unichain_Sepolia: "https://sepolia.uniscan.xyz"
 };
@@ -213,7 +213,7 @@ export const APPKIT_CHAIN_LABELS: Record<AppKitChain, string> = {
   Arbitrum_Sepolia: "Arbitrum Sepolia",
   Ethereum_Sepolia: "Ethereum Sepolia",
   Linea_Sepolia: "Linea Sepolia",
-  Polygon_Amoy: "Polygon Amoy",
+  Polygon_Amoy_Testnet: "Polygon Amoy",
   Sonic_Testnet: "Sonic Testnet",
   Unichain_Sepolia: "Unichain Sepolia"
 };
@@ -226,7 +226,7 @@ export const BRIDGE_CHAINS: AppKitChain[] = [
   "Arbitrum_Sepolia",
   "Ethereum_Sepolia",
   "Linea_Sepolia",
-  "Polygon_Amoy",
+  "Polygon_Amoy_Testnet",
   "Sonic_Testnet",
   "Unichain_Sepolia"
 ];

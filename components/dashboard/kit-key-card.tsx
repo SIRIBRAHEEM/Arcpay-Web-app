@@ -10,29 +10,41 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
   clearStoredKitKey,
-  getBuildTimeKitKey,
-  getKitKey,
+  getKitKeySource,
+  getResolvedKitKey,
   saveStoredKitKey
 } from "@/lib/kit";
 
 export function KitKeyCard() {
   const [kitKey, setKitKey] = useState("");
   const [input, setInput] = useState("");
-  const buildTimeKey = getBuildTimeKitKey();
+  const [source, setSource] = useState<"browser" | "build" | "runtime" | "none">("none");
 
   useEffect(() => {
-    function refresh() {
-      setKitKey(getKitKey());
+    let active = true;
+
+    async function refresh() {
+      const resolved = await getResolvedKitKey();
+
+      if (!active) return;
+
+      setKitKey(resolved);
+      setSource(getKitKeySource());
     }
 
-    refresh();
+    void refresh();
 
-    window.addEventListener("arcpay:kit-key-updated", refresh);
-    window.addEventListener("storage", refresh);
+    function handleRefresh() {
+      void refresh();
+    }
+
+    window.addEventListener("arcpay:kit-key-updated", handleRefresh);
+    window.addEventListener("storage", handleRefresh);
 
     return () => {
-      window.removeEventListener("arcpay:kit-key-updated", refresh);
-      window.removeEventListener("storage", refresh);
+      active = false;
+      window.removeEventListener("arcpay:kit-key-updated", handleRefresh);
+      window.removeEventListener("storage", handleRefresh);
     };
   }, []);
 
@@ -71,7 +83,7 @@ export function KitKeyCard() {
             <div>
               <p className="font-semibold">Circle App Kit key loaded</p>
               <p className="text-xs text-muted-foreground">
-                Source: {buildTimeKey ? "Vercel / .env" : "This browser"}
+                Source: {source === "browser" ? "This browser" : "Vercel / .env"}
               </p>
             </div>
           </div>
@@ -81,7 +93,7 @@ export function KitKeyCard() {
               Swap enabled
             </Badge>
 
-            {!buildTimeKey ? (
+            {source === "browser" ? (
               <Button
                 type="button"
                 variant="ghost"

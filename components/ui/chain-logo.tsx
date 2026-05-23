@@ -41,7 +41,7 @@ const chainLogoConfig: Record<
   },
   Ethereum_Sepolia: {
     label: "Ethereum Sepolia",
-    short: "Ξ",
+    short: "ETH",
     className: "from-slate-300 to-slate-500 text-black"
   },
   Linea_Sepolia: {
@@ -49,7 +49,7 @@ const chainLogoConfig: Record<
     short: "L",
     className: "from-zinc-100 to-zinc-400 text-black"
   },
-  Polygon_Amoy: {
+  Polygon_Amoy_Testnet: {
     label: "Polygon Amoy",
     short: "P",
     className: "from-purple-500 to-fuchsia-400 text-white"

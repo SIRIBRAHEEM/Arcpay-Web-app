@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/select";
 import {
   bridgeUsdc,
-  estimateSwapStablecoins,
   extractTransaction,
   swapStablecoins,
   type ArcStableToken
@@ -60,10 +59,10 @@ export function BridgeSwapPanel() {
 
   const routeTitle = useMemo(() => {
     if (mode === "swap") {
-      return `${tokenIn} → ${tokenOut} on Arc Testnet`;
+      return `${tokenIn} -> ${tokenOut} on Arc Testnet`;
     }
 
-    return `${APPKIT_CHAIN_LABELS[fromChain]} → ${APPKIT_CHAIN_LABELS[toChain]}`;
+    return `${APPKIT_CHAIN_LABELS[fromChain]} -> ${APPKIT_CHAIN_LABELS[toChain]}`;
   }, [fromChain, mode, toChain, tokenIn, tokenOut]);
 
   function flipSwapTokens() {
@@ -108,13 +107,6 @@ export function BridgeSwapPanel() {
       await requestSwitchChain(provider, CHAIN_PARAMS_BY_APPKIT_CHAIN[sourceChain]);
 
       if (mode === "swap") {
-        await estimateSwapStablecoins({
-          adapter,
-          amount,
-          tokenIn,
-          tokenOut
-        });
-
         const result = await swapStablecoins({
           adapter,
           amount,
@@ -137,12 +129,12 @@ export function BridgeSwapPanel() {
           state: "success",
           hash: txDetails.hash,
           explorerUrl: txDetails.explorerUrl,
-          memo: `${tokenIn} → ${tokenOut}`,
+          memo: `${tokenIn} -> ${tokenOut}`,
           createdAt: Date.now()
         });
 
         toast.success("Swap submitted", {
-          description: `${tokenIn} → ${tokenOut} on Arc Testnet`
+          description: `${tokenIn} -> ${tokenOut} on Arc Testnet`
         });
       }
 
@@ -189,10 +181,10 @@ export function BridgeSwapPanel() {
         lowerMessage.includes("maximum retry") ||
         lowerMessage.includes("temporarily unavailable");
 
-      toast.error(mode === "swap" ? "Swap Beta unavailable" : "Bridge failed", {
+      toast.error(mode === "swap" ? "Swap unavailable" : "Bridge failed", {
         description:
           mode === "swap" && isSwapQuoteError
-            ? "Circle testnet quote route is unavailable right now. Your Kit Key is valid. Use Bridge or Receive and try Swap again later."
+            ? "Arc Testnet swap supports USDC, EURC, and cirBTC only. Check your token balance, USDC gas, and App Kit key, then try again."
             : message
       });
     } finally {
@@ -226,7 +218,7 @@ export function BridgeSwapPanel() {
               }`}
             >
               <Repeat2 className="size-4" />
-              Swap Beta
+              Swap
             </button>
 
             <button
@@ -248,7 +240,7 @@ export function BridgeSwapPanel() {
           <form onSubmit={submit} className="grid gap-5">
             <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.025] p-5">
               <p className="text-sm text-muted-foreground">
-                {mode === "swap" ? "Swap Beta" : "Bridge USDC"}
+                {mode === "swap" ? "Swap on Arc" : "Bridge USDC"}
               </p>
 
               <div className="mt-3 flex flex-wrap items-center gap-2">
@@ -346,6 +338,7 @@ export function BridgeSwapPanel() {
                       <SelectContent>
                         <SelectItem value="USDC">USDC</SelectItem>
                         <SelectItem value="EURC">EURC</SelectItem>
+                        <SelectItem value="cirBTC">cirBTC</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
@@ -374,14 +367,15 @@ export function BridgeSwapPanel() {
                       <SelectContent>
                         <SelectItem value="USDC">USDC</SelectItem>
                         <SelectItem value="EURC">EURC</SelectItem>
+                        <SelectItem value="cirBTC">cirBTC</SelectItem>
                       </SelectContent>
                     </Select>
                   </div>
                 </div>
 
                 <div className="rounded-2xl border border-amber-400/20 bg-amber-400/10 p-4 text-sm leading-6 text-amber-200">
-                  Swap Beta uses Arc Testnet only. If Circle quote service is unavailable,
-                  use Bridge or Receive and try Swap again later.
+                  Swap uses Arc Testnet only and supports USDC, EURC, and cirBTC.
+                  Keep USDC available for gas before submitting.
                 </div>
               </div>
             ) : (
@@ -469,7 +463,7 @@ export function BridgeSwapPanel() {
               ) : mode === "swap" ? (
                 <>
                   <Repeat2 className="mr-2 size-4" />
-                  Try Swap Beta
+                  Swap on Arc
                 </>
               ) : (
                 <>
