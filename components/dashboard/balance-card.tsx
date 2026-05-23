@@ -207,7 +207,7 @@ export function BalanceCard() {
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm text-muted-foreground">
+                    <div className="rounded-2xl border border-emerald-950/10 bg-lime-50 p-4 text-sm text-muted-foreground">
                       Need test USDC?{" "}
                       <a
                         href="https://faucet.circle.com"
@@ -240,14 +240,14 @@ export function BalanceCard() {
             </Button>
           </div>
 
-          <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.035] p-4">
+          <div className="mt-5 rounded-2xl border border-emerald-950/10 bg-white/70 p-4">
             <p className="text-sm font-medium">Balance sources</p>
             {balance?.breakdown?.length ? (
               <div className="mt-3 grid gap-2">
                 {balance.breakdown.slice(0, 4).map((item, index) => (
                   <div
                     key={`${JSON.stringify(item)}-${index}`}
-                    className="flex items-center justify-between rounded-xl bg-white/[0.04] px-3 py-2 text-xs"
+                    className="flex items-center justify-between rounded-xl bg-emerald-950/[0.035] px-3 py-2 text-xs"
                   >
                     <span className="max-w-[65%] truncate text-muted-foreground">
                       {item.chain ?? item.blockchain ?? item.source ?? `Source ${index + 1}`}

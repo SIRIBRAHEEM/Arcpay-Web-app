@@ -10,7 +10,7 @@ import { getAppKit, getResolvedKitKey } from "@/lib/kit";
 
 export type WalletAdapter = unknown;
 
-export type ArcStableToken = "USDC" | "EURC";
+export type ArcStableToken = "USDC" | "EURC" | "cirBTC";
 
 export type UnifiedBalanceResult = {
   token: "USDC";
@@ -55,11 +55,17 @@ export type SwapResult = {
   }>;
 };
 
+const decimalAmountRegex = /^(?:0|[1-9]\d*)(?:\.\d{1,18})?$/;
+
 function normalizeAmount(value: string) {
   const cleaned = value.trim();
 
   if (!cleaned) {
     throw new Error("Enter an amount first.");
+  }
+
+  if (!decimalAmountRegex.test(cleaned)) {
+    throw new Error("Enter a valid decimal amount with up to 18 decimals.");
   }
 
   const numberValue = Number(cleaned);
@@ -68,7 +74,7 @@ function normalizeAmount(value: string) {
     throw new Error("Enter a valid amount greater than 0.");
   }
 
-  return numberValue.toFixed(2);
+  return cleaned;
 }
 
 function normalizeKitKey(value: string) {
@@ -88,13 +94,27 @@ function formatSwapError(error: unknown) {
   const lowerMessage = message.toLowerCase();
 
   if (
+    lowerMessage.includes("kit key") ||
+    lowerMessage.includes("apikey") ||
+    lowerMessage.includes("api key") ||
+    lowerMessage.includes("unauthorized") ||
+    lowerMessage.includes("forbidden") ||
+    lowerMessage.includes("401") ||
+    lowerMessage.includes("403")
+  ) {
+    return new Error(
+      "Swap needs a valid Circle App Kit key. Save a fresh key in the dashboard or set CIRCLE_KIT_KEY in your deployment environment."
+    );
+  }
+
+  if (
     lowerMessage.includes("failed to fetch") ||
     lowerMessage.includes("maximum retry") ||
     lowerMessage.includes("quoteswap") ||
     lowerMessage.includes("quote")
   ) {
     return new Error(
-      "Circle testnet quote service could not return a swap route right now. Your Kit Key can be valid and this can still happen. Try again later, try Chrome, or use Bridge/Receive."
+      "Circle could not return a swap quote. On Arc Testnet, swap is available only for USDC, EURC, and cirBTC, and the wallet must hold enough input token and USDC gas."
     );
   }
 
@@ -104,7 +124,7 @@ function formatSwapError(error: unknown) {
     lowerMessage.includes("unsupported")
   ) {
     return new Error(
-      "This swap route is not supported right now. On testnet, use USDC ↔ EURC on Arc Testnet."
+      "This swap route is not supported right now. On Arc Testnet, use USDC, EURC, or cirBTC."
     );
   }
 

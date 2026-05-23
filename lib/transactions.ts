@@ -3,7 +3,7 @@
 export type LocalTransaction = {
   id: string;
   type: "send" | "deposit" | "swap" | "bridge" | "receive";
-  token: "USDC" | "EURC";
+  token: "USDC" | "EURC" | "cirBTC";
   amount: string;
   recipient?: string;
   chain?: string;

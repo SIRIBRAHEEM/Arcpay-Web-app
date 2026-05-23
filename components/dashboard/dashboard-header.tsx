@@ -37,20 +37,20 @@ export function DashboardHeader() {
   }
 
   return (
-    <header className="sticky top-3 z-20 rounded-[2rem] border border-white/10 bg-[#050816]/85 p-3 shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+    <header className="sticky top-3 z-20 rounded-[1.5rem] border border-emerald-950/10 bg-white/90 p-3 shadow-[0_24px_80px_rgba(36,82,56,0.12)] backdrop-blur-2xl">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <div className="relative grid size-12 place-items-center rounded-2xl border border-blue-300/20 bg-gradient-to-br from-white/10 to-blue-400/10 shadow-[0_0_40px_rgba(96,165,250,0.18)]">
-            <span className="font-black text-blue-100">A</span>
-            <span className="absolute -right-1 -top-1 size-3 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.9)]" />
+          <div className="relative grid size-12 place-items-center rounded-full border border-emerald-950/10 bg-emerald-950 shadow-[0_18px_38px_rgba(13,69,52,0.18)]">
+            <span className="font-black text-lime-100">A</span>
+            <span className="absolute -right-1 -top-1 size-3 rounded-full bg-lime-300 shadow-[0_0_16px_rgba(190,242,100,0.9)]" />
           </div>
 
           <div>
-            <p className="font-black leading-none tracking-tight text-slate-100">
+            <p className="font-black leading-none tracking-tight text-emerald-950">
               ArcPay
             </p>
-            <p className="mt-1 text-xs text-slate-400">
-              Stablecoin payments on ARC
+            <p className="mt-1 text-xs text-emerald-950/55">
+              Private-feeling payments on ARC
             </p>
           </div>
         </Link>

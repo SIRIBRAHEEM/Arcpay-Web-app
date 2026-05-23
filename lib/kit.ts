@@ -48,7 +48,14 @@ export function getStoredKitKey() {
 }
 
 export function getKitKey() {
-  return getBuildTimeKitKey() || getStoredKitKey() || normalizeKitKey(cachedRuntimeKitKey);
+  return getStoredKitKey() || getBuildTimeKitKey() || normalizeKitKey(cachedRuntimeKitKey);
+}
+
+export function getKitKeySource() {
+  if (getStoredKitKey()) return "browser";
+  if (getBuildTimeKitKey()) return "build";
+  if (normalizeKitKey(cachedRuntimeKitKey)) return "runtime";
+  return "none";
 }
 
 export async function getRuntimeKitKey() {

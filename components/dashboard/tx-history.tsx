@@ -105,18 +105,18 @@ export function TxHistory() {
                 return (
                   <div
                     key={tx.id}
-                    className="flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-4"
+                    className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-950/10 bg-white/70 p-4"
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       <div
                         className={cn(
                           "grid size-10 shrink-0 place-items-center rounded-2xl",
                           tx.type === "send"
-                            ? "bg-cyan-400/10 text-cyan-300"
+                            ? "bg-emerald-100 text-emerald-800"
                             : tx.type === "bridge"
-                              ? "bg-purple-400/10 text-purple-300"
+                              ? "bg-violet-100 text-violet-700"
                               : tx.type === "swap"
-                                ? "bg-amber-400/10 text-amber-300"
+                                ? "bg-amber-100 text-amber-800"
                                 : "bg-primary/10 text-primary"
                         )}
                       >
@@ -130,7 +130,7 @@ export function TxHistory() {
 
                         <p className="truncate text-xs text-muted-foreground">
                           {tx.recipient ? `To ${shortAddress(tx.recipient)}` : tx.chain}
-                          {tx.memo ? ` · ${tx.memo}` : ""}
+                          {tx.memo ? ` - ${tx.memo}` : ""}
                         </p>
                       </div>
                     </div>
@@ -146,7 +146,7 @@ export function TxHistory() {
                           target="_blank"
                           rel="noreferrer"
                           aria-label="Open transaction on explorer"
-                          className="rounded-full p-2 text-muted-foreground hover:bg-white/10 hover:text-foreground"
+                          className="rounded-full p-2 text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground"
                         >
                           <ExternalLink className="size-4" />
                         </a>
@@ -189,7 +189,7 @@ export function TxHistory() {
             ) : null}
           </>
         ) : (
-          <div className="rounded-2xl border border-dashed border-white/10 p-8 text-center">
+          <div className="rounded-2xl border border-dashed border-emerald-950/15 bg-white/50 p-8 text-center">
             <p className="font-semibold">No local activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
               Sends, deposits, swaps, bridges, and detected transfers will appear here.
