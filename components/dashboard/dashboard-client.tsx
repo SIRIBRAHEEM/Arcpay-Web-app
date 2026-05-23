@@ -9,6 +9,7 @@ import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
 import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
+import { SendPanel } from "@/components/dashboard/send-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -58,7 +59,7 @@ export function DashboardClient() {
   }
 
   return (
-    <main className="min-h-screen px-4 pb-20 pt-4 sm:px-6 lg:px-8">
+    <main className="premium-dashboard-bg min-h-screen px-4 pb-20 pt-4 text-foreground sm:px-6 lg:px-8">
       <EventWatcher />
 
       <div className="mx-auto max-w-7xl">
@@ -70,15 +71,16 @@ export function DashboardClient() {
 
         <section className="mt-5 grid gap-5 xl:grid-cols-[1.15fr_0.85fr]">
           <div className="grid gap-5">
+            <SendPanel />
             <BridgeSwapPanel />
-            <ArcNetworkAnimation className="min-h-64" />
             <TxHistory />
           </div>
 
           <div className="grid content-start gap-5">
             <BalanceCard />
-            <ProtocolStatusCard />
             <ReceivePanel />
+            <ProtocolStatusCard />
+            <ArcNetworkAnimation className="min-h-64" />
           </div>
         </section>
       </div>

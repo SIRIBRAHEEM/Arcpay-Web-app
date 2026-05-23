@@ -1,50 +1,57 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Banknote, Boxes, Globe2, ShieldCheck } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Banknote, Globe2, Link2, ShieldCheck } from "lucide-react";
 
 const features = [
   {
     icon: Banknote,
     title: "Stablecoin-first",
-    description: "USDC is the primary payment asset, with EURC support through same-chain swap flows on Arc Testnet."
-  },
-  {
-    icon: Boxes,
-    title: "Unified Balance",
-    description: "Deposit USDC from supported chains and spend from one Arc-ready balance without building bridge plumbing yourself."
-  },
-  {
-    icon: ShieldCheck,
-    title: "Non-custodial",
-    description: "ArcPay never holds funds. Every operation is signed by the user’s connected wallet."
+    description:
+      "Pay with familiar assets like USDC and EURC instead of asking people to learn a new token first."
   },
   {
     icon: Globe2,
-    title: "Payments UX",
-    description: "Short addresses, QR requests, copy buttons, confirmations, and local transaction history."
+    title: "Works across chains",
+    description:
+      "Bridge funds into Arc Testnet and keep the payment experience focused on who you are paying, not network plumbing."
+  },
+  {
+    icon: Link2,
+    title: "Payment links",
+    description:
+      "Create simple requests that can be shared through chat, email, or your everyday contact flow."
+  },
+  {
+    icon: ShieldCheck,
+    title: "Wallet signed",
+    description:
+      "ArcPay never takes custody of funds. Payments are approved by the connected wallet."
   }
 ];
 
 export function FeatureGrid() {
   return (
-    <section id="what-is-arcpay" className="px-4 py-16 sm:px-6 lg:px-8">
+    <section id="what-is-arcpay" className="bg-[#f8f2df] px-4 py-20 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="max-w-2xl">
-          <p className="text-sm font-semibold uppercase tracking-[0.2em] text-primary">
-            What is ArcPay?
-          </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            A minimalist payment app for stablecoins on ARC.
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            It is a complete client-side reference app for peer-to-peer
-            stablecoin payments using Circle App Kit and Arc Testnet.
+        <div className="grid gap-8 lg:grid-cols-[0.76fr_1.24fr] lg:items-end">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.22em] text-emerald-800">
+              What is ArcPay?
+            </p>
+            <h2 className="mt-3 max-w-xl text-4xl font-black tracking-tight text-emerald-950 sm:text-5xl">
+              Your home for simple onchain payments.
+            </h2>
+          </div>
+
+          <p className="max-w-2xl text-lg leading-8 text-emerald-950/70 lg:justify-self-end">
+            ArcPay turns the Arc Testnet and Circle App Kit into an everyday
+            payment app: connect a wallet, check your balance, send funds,
+            request money, and keep a local activity trail.
           </p>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-px overflow-hidden rounded-[2rem] border border-emerald-950/10 bg-emerald-950/10 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
@@ -52,18 +59,17 @@ export function FeatureGrid() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ delay: index * 0.05, duration: 0.5 }}
+              className="bg-[#fffaf0] p-6 sm:p-7"
             >
-              <Card className="glass h-full rounded-3xl">
-                <CardContent className="p-6">
-                  <div className="grid size-11 place-items-center rounded-2xl bg-primary/10 text-primary">
-                    <feature.icon className="size-5" />
-                  </div>
-                  <h3 className="mt-5 text-lg font-bold">{feature.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-muted-foreground">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <div className="grid size-12 place-items-center rounded-full bg-emerald-950 text-lime-100">
+                <feature.icon className="size-5" />
+              </div>
+              <h3 className="mt-8 text-xl font-black text-emerald-950">
+                {feature.title}
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-emerald-950/65">
+                {feature.description}
+              </p>
             </motion.div>
           ))}
         </div>

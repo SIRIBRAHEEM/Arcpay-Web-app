@@ -37,11 +37,11 @@ export function DashboardHeader() {
   }
 
   return (
-    <header className="sticky top-3 z-20 rounded-[2rem] border border-white/10 bg-[#050816]/85 p-3 shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
+    <header className="sticky top-3 z-20 rounded-[1.5rem] border border-white/10 bg-[#03130e]/85 p-3 shadow-[0_24px_90px_rgba(0,0,0,0.45)] backdrop-blur-2xl">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
         <Link href="/" className="flex items-center gap-3">
-          <div className="relative grid size-12 place-items-center rounded-2xl border border-blue-300/20 bg-gradient-to-br from-white/10 to-blue-400/10 shadow-[0_0_40px_rgba(96,165,250,0.18)]">
-            <span className="font-black text-blue-100">A</span>
+          <div className="relative grid size-12 place-items-center rounded-full border border-lime-200/20 bg-lime-200/10 shadow-[0_0_40px_rgba(190,242,100,0.14)]">
+            <span className="font-black text-lime-100">A</span>
             <span className="absolute -right-1 -top-1 size-3 rounded-full bg-emerald-400 shadow-[0_0_16px_rgba(52,211,153,0.9)]" />
           </div>
 
@@ -50,7 +50,7 @@ export function DashboardHeader() {
               ArcPay
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              Stablecoin payments on ARC
+              Private-feeling payments on ARC
             </p>
           </div>
         </Link>
