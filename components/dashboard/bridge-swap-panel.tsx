@@ -172,20 +172,9 @@ export function BridgeSwapPanel() {
       setAmount("");
     } catch (error) {
       const message = error instanceof Error ? error.message : "Please try again.";
-      const lowerMessage = message.toLowerCase();
-
-      const isSwapQuoteError =
-        lowerMessage.includes("quote") ||
-        lowerMessage.includes("quoteswap") ||
-        lowerMessage.includes("failed to fetch") ||
-        lowerMessage.includes("maximum retry") ||
-        lowerMessage.includes("temporarily unavailable");
 
       toast.error(mode === "swap" ? "Swap unavailable" : "Bridge failed", {
-        description:
-          mode === "swap" && isSwapQuoteError
-            ? "Arc Testnet swap supports USDC, EURC, and cirBTC only. Check your token balance, USDC gas, and App Kit key, then try again."
-            : message
+        description: message
       });
     } finally {
       setLoading(false);

@@ -265,7 +265,6 @@ export async function estimateSwapStablecoins({
       tokenOut,
       amountIn: safeAmount,
       config: {
-        allowanceStrategy: "approve",
         kitKey
       }
     });
@@ -325,7 +324,6 @@ export async function swapStablecoins({
     tokenOut,
     amountIn: safeAmount,
     config: {
-      allowanceStrategy: "approve",
       kitKey,
       slippageBps
     }
