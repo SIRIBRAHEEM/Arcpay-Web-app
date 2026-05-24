@@ -13,20 +13,23 @@ import { SendPanel } from "@/components/dashboard/send-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
+import { useAuthStore } from "@/store/auth-store";
 import { useWalletStore } from "@/store/wallet-store";
 
 export function DashboardClient() {
   const router = useRouter();
   const address = useWalletStore((state) => state.address);
   const hydrated = useWalletStore((state) => state.hydrated);
+  const authHydrated = useAuthStore((state) => state.hydrated);
+  const session = useAuthStore((state) => state.session);
 
   useEffect(() => {
-    if (hydrated && !address) {
-      router.replace("/");
+    if (hydrated && authHydrated && !address && !session) {
+      router.replace("/login");
     }
-  }, [address, hydrated, router]);
+  }, [address, authHydrated, hydrated, router, session]);
 
-  if (!hydrated) {
+  if (!hydrated || !authHydrated) {
     return (
       <main className="premium-dashboard-bg grid min-h-screen place-items-center px-4">
         <Card className="glass w-full max-w-md rounded-3xl">
@@ -46,9 +49,11 @@ export function DashboardClient() {
       <main className="premium-dashboard-bg grid min-h-screen place-items-center px-4">
         <Card className="glass w-full max-w-md rounded-3xl">
           <CardContent className="p-6 text-center">
-            <p className="text-lg font-bold">Connect to continue</p>
+            <p className="text-lg font-bold">
+              {session ? "Connect wallet to continue" : "Login to continue"}
+            </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              ArcPay is non-custodial and needs a browser wallet.
+              ArcPay is non-custodial, so payments still need an EVM wallet.
             </p>
             <ConnectButton redirectTo="/dashboard" className="mt-6 w-full" />
           </CardContent>

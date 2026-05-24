@@ -15,7 +15,6 @@ import {
   WalletCards,
   Zap
 } from "lucide-react";
-import { ConnectButton } from "@/components/connect-button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ArcPayLogoMark } from "@/components/arcpay-logo";
 import { Badge } from "@/components/ui/badge";
@@ -72,10 +71,12 @@ export function Hero() {
               Faucet
             </a>
           </Button>
-          <ConnectButton
-            redirectTo="/dashboard"
-            className="rounded-full px-5"
-          />
+          <Button variant="ghost" className="rounded-full px-4" asChild>
+            <Link href="/login">Log in</Link>
+          </Button>
+          <Button className="rounded-full px-5" asChild>
+            <Link href="/signup">Sign up</Link>
+          </Button>
         </div>
       </div>
 
@@ -101,12 +102,16 @@ export function Hero() {
           </p>
 
           <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <ConnectButton
-              redirectTo="/dashboard"
+            <Button
               size="lg"
               className="h-12 rounded-full px-7"
-              label="Try it now"
-            />
+              asChild
+            >
+              <Link href="/signup">
+                Create account
+                <ArrowRight className="ml-2 size-4" />
+              </Link>
+            </Button>
             <Button
               size="lg"
               variant="secondary"

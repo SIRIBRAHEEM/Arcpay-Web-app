@@ -14,6 +14,7 @@ import {
   requestSwitchChain
 } from "@/lib/arc";
 import { shortAddress } from "@/lib/utils";
+import { useAuthStore } from "@/store/auth-store";
 import { useWalletStore } from "@/store/wallet-store";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 
@@ -22,6 +23,8 @@ export function DashboardHeader() {
   const provider = useWalletStore((state) => state.provider);
   const disconnect = useWalletStore((state) => state.disconnect);
   const chainId = useWalletStore((state) => state.chainId);
+  const session = useAuthStore((state) => state.session);
+  const signOut = useAuthStore((state) => state.signOut);
   const copy = useCopyToClipboard();
 
   async function switchToArc() {
@@ -74,7 +77,11 @@ export function DashboardHeader() {
             className="gap-2 rounded-full px-3 py-1.5 text-emerald-950/80 dark:text-lime-50/90"
           >
             <ShieldCheck className="size-3.5" />
-            Non-custodial
+            {session?.method === "passkey"
+              ? "Passkey"
+              : session?.method === "email"
+                ? "Email"
+                : "Non-custodial"}
           </Badge>
 
           {chainId !== ARC_CHAIN_ID ? (
@@ -112,6 +119,7 @@ export function DashboardHeader() {
             variant="ghost"
             onClick={() => {
               disconnect();
+              signOut();
               toast.success("Wallet disconnected");
             }}
             aria-label="Disconnect wallet"

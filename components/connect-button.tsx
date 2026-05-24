@@ -3,12 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Wallet } from "lucide-react";
-import type { Address } from "viem";
 import { toast } from "sonner";
 import { Button, type ButtonProps } from "@/components/ui/button";
-import { ARC_TESTNET_PARAMS, requestSwitchChain } from "@/lib/arc";
-import { createBrowserAdapter } from "@/lib/kit";
+import { connectWalletProvider } from "@/lib/connect-wallet";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/store/auth-store";
 import { useWalletStore } from "@/store/wallet-store";
 
 type ConnectButtonProps = ButtonProps & {
@@ -26,6 +25,7 @@ export function ConnectButton({
   const [loading, setLoading] = useState(false);
   const address = useWalletStore((state) => state.address);
   const setConnected = useWalletStore((state) => state.setConnected);
+  const signIn = useAuthStore((state) => state.signIn);
 
   async function connect() {
     const provider = window.ethereum;
@@ -40,28 +40,14 @@ export function ConnectButton({
     setLoading(true);
 
     try {
-      const accounts = (await provider.request({
-        method: "eth_requestAccounts"
-      })) as Address[];
+      const connection = await connectWalletProvider(provider);
 
-      if (!accounts?.[0]) {
-        throw new Error("No account returned by wallet.");
-      }
-
-      await requestSwitchChain(provider, ARC_TESTNET_PARAMS);
-
-      const chainId = Number.parseInt(
-        (await provider.request({ method: "eth_chainId" })) as string,
-        16
-      );
-
-      const adapter = await createBrowserAdapter(provider);
-
-      setConnected({
-        address: accounts[0],
-        provider,
-        adapter,
-        chainId
+      setConnected(connection);
+      signIn({
+        method: "wallet",
+        label: "Browser Wallet",
+        address: connection.address,
+        createdAt: Date.now()
       });
 
       toast.success("Wallet connected", {
