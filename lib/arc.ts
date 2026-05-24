@@ -231,6 +231,10 @@ export const BRIDGE_CHAINS: AppKitChain[] = [
   "Unichain_Sepolia"
 ];
 
+export function getNativeGasSymbol(chain: AppKitChain) {
+  return CHAIN_PARAMS_BY_APPKIT_CHAIN[chain].nativeCurrency.symbol;
+}
+
 export async function requestSwitchChain(
   provider: EIP1193Provider,
   chain: WalletAddEthereumChainParameter
@@ -247,6 +251,10 @@ export async function requestSwitchChain(
       await provider.request({
         method: "wallet_addEthereumChain",
         params: [chain]
+      });
+      await provider.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: chain.chainId }]
       });
       return;
     }

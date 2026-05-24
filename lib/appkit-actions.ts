@@ -89,9 +89,29 @@ function normalizeKitKey(value: string) {
   return `KIT_KEY:${cleaned}`;
 }
 
+async function getRequiredKitKey(feature: "Swap") {
+  const kitKey = normalizeKitKey(await getResolvedKitKey());
+
+  if (!kitKey) {
+    throw new Error(
+      `${feature} is not configured. Add KIT_KEY or CIRCLE_KIT_KEY in Vercel, or save a Circle App Kit key in the dashboard, then refresh.`
+    );
+  }
+
+  return kitKey;
+}
+
 function formatSwapError(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
   const lowerMessage = message.toLowerCase();
+
+  if (
+    lowerMessage.includes("user rejected") ||
+    lowerMessage.includes("user denied") ||
+    lowerMessage.includes("rejected the request")
+  ) {
+    return new Error("The wallet rejected the swap. Confirm it in your wallet to continue.");
+  }
 
   if (
     lowerMessage.includes("kit key") ||
@@ -103,7 +123,7 @@ function formatSwapError(error: unknown) {
     lowerMessage.includes("403")
   ) {
     return new Error(
-      "Swap needs a valid Circle App Kit key. Save a fresh key in the dashboard or set CIRCLE_KIT_KEY in your deployment environment."
+      "Swap needs a valid Circle App Kit key. Set KIT_KEY or CIRCLE_KIT_KEY in your deployment environment, or save a fresh key in the dashboard."
     );
   }
 
@@ -125,6 +145,53 @@ function formatSwapError(error: unknown) {
   ) {
     return new Error(
       "This swap route is not supported right now. On Arc Testnet, use USDC, EURC, or cirBTC."
+    );
+  }
+
+  return error;
+}
+
+function formatBridgeError(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  const lowerMessage = message.toLowerCase();
+
+  if (
+    lowerMessage.includes("user rejected") ||
+    lowerMessage.includes("user denied") ||
+    lowerMessage.includes("rejected the request")
+  ) {
+    return new Error("The wallet rejected the bridge. Confirm the bridge steps in your wallet to continue.");
+  }
+
+  if (
+    lowerMessage.includes("insufficient") ||
+    lowerMessage.includes("balance") ||
+    lowerMessage.includes("funds")
+  ) {
+    return new Error(
+      "Bridge needs enough source-chain USDC plus native gas on the source chain. Add test funds, then try again."
+    );
+  }
+
+  if (
+    lowerMessage.includes("route") ||
+    lowerMessage.includes("not supported") ||
+    lowerMessage.includes("unsupported") ||
+    lowerMessage.includes("chain")
+  ) {
+    return new Error(
+      "This bridge route is not supported by App Kit right now. Try Arc Testnet to Base Sepolia, or Base Sepolia to Arc Testnet."
+    );
+  }
+
+  if (
+    lowerMessage.includes("failed to fetch") ||
+    lowerMessage.includes("network") ||
+    lowerMessage.includes("maximum retry") ||
+    lowerMessage.includes("estimate")
+  ) {
+    return new Error(
+      "Circle could not estimate the bridge route. Check your connection, source-chain gas, and test USDC balance, then try again."
     );
   }
 
@@ -237,13 +304,7 @@ export async function estimateSwapStablecoins({
   tokenIn: ArcStableToken;
   tokenOut: ArcStableToken;
 }) {
-  const kitKey = normalizeKitKey(await getResolvedKitKey());
-
-  if (!kitKey) {
-    throw new Error(
-      "Swap is not configured. Add CIRCLE_KIT_KEY in Vercel or save a Circle App Kit key in the dashboard, then redeploy or refresh."
-    );
-  }
+  const kitKey = await getRequiredKitKey("Swap");
 
   if (tokenIn === tokenOut) {
     throw new Error("Choose two different tokens to swap.");
@@ -288,13 +349,7 @@ export async function swapStablecoins({
   chain?: AppKitChain;
   slippageBps?: number;
 }) {
-  const kitKey = normalizeKitKey(await getResolvedKitKey());
-
-  if (!kitKey) {
-    throw new Error(
-      "Swap is not configured. Add CIRCLE_KIT_KEY in Vercel or save a Circle App Kit key in the dashboard, then redeploy or refresh."
-    );
-  }
+  const kitKey = await getRequiredKitKey("Swap");
 
   if (tokenIn === tokenOut) {
     throw new Error("Choose two different tokens to swap.");
@@ -368,11 +423,16 @@ export async function bridgeUsdc({
     throw new Error("Choose two different chains to bridge.");
   }
 
+  if (typeof navigator !== "undefined" && !navigator.onLine) {
+    throw new Error("You are offline. Check your internet connection and try again.");
+  }
+
   const kit = getAppKit() as unknown as {
+    estimateBridge: (params: unknown) => Promise<unknown>;
     bridge: (params: unknown) => Promise<unknown>;
   };
 
-  return kit.bridge({
+  const params = {
     from: {
       adapter,
       chain: fromChain
@@ -382,8 +442,18 @@ export async function bridgeUsdc({
       chain: toChain
     },
     amount: normalizeAmount(amount),
-    token: "USDC"
-  });
+    token: "USDC",
+    config: {
+      batchTransactions: false
+    }
+  };
+
+  try {
+    await kit.estimateBridge(params);
+    return await kit.bridge(params);
+  } catch (error) {
+    throw formatBridgeError(error);
+  }
 }
 
 export function extractTransaction(result: unknown): ExtractedTransaction {

@@ -35,6 +35,7 @@ import {
   BRIDGE_CHAINS,
   CHAIN_PARAMS_BY_APPKIT_CHAIN,
   getNativeGasBalance,
+  getNativeGasSymbol,
   requestSwitchChain,
   type AppKitChain
 } from "@/lib/arc";
@@ -53,8 +54,8 @@ export function BridgeSwapPanel() {
   const [amount, setAmount] = useState("");
   const [tokenIn, setTokenIn] = useState<ArcStableToken>("USDC");
   const [tokenOut, setTokenOut] = useState<ArcStableToken>("EURC");
-  const [fromChain, setFromChain] = useState<AppKitChain>("Base_Sepolia");
-  const [toChain, setToChain] = useState<AppKitChain>("Arc_Testnet");
+  const [fromChain, setFromChain] = useState<AppKitChain>("Arc_Testnet");
+  const [toChain, setToChain] = useState<AppKitChain>("Base_Sepolia");
   const [loading, setLoading] = useState(false);
   const [txOpen, setTxOpen] = useState(false);
   const [tx, setTx] = useState<ReturnType<typeof extractTransaction> | null>(null);
@@ -75,6 +76,22 @@ export function BridgeSwapPanel() {
   function flipBridgeChains() {
     setFromChain(toChain);
     setToChain(fromChain);
+  }
+
+  function handleFromChainChange(value: AppKitChain) {
+    setFromChain(value);
+
+    if (value === toChain) {
+      setToChain(value === "Arc_Testnet" ? "Base_Sepolia" : "Arc_Testnet");
+    }
+  }
+
+  function handleToChainChange(value: AppKitChain) {
+    setToChain(value);
+
+    if (value === fromChain) {
+      setFromChain(value === "Arc_Testnet" ? "Base_Sepolia" : "Arc_Testnet");
+    }
   }
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
@@ -108,15 +125,16 @@ export function BridgeSwapPanel() {
 
       await requestSwitchChain(provider, CHAIN_PARAMS_BY_APPKIT_CHAIN[sourceChain]);
 
+      const gasBalance = await getNativeGasBalance(provider, address);
+      const gasSymbol = getNativeGasSymbol(sourceChain);
+
+      if (gasBalance <= 0n) {
+        throw new Error(
+          `${APPKIT_CHAIN_LABELS[sourceChain]} needs ${gasSymbol} for network fees. Add test ${gasSymbol}, then try again.`
+        );
+      }
+
       if (mode === "swap") {
-        const gasBalance = await getNativeGasBalance(provider, address);
-
-        if (gasBalance <= 0n) {
-          throw new Error(
-            "Arc Testnet gas is paid in native USDC. Add Arc Testnet USDC for gas, then try swap again."
-          );
-        }
-
         const result = await swapStablecoins({
           adapter,
           amount,
@@ -213,7 +231,7 @@ export function BridgeSwapPanel() {
               className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                 mode === "swap"
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground dark:hover:bg-white/10"
+                  : "text-emerald-950/70 hover:bg-emerald-950/5 hover:text-emerald-950 dark:text-lime-50/80 dark:hover:bg-white/10 dark:hover:text-lime-50"
               }`}
             >
               <Repeat2 className="size-4" />
@@ -226,7 +244,7 @@ export function BridgeSwapPanel() {
               className={`flex items-center justify-center gap-2 rounded-xl px-3 py-2 text-sm font-semibold transition ${
                 mode === "bridge"
                   ? "bg-primary text-primary-foreground shadow-glow"
-                  : "text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground dark:hover:bg-white/10"
+                  : "text-emerald-950/70 hover:bg-emerald-950/5 hover:text-emerald-950 dark:text-lime-50/80 dark:hover:bg-white/10 dark:hover:text-lime-50"
               }`}
             >
               <Waypoints className="size-4" />
@@ -237,8 +255,8 @@ export function BridgeSwapPanel() {
 
         <CardContent className="p-5 pt-0">
           <form onSubmit={submit} className="grid gap-4">
-            <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.055]">
-              <p className="text-sm text-muted-foreground">
+            <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.075]">
+              <p className="text-sm text-emerald-950/65 dark:text-lime-50/80">
                 {mode === "swap" ? "Swap on Arc" : "Bridge USDC"}
               </p>
 
@@ -248,11 +266,11 @@ export function BridgeSwapPanel() {
                     <Badge className="rounded-full bg-teal-100 text-teal-900 dark:bg-teal-300/15 dark:text-teal-100">
                       {tokenIn}
                     </Badge>
-                    <ArrowLeftRight className="size-4 text-muted-foreground" />
+                    <ArrowLeftRight className="size-4 text-emerald-950/45 dark:text-lime-50/70" />
                     <Badge className="rounded-full bg-primary/15 text-primary">
                       {tokenOut}
                     </Badge>
-                    <span className="text-sm text-muted-foreground">on</span>
+                    <span className="text-sm text-emerald-950/65 dark:text-lime-50/80">on</span>
                     <ChainLogo chain="Arc_Testnet" />
                     <span className="text-sm font-semibold text-foreground">Arc Testnet</span>
                   </>
@@ -262,7 +280,7 @@ export function BridgeSwapPanel() {
                     <span className="text-sm font-semibold text-foreground">
                       {APPKIT_CHAIN_LABELS[fromChain]}
                     </span>
-                    <ArrowLeftRight className="size-4 text-muted-foreground" />
+                    <ArrowLeftRight className="size-4 text-emerald-950/45 dark:text-lime-50/70" />
                     <ChainLogo chain={toChain} />
                     <span className="text-sm font-semibold text-foreground">
                       {APPKIT_CHAIN_LABELS[toChain]}
@@ -271,21 +289,21 @@ export function BridgeSwapPanel() {
                 )}
               </div>
 
-              <p className="mt-3 text-lg font-black tracking-tight">{routeTitle}</p>
+              <p className="mt-3 text-lg font-black tracking-tight text-emerald-950 dark:text-lime-50">{routeTitle}</p>
             </div>
 
-            <div className="rounded-[1.25rem] border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
+            <div className="rounded-[1.25rem] border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.075]">
               <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-4">
                 <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4 dark:border-white/10 dark:bg-white/[0.06]">
                   {mode === "swap" ? (
                     <>
-                      <p className="text-xs text-muted-foreground">From token</p>
-                      <p className="mt-2 font-bold">{tokenIn}</p>
+                      <p className="text-xs text-emerald-950/60 dark:text-lime-50/75">From token</p>
+                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{tokenIn}</p>
                     </>
                   ) : (
                     <>
-                      <p className="text-xs text-muted-foreground">From chain</p>
-                      <p className="mt-2 font-bold">{APPKIT_CHAIN_LABELS[fromChain]}</p>
+                      <p className="text-xs text-emerald-950/60 dark:text-lime-50/75">From chain</p>
+                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{APPKIT_CHAIN_LABELS[fromChain]}</p>
                     </>
                   )}
                 </div>
@@ -297,13 +315,13 @@ export function BridgeSwapPanel() {
                 <div className="rounded-2xl border border-emerald-950/10 bg-white/85 p-4 dark:border-white/10 dark:bg-white/[0.06]">
                   {mode === "swap" ? (
                     <>
-                      <p className="text-xs text-muted-foreground">To token</p>
-                      <p className="mt-2 font-bold">{tokenOut}</p>
+                      <p className="text-xs text-emerald-950/60 dark:text-lime-50/75">To token</p>
+                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{tokenOut}</p>
                     </>
                   ) : (
                     <>
-                      <p className="text-xs text-muted-foreground">To chain</p>
-                      <p className="mt-2 font-bold">{APPKIT_CHAIN_LABELS[toChain]}</p>
+                      <p className="text-xs text-emerald-950/60 dark:text-lime-50/75">To chain</p>
+                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{APPKIT_CHAIN_LABELS[toChain]}</p>
                     </>
                   )}
                 </div>
@@ -390,7 +408,7 @@ export function BridgeSwapPanel() {
                     <Label>From chain</Label>
                     <Select
                       value={fromChain}
-                      onValueChange={(value) => setFromChain(value as AppKitChain)}
+                      onValueChange={(value) => handleFromChainChange(value as AppKitChain)}
                     >
                       <SelectTrigger>
                         <SelectedChain chain={fromChain} />
@@ -421,7 +439,7 @@ export function BridgeSwapPanel() {
                     <Label>To chain</Label>
                     <Select
                       value={toChain}
-                      onValueChange={(value) => setToChain(value as AppKitChain)}
+                      onValueChange={(value) => handleToChainChange(value as AppKitChain)}
                     >
                       <SelectTrigger>
                         <SelectedChain chain={toChain} />
@@ -438,14 +456,14 @@ export function BridgeSwapPanel() {
                   </div>
                 </div>
 
-                <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm text-primary">
-                  Bridge supports USDC transfers. Your wallet must have test USDC
-                  and native gas on the selected source chain.
+                <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-emerald-950 dark:text-lime-50">
+                  Bridge supports USDC transfers. Keep source-chain USDC plus{" "}
+                  {getNativeGasSymbol(fromChain)} gas on {APPKIT_CHAIN_LABELS[fromChain]}.
                 </div>
               </div>
             )}
 
-            <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 text-sm text-muted-foreground dark:border-white/10 dark:bg-white/[0.055]">
+            <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 text-sm text-emerald-950/70 dark:border-white/10 dark:bg-white/[0.075] dark:text-lime-50/80">
               Need test funds?{" "}
               <a
                 href="https://faucet.circle.com"

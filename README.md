@@ -27,7 +27,9 @@ payments on Arc Testnet using Circle App Kit.
 Swap requires a Circle App Kit key from Circle Console. Do not commit real keys.
 
 ```txt
-CIRCLE_KIT_KEY=KIT_KEY:your-id:your-secret
+KIT_KEY=KIT_KEY:your-id:your-secret
+# CIRCLE_KIT_KEY is also supported for existing deployments.
+# CIRCLE_KIT_KEY=KIT_KEY:your-id:your-secret
 # Optional fallback for static/client-only builds:
 # NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
 ```
