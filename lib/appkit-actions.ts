@@ -101,9 +101,92 @@ async function getRequiredKitKey(feature: "Swap") {
   return kitKey;
 }
 
+function isErrorRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
+}
+
+function sanitizeErrorText(value: string) {
+  return value.replace(/KIT_KEY:[A-Za-z0-9:_-]+/g, "KIT_KEY:***").trim();
+}
+
+function addErrorPart(parts: Set<string>, value: unknown) {
+  if (typeof value !== "string" && typeof value !== "number") return;
+
+  const text = sanitizeErrorText(String(value));
+
+  if (text) {
+    parts.add(text);
+  }
+}
+
+function collectErrorParts(
+  value: unknown,
+  parts: Set<string>,
+  seen = new WeakSet<object>(),
+  depth = 0
+) {
+  if (depth > 3) return;
+
+  if (typeof value === "string" || typeof value === "number") {
+    addErrorPart(parts, value);
+    return;
+  }
+
+  if (!isErrorRecord(value)) return;
+
+  if (seen.has(value)) return;
+  seen.add(value);
+
+  addErrorPart(parts, value.name);
+  addErrorPart(parts, value.message);
+  addErrorPart(parts, value.reason);
+  addErrorPart(parts, value.details);
+  addErrorPart(parts, value.shortMessage);
+  addErrorPart(parts, value.code);
+  addErrorPart(parts, value.status);
+
+  const cause = value.cause;
+  if (cause) {
+    collectErrorParts(cause, parts, seen, depth + 1);
+  }
+
+  const trace = isErrorRecord(cause) ? cause.trace : value.trace;
+  if (isErrorRecord(trace)) {
+    const validationErrors = trace.validationErrors;
+
+    if (Array.isArray(validationErrors)) {
+      validationErrors.forEach((item) => collectErrorParts(item, parts, seen, depth + 1));
+    }
+  }
+}
+
+function getErrorMessage(error: unknown) {
+  const parts = new Set<string>();
+  collectErrorParts(error, parts);
+
+  return [...parts].join(" | ");
+}
+
+function getErrorDetail(error: unknown) {
+  const message = getErrorMessage(error);
+
+  if (!message) return "";
+
+  return message.length > 240 ? `${message.slice(0, 237)}...` : message;
+}
+
+function logAppKitError(scope: string, error: unknown) {
+  if (typeof console === "undefined") return;
+
+  const detail = getErrorDetail(error);
+  console.error(`[ArcPay ${scope}]`, detail || error);
+}
+
 function formatSwapError(error: unknown) {
-  const message = error instanceof Error ? error.message : String(error);
+  const message = getErrorMessage(error);
   const lowerMessage = message.toLowerCase();
+  const detail = getErrorDetail(error);
+  const detailSuffix = detail ? ` Circle returned: ${detail}` : "";
 
   if (
     lowerMessage.includes("user rejected") ||
@@ -123,7 +206,20 @@ function formatSwapError(error: unknown) {
     lowerMessage.includes("403")
   ) {
     return new Error(
-      "Swap needs a valid Circle App Kit key. Set KIT_KEY or CIRCLE_KIT_KEY in your deployment environment, or save a fresh key in the dashboard."
+      `Swap needs a valid Circle App Kit key. Set KIT_KEY or CIRCLE_KIT_KEY in your deployment environment, or save a fresh key in the dashboard.${detailSuffix}`
+    );
+  }
+
+  if (
+    lowerMessage.includes("domain") ||
+    lowerMessage.includes("origin") ||
+    lowerMessage.includes("appinfo") ||
+    lowerMessage.includes("app info") ||
+    lowerMessage.includes("allowed") ||
+    lowerMessage.includes("allowlist")
+  ) {
+    return new Error(
+      `Circle rejected this site for the App Kit request. Check the key settings in Circle Console for this deployed domain, then refresh.${detailSuffix}`
     );
   }
 
@@ -134,7 +230,7 @@ function formatSwapError(error: unknown) {
     lowerMessage.includes("quote")
   ) {
     return new Error(
-      "Circle could not return a swap quote. On Arc Testnet, swap is available only for USDC, EURC, and cirBTC, and the wallet must hold enough input token and USDC gas."
+      `Circle could not return a swap quote. Arc Testnet swaps use USDC, EURC, or cirBTC only, with enough input token and native USDC gas.${detailSuffix}`
     );
   }
 
@@ -144,16 +240,18 @@ function formatSwapError(error: unknown) {
     lowerMessage.includes("unsupported")
   ) {
     return new Error(
-      "This swap route is not supported right now. On Arc Testnet, use USDC, EURC, or cirBTC."
+      `This swap route is not supported right now. On Arc Testnet, use USDC, EURC, or cirBTC.${detailSuffix}`
     );
   }
 
-  return error;
+  return new Error(detail || "Circle App Kit could not complete the swap.");
 }
 
 function formatBridgeError(error: unknown) {
-  const message = error instanceof Error ? error.message : String(error);
+  const message = getErrorMessage(error);
   const lowerMessage = message.toLowerCase();
+  const detail = getErrorDetail(error);
+  const detailSuffix = detail ? ` Circle returned: ${detail}` : "";
 
   if (
     lowerMessage.includes("user rejected") ||
@@ -169,7 +267,7 @@ function formatBridgeError(error: unknown) {
     lowerMessage.includes("funds")
   ) {
     return new Error(
-      "Bridge needs enough source-chain USDC plus native gas on the source chain. Add test funds, then try again."
+      `Bridge needs enough source-chain USDC plus native gas on the source chain. Add test funds, then try again.${detailSuffix}`
     );
   }
 
@@ -180,7 +278,7 @@ function formatBridgeError(error: unknown) {
     lowerMessage.includes("chain")
   ) {
     return new Error(
-      "This bridge route is not supported by App Kit right now. Try Arc Testnet to Base Sepolia, or Base Sepolia to Arc Testnet."
+      `This bridge route is not supported by App Kit right now. Try Arc Testnet to Base Sepolia, or Base Sepolia to Arc Testnet.${detailSuffix}`
     );
   }
 
@@ -191,11 +289,11 @@ function formatBridgeError(error: unknown) {
     lowerMessage.includes("estimate")
   ) {
     return new Error(
-      "Circle could not estimate the bridge route. Check your connection, source-chain gas, and test USDC balance, then try again."
+      `Circle could not estimate the bridge route. Check your connection, source-chain gas, and test USDC balance, then try again.${detailSuffix}`
     );
   }
 
-  return error;
+  return new Error(detail || "Circle App Kit could not complete the bridge.");
 }
 
 export async function fetchUnifiedBalance(adapter: WalletAdapter) {
@@ -330,6 +428,7 @@ export async function estimateSwapStablecoins({
       }
     });
   } catch (error) {
+    logAppKitError("estimate swap", error);
     throw formatSwapError(error);
   }
 }
@@ -388,6 +487,7 @@ export async function swapStablecoins({
     await kit.estimateSwap(params);
     return await kit.swap(params);
   } catch (error) {
+    logAppKitError("swap", error);
     throw formatSwapError(error);
   }
 }
@@ -452,6 +552,7 @@ export async function bridgeUsdc({
     await kit.estimateBridge(params);
     return await kit.bridge(params);
   } catch (error) {
+    logAppKitError("bridge", error);
     throw formatBridgeError(error);
   }
 }

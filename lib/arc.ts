@@ -153,14 +153,14 @@ export const POLYGON_AMOY_PARAMS: WalletAddEthereumChainParameter = {
 };
 
 export const SONIC_TESTNET_PARAMS: WalletAddEthereumChainParameter = {
-  chainId: "0xdede",
+  chainId: "0x3909",
   chainName: "Sonic Testnet",
   nativeCurrency: {
     name: "Sonic",
     symbol: "S",
     decimals: 18
   },
-  rpcUrls: ["https://rpc.blaze.soniclabs.com"],
+  rpcUrls: ["https://rpc.testnet.soniclabs.com"],
   blockExplorerUrls: ["https://testnet.sonicscan.org"]
 };
 
@@ -231,8 +231,26 @@ export const BRIDGE_CHAINS: AppKitChain[] = [
   "Unichain_Sepolia"
 ];
 
-export function getNativeGasSymbol(chain: AppKitChain) {
-  return CHAIN_PARAMS_BY_APPKIT_CHAIN[chain].nativeCurrency.symbol;
+export function isAppKitChain(value: string): value is AppKitChain {
+  return Object.prototype.hasOwnProperty.call(CHAIN_PARAMS_BY_APPKIT_CHAIN, value);
+}
+
+export function getChainLabel(chain?: AppKitChain) {
+  return chain ? APPKIT_CHAIN_LABELS[chain] ?? chain.replaceAll("_", " ") : "Unknown chain";
+}
+
+export function getChainParams(chain: AppKitChain) {
+  const params = CHAIN_PARAMS_BY_APPKIT_CHAIN[chain];
+
+  if (!params) {
+    throw new Error("Choose a supported source chain, then try again.");
+  }
+
+  return params;
+}
+
+export function getNativeGasSymbol(chain?: AppKitChain) {
+  return chain ? CHAIN_PARAMS_BY_APPKIT_CHAIN[chain]?.nativeCurrency.symbol ?? "native gas" : "native gas";
 }
 
 export async function requestSwitchChain(

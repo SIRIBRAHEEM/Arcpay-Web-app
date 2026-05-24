@@ -6,14 +6,19 @@ type ChainLogoProps = {
   className?: string;
 };
 
-const chainLogoConfig: Record<
-  AppKitChain,
-  {
-    label: string;
-    short: string;
-    className: string;
-  }
-> = {
+type ChainLogoConfig = {
+  label: string;
+  short: string;
+  className: string;
+};
+
+const fallbackChainLogoConfig: ChainLogoConfig = {
+  label: "Unknown chain",
+  short: "?",
+  className: "from-slate-300 to-slate-500 text-black"
+};
+
+const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
   Arc_Testnet: {
     label: "Arc Testnet",
     short: "A",
@@ -66,8 +71,12 @@ const chainLogoConfig: Record<
   }
 };
 
+function getChainLogoConfig(chain: AppKitChain) {
+  return chainLogoConfig[chain] ?? fallbackChainLogoConfig;
+}
+
 export function ChainLogo({ chain, className }: ChainLogoProps) {
-  const config = chainLogoConfig[chain];
+  const config = getChainLogoConfig(chain);
 
   return (
     <span
@@ -84,7 +93,7 @@ export function ChainLogo({ chain, className }: ChainLogoProps) {
 }
 
 export function ChainOption({ chain }: { chain: AppKitChain }) {
-  const config = chainLogoConfig[chain];
+  const config = getChainLogoConfig(chain);
 
   return (
     <span className="flex items-center gap-3">
@@ -95,7 +104,7 @@ export function ChainOption({ chain }: { chain: AppKitChain }) {
 }
 
 export function SelectedChain({ chain }: { chain: AppKitChain }) {
-  const config = chainLogoConfig[chain];
+  const config = getChainLogoConfig(chain);
 
   return (
     <span className="flex items-center gap-3">

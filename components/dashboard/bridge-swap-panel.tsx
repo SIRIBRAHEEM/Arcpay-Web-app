@@ -31,11 +31,12 @@ import {
   type ArcStableToken
 } from "@/lib/appkit-actions";
 import {
-  APPKIT_CHAIN_LABELS,
   BRIDGE_CHAINS,
-  CHAIN_PARAMS_BY_APPKIT_CHAIN,
+  getChainLabel,
+  getChainParams,
   getNativeGasBalance,
   getNativeGasSymbol,
+  isAppKitChain,
   requestSwitchChain,
   type AppKitChain
 } from "@/lib/arc";
@@ -65,7 +66,7 @@ export function BridgeSwapPanel() {
       return `${tokenIn} -> ${tokenOut} on Arc Testnet`;
     }
 
-    return `${APPKIT_CHAIN_LABELS[fromChain]} -> ${APPKIT_CHAIN_LABELS[toChain]}`;
+    return `${getChainLabel(fromChain)} -> ${getChainLabel(toChain)}`;
   }, [fromChain, mode, toChain, tokenIn, tokenOut]);
 
   function flipSwapTokens() {
@@ -78,7 +79,12 @@ export function BridgeSwapPanel() {
     setToChain(fromChain);
   }
 
-  function handleFromChainChange(value: AppKitChain) {
+  function handleFromChainChange(value: string) {
+    if (!isAppKitChain(value)) {
+      toast.error("Choose a supported source chain.");
+      return;
+    }
+
     setFromChain(value);
 
     if (value === toChain) {
@@ -86,7 +92,12 @@ export function BridgeSwapPanel() {
     }
   }
 
-  function handleToChainChange(value: AppKitChain) {
+  function handleToChainChange(value: string) {
+    if (!isAppKitChain(value)) {
+      toast.error("Choose a supported destination chain.");
+      return;
+    }
+
     setToChain(value);
 
     if (value === fromChain) {
@@ -123,14 +134,18 @@ export function BridgeSwapPanel() {
     try {
       const sourceChain: AppKitChain = mode === "swap" ? "Arc_Testnet" : fromChain;
 
-      await requestSwitchChain(provider, CHAIN_PARAMS_BY_APPKIT_CHAIN[sourceChain]);
+      if (!isAppKitChain(sourceChain)) {
+        throw new Error("Choose a supported source chain, then try again.");
+      }
+
+      await requestSwitchChain(provider, getChainParams(sourceChain));
 
       const gasBalance = await getNativeGasBalance(provider, address);
       const gasSymbol = getNativeGasSymbol(sourceChain);
 
       if (gasBalance <= 0n) {
         throw new Error(
-          `${APPKIT_CHAIN_LABELS[sourceChain]} needs ${gasSymbol} for network fees. Add test ${gasSymbol}, then try again.`
+          `${getChainLabel(sourceChain)} needs ${gasSymbol} for network fees. Add test ${gasSymbol}, then try again.`
         );
       }
 
@@ -188,18 +203,20 @@ export function BridgeSwapPanel() {
           state: "success",
           hash: txDetails.hash,
           explorerUrl: txDetails.explorerUrl,
-          memo: `Bridge USDC to ${APPKIT_CHAIN_LABELS[toChain]}`,
+          memo: `Bridge USDC to ${getChainLabel(toChain)}`,
           createdAt: Date.now()
         });
 
         toast.success("Bridge submitted", {
-          description: `USDC is moving to ${APPKIT_CHAIN_LABELS[toChain]}`
+          description: `USDC is moving to ${getChainLabel(toChain)}`
         });
       }
 
       setAmount("");
     } catch (error) {
       const message = error instanceof Error ? error.message : "Please try again.";
+
+      console.error("[ArcPay bridge-swap]", message);
 
       toast.error(mode === "swap" ? "Swap unavailable" : "Bridge failed", {
         description: message
@@ -278,12 +295,12 @@ export function BridgeSwapPanel() {
                   <>
                     <ChainLogo chain={fromChain} />
                     <span className="text-sm font-semibold text-foreground">
-                      {APPKIT_CHAIN_LABELS[fromChain]}
+                      {getChainLabel(fromChain)}
                     </span>
                     <ArrowLeftRight className="size-4 text-emerald-950/45 dark:text-lime-50/70" />
                     <ChainLogo chain={toChain} />
                     <span className="text-sm font-semibold text-foreground">
-                      {APPKIT_CHAIN_LABELS[toChain]}
+                      {getChainLabel(toChain)}
                     </span>
                   </>
                 )}
@@ -303,7 +320,7 @@ export function BridgeSwapPanel() {
                   ) : (
                     <>
                       <p className="text-xs text-emerald-950/60 dark:text-lime-50/75">From chain</p>
-                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{APPKIT_CHAIN_LABELS[fromChain]}</p>
+                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{getChainLabel(fromChain)}</p>
                     </>
                   )}
                 </div>
@@ -321,7 +338,7 @@ export function BridgeSwapPanel() {
                   ) : (
                     <>
                       <p className="text-xs text-emerald-950/60 dark:text-lime-50/75">To chain</p>
-                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{APPKIT_CHAIN_LABELS[toChain]}</p>
+                      <p className="mt-2 font-bold text-emerald-950 dark:text-lime-50">{getChainLabel(toChain)}</p>
                     </>
                   )}
                 </div>
@@ -408,7 +425,7 @@ export function BridgeSwapPanel() {
                     <Label>From chain</Label>
                     <Select
                       value={fromChain}
-                      onValueChange={(value) => handleFromChainChange(value as AppKitChain)}
+                      onValueChange={handleFromChainChange}
                     >
                       <SelectTrigger>
                         <SelectedChain chain={fromChain} />
@@ -439,7 +456,7 @@ export function BridgeSwapPanel() {
                     <Label>To chain</Label>
                     <Select
                       value={toChain}
-                      onValueChange={(value) => handleToChainChange(value as AppKitChain)}
+                      onValueChange={handleToChainChange}
                     >
                       <SelectTrigger>
                         <SelectedChain chain={toChain} />
@@ -458,7 +475,7 @@ export function BridgeSwapPanel() {
 
                 <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-emerald-950 dark:text-lime-50">
                   Bridge supports USDC transfers. Keep source-chain USDC plus{" "}
-                  {getNativeGasSymbol(fromChain)} gas on {APPKIT_CHAIN_LABELS[fromChain]}.
+                  {getNativeGasSymbol(fromChain)} gas on {getChainLabel(fromChain)}.
                 </div>
               </div>
             )}
