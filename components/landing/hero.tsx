@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { ConnectButton } from "@/components/connect-button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ArcPayLogoMark } from "@/components/arcpay-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -39,9 +40,7 @@ export function Hero() {
           className="relative z-10 flex items-center gap-3"
           aria-label="ArcPay home"
         >
-          <div className="grid size-10 place-items-center rounded-full border border-emerald-900/10 bg-emerald-950 text-white shadow-[0_16px_40px_rgba(13,69,52,0.18)] dark:border-lime-200/20 dark:bg-lime-200 dark:text-emerald-950">
-            <span className="text-lg font-black">A</span>
-          </div>
+          <ArcPayLogoMark className="size-10 rounded-[0.95rem]" />
           <div>
             <p className="text-base font-black tracking-tight text-emerald-950 dark:text-lime-50">
               ArcPay

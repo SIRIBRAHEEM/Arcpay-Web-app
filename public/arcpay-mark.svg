@@ -1,6 +1,16 @@
 <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="120" height="120" rx="32" fill="#050914"/>
-  <rect x="1" y="1" width="118" height="118" rx="31" stroke="white" stroke-opacity="0.12" stroke-width="2"/>
-  <path d="M31 82L54.637 34.347C56.998 29.588 63.762 29.572 66.145 34.32L90 82" stroke="#20D59F" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M44 66H76" stroke="#0FB7D7" stroke-width="9" stroke-linecap="round"/>
+  <defs>
+    <radialGradient id="markGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(38 26) rotate(55) scale(68)">
+      <stop stop-color="#BEF264"/>
+      <stop offset="0.4" stop-color="#0F766E"/>
+      <stop offset="1" stop-color="#07111C"/>
+    </radialGradient>
+  </defs>
+  <rect width="120" height="120" rx="30" fill="url(#markGlow)"/>
+  <rect x="2" y="2" width="116" height="116" rx="28" stroke="white" stroke-opacity="0.18" stroke-width="4"/>
+  <path d="M32.8 83.4 53.7 39c2.53-5.36 9.98-5.5 12.72-.22l23.05 44.62" stroke="#ECFCCB" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M46.5 66.6h34.4" stroke="#5EEAD4" stroke-width="11" stroke-linecap="round"/>
+  <path d="M84 29.7c9.02 5.05 15.12 14.72 15.12 25.8 0 4.08-.82 7.98-2.32 11.5" stroke="#A3E635" stroke-width="6.5" stroke-linecap="round"/>
+  <path d="M35.4 94.5c6.3 4.94 14.26 7.88 22.9 7.88 7.86 0 15.14-2.43 21.15-6.57" stroke="#2DD4BF" stroke-width="6.5" stroke-linecap="round"/>
+  <circle cx="91.3" cy="29.2" r="7.1" fill="#BEF264"/>
 </svg>

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { ArcPayLogoMark } from "@/components/arcpay-logo";
 import {
   ARC_BLOCK_EXPLORER,
   ARC_CHAIN_ID,
@@ -41,10 +42,7 @@ export function DashboardHeader() {
     <header className="sticky top-3 z-20 rounded-[1.25rem] border border-emerald-950/10 bg-white/95 p-3 shadow-[0_24px_80px_rgba(36,82,56,0.12)] backdrop-blur-2xl dark:border-lime-200/15 dark:bg-[#04110e]/95 dark:shadow-[0_24px_80px_rgba(0,0,0,0.38)]">
       <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
         <Link href="/" className="flex min-w-0 items-center gap-3">
-          <div className="relative grid size-11 shrink-0 place-items-center rounded-full border border-emerald-950/10 bg-emerald-950 shadow-[0_18px_38px_rgba(13,69,52,0.18)] dark:border-lime-200/25 dark:bg-lime-200">
-            <span className="font-black text-lime-100 dark:text-emerald-950">A</span>
-            <span className="absolute -right-1 -top-1 size-3 rounded-full bg-lime-300 shadow-[0_0_16px_rgba(190,242,100,0.9)]" />
-          </div>
+          <ArcPayLogoMark active />
 
           <div className="min-w-0">
             <p className="font-black leading-none tracking-tight text-emerald-950 dark:text-lime-50">
