@@ -243,9 +243,9 @@ export function ChainOption({ chain }: { chain: AppKitChain }) {
   const config = getChainLogoConfig(chain);
 
   return (
-    <span className="flex items-center gap-3">
-      <ChainLogo chain={chain} />
-      <span>{config.label}</span>
+    <span className="flex min-w-0 items-center gap-3">
+      <ChainLogo chain={chain} className="size-7" />
+      <span className="min-w-0 truncate font-medium leading-none">{config.label}</span>
     </span>
   );
 }
@@ -254,9 +254,11 @@ export function SelectedChain({ chain }: { chain: AppKitChain }) {
   const config = getChainLogoConfig(chain);
 
   return (
-    <span className="flex items-center gap-3">
-      <ChainLogo chain={chain} />
-      <span className="truncate">{config.label}</span>
+    <span className="flex min-w-0 flex-1 items-center gap-2.5 overflow-hidden">
+      <ChainLogo chain={chain} className="size-7 shadow-none" />
+      <span className="min-w-0 truncate font-medium leading-none text-emerald-950 dark:text-lime-50">
+        {config.label}
+      </span>
     </span>
   );
 }

@@ -199,7 +199,7 @@ export function BridgePanel() {
               <div className="grid gap-2">
                 <Label>From chain</Label>
                 <Select value={fromChain} onValueChange={handleFromChainChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
                     <SelectedChain chain={fromChain} />
                   </SelectTrigger>
 
@@ -227,7 +227,7 @@ export function BridgePanel() {
               <div className="grid gap-2">
                 <Label>To chain</Label>
                 <Select value={toChain} onValueChange={handleToChainChange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
                     <SelectedChain chain={toChain} />
                   </SelectTrigger>
 
