@@ -16,8 +16,8 @@ function normalizeKitKey(value: string) {
 
 export async function GET() {
   const kitKey = normalizeKitKey(
-    process.env.CIRCLE_KIT_KEY?.trim() ||
-      process.env.KIT_KEY?.trim() ||
+    process.env.KIT_KEY?.trim() ||
+      process.env.CIRCLE_KIT_KEY?.trim() ||
       process.env.NEXT_PUBLIC_KIT_KEY?.trim() ||
       ""
   );
