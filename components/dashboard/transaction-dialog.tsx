@@ -32,7 +32,7 @@ export function TransactionDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="overflow-hidden rounded-[1.5rem] border-emerald-950/10 bg-white p-0 shadow-card dark:border-white/10 dark:bg-[#06130f] sm:max-w-md">
         <div className="relative p-6">
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(14,92,67,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.08)_1px,transparent_1px)] bg-[size:48px_48px] dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(190,242,100,0.045)_1px,transparent_1px)]" />
+          <div className="absolute inset-0 bg-primary/5 dark:bg-primary/10" />
 
           <div className="relative">
             <LottieSuccess className="size-32" />

@@ -3,16 +3,14 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { BalanceCard } from "@/components/dashboard/balance-card";
-import { BridgeSwapPanel } from "@/components/dashboard/bridge-swap-panel";
+import { BridgePanel } from "@/components/dashboard/bridge-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
-import { KitKeyCard } from "@/components/dashboard/kit-key-card";
 import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
 import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
 import { SendPanel } from "@/components/dashboard/send-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
-import { ArcNetworkAnimation } from "@/components/visuals/arc-network-animation";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
 import { useWalletStore } from "@/store/wallet-store";
@@ -73,8 +71,7 @@ export function DashboardClient() {
         <section className="mt-4 grid gap-4 xl:grid-cols-[1.12fr_0.88fr]">
           <div className="grid gap-4">
             <SendPanel />
-            <KitKeyCard />
-            <BridgeSwapPanel />
+            <BridgePanel />
             <TxHistory />
           </div>
 
@@ -82,7 +79,6 @@ export function DashboardClient() {
             <BalanceCard />
             <ReceivePanel />
             <ProtocolStatusCard />
-            <ArcNetworkAnimation className="min-h-64" />
           </div>
         </section>
       </div>

@@ -28,8 +28,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
 import { depositUnifiedBalance, extractTransaction } from "@/lib/appkit-actions";
 import {
-  ARC_TESTNET_PARAMS,
-  BASE_SEPOLIA_PARAMS,
+  BRIDGE_CHAINS,
+  getChainLabel,
+  getChainParams,
   requestSwitchChain,
   type SupportedDepositChain
 } from "@/lib/arc";
@@ -43,18 +44,11 @@ const depositChains: Array<{
   label: string;
   value: SupportedDepositChain;
   description: string;
-}> = [
-  {
-    label: "Base Sepolia",
-    value: "Base_Sepolia",
-    description: "Deposit test USDC from Base Sepolia into Unified Balance."
-  },
-  {
-    label: "Arc Testnet",
-    value: "Arc_Testnet",
-    description: "Deposit Arc Testnet USDC into Unified Balance."
-  }
-];
+}> = BRIDGE_CHAINS.map((chain) => ({
+  label: getChainLabel(chain),
+  value: chain,
+  description: `Deposit test USDC from ${getChainLabel(chain)} into Unified Balance.`
+}));
 
 export function BalanceCard() {
   const { balance, loading, refresh } = useUnifiedBalance();
@@ -88,10 +82,7 @@ export function BalanceCard() {
     setDepositing(true);
 
     try {
-      await requestSwitchChain(
-        provider,
-        chain === "Base_Sepolia" ? BASE_SEPOLIA_PARAMS : ARC_TESTNET_PARAMS
-      );
+      await requestSwitchChain(provider, getChainParams(chain));
 
       const result = await depositUnifiedBalance({
         adapter,
@@ -103,7 +94,7 @@ export function BalanceCard() {
       setTx(txDetails);
       setTxOpen(true);
 
-      saveTransaction(address, {
+      void saveTransaction(address, {
         id: crypto.randomUUID(),
         type: "deposit",
         token: "USDC",

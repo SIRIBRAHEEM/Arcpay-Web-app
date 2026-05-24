@@ -1,28 +1,30 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ArrowDownToLine,
   ArrowLeftRight,
   ChevronDown,
   ChevronUp,
   ExternalLink,
-  Repeat2,
+  Link2,
+  RefreshCcw,
   Send
 } from "lucide-react";
+import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { loadTransactions, type LocalTransaction } from "@/lib/transactions";
+import { loadTransactions, type ActivityTransaction } from "@/lib/transactions";
 import { cn, shortAddress } from "@/lib/utils";
 import { useWalletStore } from "@/store/wallet-store";
 
 const iconByType = {
   send: Send,
   deposit: ArrowDownToLine,
-  swap: Repeat2,
   bridge: ArrowLeftRight,
-  receive: ArrowDownToLine
+  receive: ArrowDownToLine,
+  request: Link2
 };
 
 const INITIAL_VISIBLE_TRANSACTIONS = 4;
@@ -30,31 +32,62 @@ const VIEW_MORE_STEP = 5;
 
 export function TxHistory() {
   const address = useWalletStore((state) => state.address);
-  const [transactions, setTransactions] = useState<LocalTransaction[]>([]);
+  const [transactions, setTransactions] = useState<ActivityTransaction[]>([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_TRANSACTIONS);
+  const [loading, setLoading] = useState(false);
+  const [cloudEnabled, setCloudEnabled] = useState(false);
+  const [cloudError, setCloudError] = useState("");
+
+  const refreshActivity = useCallback(async (currentAddress = address) => {
+    if (!currentAddress) {
+      setTransactions([]);
+      setCloudEnabled(false);
+      setCloudError("");
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    const result = await loadTransactions(currentAddress);
+    setTransactions(result.transactions);
+    setCloudEnabled(result.cloud);
+    setCloudError(result.error ?? "");
+    setLoading(false);
+  }, [address]);
 
   useEffect(() => {
     if (!address) {
       setTransactions([]);
+      setCloudEnabled(false);
+      setCloudError("");
       return;
     }
 
     const currentAddress = address;
 
     function refresh() {
-      setTransactions(loadTransactions(currentAddress));
+      void refreshActivity(currentAddress);
+    }
+
+    function handleActivityError(event: Event) {
+      const detail = (event as CustomEvent<string>).detail;
+      setCloudError(detail || "Could not save cloud activity.");
+      toast.error("Cloud activity not saved", {
+        description: detail || "Check Vercel KV or Upstash Redis env vars."
+      });
     }
 
     refresh();
 
     window.addEventListener("arcpay:transactions", refresh);
-    window.addEventListener("storage", refresh);
+    window.addEventListener("arcpay:transactions-error", handleActivityError);
 
     return () => {
       window.removeEventListener("arcpay:transactions", refresh);
-      window.removeEventListener("storage", refresh);
+      window.removeEventListener("arcpay:transactions-error", handleActivityError);
     };
-  }, [address]);
+  }, [address, refreshActivity]);
 
   useEffect(() => {
     setVisibleCount(INITIAL_VISIBLE_TRANSACTIONS);
@@ -90,12 +123,31 @@ export function TxHistory() {
           ) : null}
         </div>
 
-        <Badge variant="secondary" className="rounded-full">
-          Local
-        </Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant={cloudEnabled ? "secondary" : "outline"} className="rounded-full">
+            {cloudEnabled ? "Cloud" : "Cloud setup needed"}
+          </Badge>
+
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon"
+            onClick={() => void refreshActivity()}
+            disabled={loading}
+            aria-label="Refresh cloud activity"
+          >
+            <RefreshCcw className={cn("size-4", loading && "animate-spin")} />
+          </Button>
+        </div>
       </CardHeader>
 
       <CardContent className="p-5 pt-0">
+        {cloudError ? (
+          <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100">
+            {cloudError}
+          </div>
+        ) : null}
+
         {transactions.length ? (
           <>
             <div className="grid gap-3">
@@ -115,8 +167,8 @@ export function TxHistory() {
                             ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
                             : tx.type === "bridge"
                               ? "bg-violet-100 text-violet-700 dark:bg-violet-400/10 dark:text-violet-200"
-                              : tx.type === "swap"
-                                ? "bg-amber-100 text-amber-800 dark:bg-amber-400/10 dark:text-amber-200"
+                              : tx.type === "request"
+                                ? "bg-sky-100 text-sky-800 dark:bg-sky-400/10 dark:text-sky-200"
                                 : "bg-primary/10 text-primary"
                         )}
                       >
@@ -190,9 +242,9 @@ export function TxHistory() {
           </>
         ) : (
           <div className="rounded-2xl border border-dashed border-emerald-950/15 bg-white/50 p-6 text-center dark:border-white/10 dark:bg-white/[0.035]">
-            <p className="font-semibold">No local activity yet</p>
+            <p className="font-semibold">No cloud activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Sends, deposits, swaps, bridges, and detected transfers will appear here.
+              Sends, deposits, bridge transfers, requests, and detected transfers will appear here.
             </p>
           </div>
         )}

@@ -17,7 +17,7 @@ export type AppKitChain =
   | "Sonic_Testnet"
   | "Unichain_Sepolia";
 
-export type SupportedDepositChain = "Base_Sepolia" | "Arc_Testnet";
+export type SupportedDepositChain = AppKitChain;
 
 export const ARC_TESTNET = defineChain({
   id: ARC_CHAIN_ID,

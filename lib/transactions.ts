@@ -1,8 +1,8 @@
 "use client";
 
-export type LocalTransaction = {
+export type ActivityTransaction = {
   id: string;
-  type: "send" | "deposit" | "swap" | "bridge" | "receive";
+  type: "send" | "deposit" | "bridge" | "receive" | "request";
   token: "USDC" | "EURC" | "cirBTC";
   amount: string;
   recipient?: string;
@@ -14,33 +14,85 @@ export type LocalTransaction = {
   createdAt: number;
 };
 
-const keyPrefix = "arcpay:transactions";
+export type TransactionLoadResult = {
+  transactions: ActivityTransaction[];
+  cloud: boolean;
+  error?: string;
+};
 
-function keyFor(address: string) {
-  return `${keyPrefix}:${address.toLowerCase()}`;
-}
+const TRANSACTION_EVENT = "arcpay:transactions";
+const TRANSACTION_ERROR_EVENT = "arcpay:transactions-error";
 
-export function loadTransactions(address: string) {
-  if (typeof window === "undefined") return [];
+export async function loadTransactions(address: string): Promise<TransactionLoadResult> {
+  if (typeof window === "undefined") {
+    return {
+      transactions: [],
+      cloud: false
+    };
+  }
 
   try {
-    const raw = window.localStorage.getItem(keyFor(address));
-    if (!raw) return [];
+    const response = await fetch(`/api/transactions?address=${encodeURIComponent(address)}`, {
+      cache: "no-store"
+    });
 
-    const parsed = JSON.parse(raw) as LocalTransaction[];
-    return parsed.sort((a, b) => b.createdAt - a.createdAt);
-  } catch {
-    return [];
+    const data = (await response.json()) as TransactionLoadResult;
+
+    if (!response.ok) {
+      return {
+        transactions: [],
+        cloud: false,
+        error: data.error ?? "Cloud activity is not configured yet."
+      };
+    }
+
+    return {
+      transactions: Array.isArray(data.transactions)
+        ? data.transactions.sort((a, b) => b.createdAt - a.createdAt)
+        : [],
+      cloud: Boolean(data.cloud)
+    };
+  } catch (error) {
+    return {
+      transactions: [],
+      cloud: false,
+      error: error instanceof Error ? error.message : "Could not load cloud activity."
+    };
   }
 }
 
-export function saveTransaction(address: string, transaction: LocalTransaction) {
-  if (typeof window === "undefined") return;
+export async function saveTransaction(address: string, transaction: ActivityTransaction) {
+  if (typeof window === "undefined") return false;
 
-  const current = loadTransactions(address);
-  const filtered = current.filter((item) => item.id !== transaction.id);
-  const next = [transaction, ...filtered].slice(0, 50);
+  try {
+    const response = await fetch("/api/transactions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        address,
+        transaction
+      })
+    });
 
-  window.localStorage.setItem(keyFor(address), JSON.stringify(next));
-  window.dispatchEvent(new CustomEvent("arcpay:transactions"));
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      throw new Error(data?.error ?? "Could not save cloud activity.");
+    }
+
+    window.dispatchEvent(new CustomEvent(TRANSACTION_EVENT));
+    return true;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Could not save cloud activity.";
+
+    window.dispatchEvent(
+      new CustomEvent(TRANSACTION_ERROR_EVENT, {
+        detail: message
+      })
+    );
+
+    console.error("[ArcPay activity]", message);
+    return false;
+  }
 }

@@ -34,7 +34,7 @@ export function EventWatcher() {
 
           if (!value || !to || !log.transactionHash) continue;
 
-          saveTransaction(currentAddress, {
+          void saveTransaction(currentAddress, {
             id: `sent-${log.transactionHash}`,
             type: "send",
             token: "USDC",
@@ -67,7 +67,7 @@ export function EventWatcher() {
 
           if (!value || !log.transactionHash) continue;
 
-          saveTransaction(currentAddress, {
+          void saveTransaction(currentAddress, {
             id: `received-${log.transactionHash}`,
             type: "receive",
             token: "USDC",

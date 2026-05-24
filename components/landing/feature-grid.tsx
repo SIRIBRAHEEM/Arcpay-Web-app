@@ -47,7 +47,7 @@ export function FeatureGrid() {
           <p className="max-w-2xl text-lg leading-8 text-emerald-950/70 dark:text-lime-50/68 lg:justify-self-end">
             ArcPay turns the Arc Testnet and Circle App Kit into an everyday
             payment app: connect a wallet, check your balance, send funds,
-            request money, and keep a local activity trail.
+            request money, and keep a cloud activity trail.
           </p>
         </div>
 

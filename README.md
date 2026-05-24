@@ -13,18 +13,18 @@ payments on Arc Testnet using Circle App Kit.
   - `unifiedBalance.getBalances`
   - `unifiedBalance.spend`
   - `kit.send`
-  - `kit.swap` for USDC, EURC, and cirBTC on Arc Testnet
+  - `kit.bridge` for USDC routes
 - USDC primary payments.
-- QR-code receive/request panel.
-- Copyable wallet address and request URI.
-- Local transaction history.
+- QR-code request panel with shareable payment links.
+- Copyable wallet address and request link.
+- Cloud transaction history through Vercel KV or Upstash Redis.
 - Optional ERC-20 transfer watcher through viem.
 - Sonner toasts and transaction confirmation modal.
 - Mobile-first responsive layout.
 
 ## Environment
 
-Swap requires a Circle App Kit key from Circle Console. Do not commit real keys.
+Cloud activity needs Vercel KV or Upstash Redis. Do not commit real keys.
 
 ```txt
 KIT_KEY=KIT_KEY:your-id:your-secret
@@ -32,10 +32,12 @@ KIT_KEY=KIT_KEY:your-id:your-secret
 # CIRCLE_KIT_KEY=KIT_KEY:your-id:your-secret
 # Optional fallback for static/client-only builds:
 # NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
-```
 
-The dashboard also includes a local browser key card for test builds. A key saved
-there stays in that browser's local storage and can override a broken deploy key.
+# Cloud activity storage:
+KV_REST_API_URL=https://your-upstash-url
+KV_REST_API_TOKEN=your-token
+# UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN are also supported.
+```
 
 ## Tech Stack
 

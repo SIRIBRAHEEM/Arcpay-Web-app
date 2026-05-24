@@ -72,7 +72,7 @@ export function SendPanel() {
       setTx(txDetails);
       setTxOpen(true);
 
-      saveTransaction(address, {
+      void saveTransaction(address, {
         id: crypto.randomUUID(),
         type: "send",
         token,
