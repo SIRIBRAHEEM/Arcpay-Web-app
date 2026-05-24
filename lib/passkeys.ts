@@ -49,11 +49,19 @@ function randomBytes(length = 32) {
 }
 
 export function isPasskeySupported() {
+  if (typeof window === "undefined") return false;
+
+  const credentials = navigator.credentials as
+    | (CredentialsContainer & {
+        create?: CredentialsContainer["create"];
+        get?: CredentialsContainer["get"];
+      })
+    | undefined;
+
   return Boolean(
-    typeof window !== "undefined" &&
-      window.PublicKeyCredential &&
-      navigator.credentials?.create &&
-      navigator.credentials?.get
+    "PublicKeyCredential" in window &&
+      typeof credentials?.create === "function" &&
+      typeof credentials?.get === "function"
   );
 }
 
