@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Send, ShieldCheck, WalletCards } from "lucide-react";
+import { ArrowRight, Send, WalletCards } from "lucide-react";
 import { toast } from "sonner";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -107,17 +106,10 @@ export function SendPanel() {
     <>
       <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
         <CardHeader className="space-y-3 p-5">
-          <div className="flex items-center justify-between gap-4">
-            <CardTitle className="flex items-center gap-2">
-              <Send className="size-5 text-primary" />
-              Pay
-            </CardTitle>
-
-            <Badge className="gap-2 rounded-full border-emerald-950/10 bg-lime-200 text-emerald-950 dark:border-lime-200/20 dark:bg-lime-200/12 dark:text-lime-100">
-              <ShieldCheck className="size-3.5" />
-              Wallet signed
-            </Badge>
-          </div>
+          <CardTitle className="flex items-center gap-2">
+            <Send className="size-5 text-primary" />
+            Pay
+          </CardTitle>
 
           <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.055]">
             <p className="text-sm text-muted-foreground">Fast payment route</p>

@@ -11,7 +11,6 @@ import {
   RefreshCcw,
   Send
 } from "lucide-react";
-import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,14 +34,12 @@ export function TxHistory() {
   const [transactions, setTransactions] = useState<ActivityTransaction[]>([]);
   const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_TRANSACTIONS);
   const [loading, setLoading] = useState(false);
-  const [cloudEnabled, setCloudEnabled] = useState(false);
-  const [cloudError, setCloudError] = useState("");
+  const [activityError, setActivityError] = useState("");
 
   const refreshActivity = useCallback(async (currentAddress = address) => {
     if (!currentAddress) {
       setTransactions([]);
-      setCloudEnabled(false);
-      setCloudError("");
+      setActivityError("");
       setLoading(false);
       return;
     }
@@ -51,16 +48,14 @@ export function TxHistory() {
 
     const result = await loadTransactions(currentAddress);
     setTransactions(result.transactions);
-    setCloudEnabled(result.cloud);
-    setCloudError(result.error ?? "");
+    setActivityError(result.error ?? "");
     setLoading(false);
   }, [address]);
 
   useEffect(() => {
     if (!address) {
       setTransactions([]);
-      setCloudEnabled(false);
-      setCloudError("");
+      setActivityError("");
       return;
     }
 
@@ -70,22 +65,12 @@ export function TxHistory() {
       void refreshActivity(currentAddress);
     }
 
-    function handleActivityError(event: Event) {
-      const detail = (event as CustomEvent<string>).detail;
-      setCloudError(detail || "Could not save cloud activity.");
-      toast.error("Cloud activity not saved", {
-        description: detail || "Check Vercel KV or Upstash Redis env vars."
-      });
-    }
-
     refresh();
 
     window.addEventListener("arcpay:transactions", refresh);
-    window.addEventListener("arcpay:transactions-error", handleActivityError);
 
     return () => {
       window.removeEventListener("arcpay:transactions", refresh);
-      window.removeEventListener("arcpay:transactions-error", handleActivityError);
     };
   }, [address, refreshActivity]);
 
@@ -124,8 +109,8 @@ export function TxHistory() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Badge variant={cloudEnabled ? "secondary" : "outline"} className="rounded-full">
-            {cloudEnabled ? "Cloud" : "Cloud setup needed"}
+          <Badge variant="secondary" className="rounded-full">
+            Local history
           </Badge>
 
           <Button
@@ -134,7 +119,7 @@ export function TxHistory() {
             size="icon"
             onClick={() => void refreshActivity()}
             disabled={loading}
-            aria-label="Refresh cloud activity"
+            aria-label="Refresh local activity"
           >
             <RefreshCcw className={cn("size-4", loading && "animate-spin")} />
           </Button>
@@ -142,9 +127,9 @@ export function TxHistory() {
       </CardHeader>
 
       <CardContent className="p-5 pt-0">
-        {cloudError ? (
+        {activityError ? (
           <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100">
-            {cloudError}
+            {activityError}
           </div>
         ) : null}
 
@@ -242,9 +227,9 @@ export function TxHistory() {
           </>
         ) : (
           <div className="rounded-2xl border border-dashed border-emerald-950/15 bg-white/50 p-6 text-center dark:border-white/10 dark:bg-white/[0.035]">
-            <p className="font-semibold">No cloud activity yet</p>
+            <p className="font-semibold">No local activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
-              Sends, deposits, bridge transfers, requests, and detected transfers will appear here.
+              Sends, deposits, bridge transfers, requests, and detected transfers will stay in this browser.
             </p>
           </div>
         )}

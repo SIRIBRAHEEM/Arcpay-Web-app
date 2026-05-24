@@ -30,13 +30,7 @@ export function ProtocolStatusCard() {
   return (
     <Card className="glass overflow-hidden rounded-[1.5rem]">
       <CardHeader className="p-5">
-        <CardTitle className="flex items-center justify-between">
-          <span>Protocol Status</span>
-
-          <span className="rounded-full border border-emerald-950/10 bg-lime-200 px-3 py-1 text-xs font-semibold text-emerald-950 dark:border-lime-200/20 dark:bg-lime-200/12 dark:text-lime-100">
-            Live
-          </span>
-        </CardTitle>
+        <CardTitle>Protocol Status</CardTitle>
       </CardHeader>
 
       <CardContent className="grid gap-3 p-5 pt-0 sm:grid-cols-2">

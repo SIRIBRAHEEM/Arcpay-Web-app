@@ -6,7 +6,7 @@ Next.js 15, Circle App Kit, and a clean premium dashboard interface.
 The app is focused on the flows that matter most for testnet payments: connect a
 wallet, view Unified Balance, deposit USDC, bridge USDC across supported chains,
 create shareable payment requests, and keep wallet activity available from the
-cloud.
+same browser.
 
 ## What ArcPay Comes With
 
@@ -23,7 +23,7 @@ cloud.
   Linea, Polygon, Sonic, and Unichain testnets.
 - Shareable request links with QR code support.
 - Copyable wallet address and payment request link.
-- Cloud transaction activity through Vercel KV or Upstash Redis.
+- Local transaction activity saved per connected wallet in the browser.
 - Optional ERC-20 transfer watcher through viem.
 - Sonner toasts and transaction confirmation modal.
 - Mobile-first layout for phone, tablet, and desktop.
@@ -85,17 +85,9 @@ KIT_KEY=KIT_KEY:your-id:your-secret
 # Optional fallback for static/client-only builds:
 # NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
 
-# Cloud activity storage:
-KV_REST_API_URL=https://your-upstash-url
-KV_REST_API_TOKEN=your-token
-
-# Upstash names are also supported:
-# UPSTASH_REDIS_REST_URL=https://your-upstash-url
-# UPSTASH_REDIS_REST_TOKEN=your-token
 ```
 
-Cloud activity will fall back to an unavailable response until Redis/KV
-variables are configured.
+Activity history is stored locally in the browser for the connected wallet.
 
 ## Local Development
 
