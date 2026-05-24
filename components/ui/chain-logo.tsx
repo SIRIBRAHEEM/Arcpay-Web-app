@@ -24,7 +24,7 @@ const fallbackChainLogoConfig: ChainLogoConfig = {
 const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
   Arc_Testnet: {
     label: "Arc Testnet",
-    className: "bg-[#071b27] text-sky-200 ring-sky-400/30",
+    className: "bg-[#061923] text-sky-200 ring-sky-400/30",
     icon: ArcMark
   },
   Base_Sepolia: {
@@ -34,7 +34,7 @@ const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
   },
   Optimism_Sepolia: {
     label: "Optimism Sepolia",
-    className: "bg-[#ff0420] text-white ring-red-300/35",
+    className: "bg-[#ff0421] text-white ring-red-300/35",
     icon: OptimismMark
   },
   Avalanche_Fuji: {
@@ -44,7 +44,7 @@ const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
   },
   Arbitrum_Sepolia: {
     label: "Arbitrum Sepolia",
-    className: "bg-[#101d2f] text-sky-100 ring-sky-300/30",
+    className: "bg-[#05163d] text-sky-100 ring-[#10e1ff]/35",
     icon: ArbitrumMark
   },
   Ethereum_Sepolia: {
@@ -69,7 +69,7 @@ const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
   },
   Unichain_Sepolia: {
     label: "Unichain Sepolia",
-    className: "bg-[#ff18d8] text-white ring-pink-200/45",
+    className: "bg-[#f50db4] text-white ring-[#feaff0]/50",
     icon: UnichainMark
   }
 };
@@ -92,18 +92,25 @@ function QuestionMark(props: ChainMarkProps) {
 function ArcMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <circle cx="16" cy="16" r="15.5" fill="#071b27" />
+      <circle cx="16" cy="16" r="15.5" fill="#061923" />
       <path
-        d="M8.2 20.6 13.1 8.2c.9-2.2 4-2.2 4.8 0l5 12.4"
-        stroke="#8bc5ff"
-        strokeWidth="3.2"
+        d="M7.9 20.8 13.1 8.5c.8-2 3.6-2 4.4 0l5.2 12.3"
+        stroke="#8bd6ff"
+        strokeWidth="3.1"
         strokeLinecap="round"
       />
       <path
-        d="M11.6 17.2h8.9"
-        stroke="#37d7ff"
-        strokeWidth="3"
+        d="M11.5 17.4h8.9"
+        stroke="#37f2ff"
+        strokeWidth="2.8"
         strokeLinecap="round"
+      />
+      <path
+        d="M24 7.6c2.2 2.3 3.5 5.2 3.5 8.4"
+        stroke="#cfff8d"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        opacity=".95"
       />
     </svg>
   );
@@ -113,7 +120,7 @@ function BaseMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
       <circle cx="16" cy="16" r="15.5" fill="#fff" />
-      <rect x="8.4" y="8.4" width="15.2" height="15.2" rx="4.2" fill="#0052ff" />
+      <rect x="8" y="8" width="16" height="16" rx="4.4" fill="#0052ff" />
     </svg>
   );
 }
@@ -121,15 +128,15 @@ function BaseMark(props: ChainMarkProps) {
 function OptimismMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <circle cx="16" cy="16" r="15.5" fill="#ff0420" />
+      <circle cx="16" cy="16" r="15.5" fill="#ff0421" />
       <text
         x="16"
-        y="19.2"
+        y="19.4"
         textAnchor="middle"
         fill="white"
-        fontSize="10"
+        fontFamily="Arial Black, Arial, sans-serif"
+        fontSize="10.4"
         fontWeight="900"
-        letterSpacing="-0.8"
       >
         OP
       </text>
@@ -141,8 +148,14 @@ function AvalancheMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
       <circle cx="16" cy="16" r="15.5" fill="#e84142" />
-      <path d="M15.7 7.8 7.9 21.2h5.1l2.7-4.7 2.7 4.7h5.7L16.3 7.8a.35.35 0 0 0-.6 0Z" fill="white" />
-      <path d="M22.5 21.2h2.2l-2.6-4.6-1.1 1.9 1.5 2.7Z" fill="white" />
+      <path
+        d="M15.3 7.4a.8.8 0 0 1 1.4 0l8.2 14.2a.8.8 0 0 1-.7 1.2h-5.1c-.4 0-.8-.2-1-.6l-2-3.5a.7.7 0 0 0-1.2 0l-2 3.5c-.2.4-.6.6-1 .6H7.8a.8.8 0 0 1-.7-1.2l8.2-14.2Z"
+        fill="white"
+      />
+      <path
+        d="M21.8 15.4 25 20.9a.7.7 0 0 1-.6 1h-2.7a.9.9 0 0 1-.8-.5l-1.4-2.5 1.9-3.4c.1-.2.3-.2.4-.1Z"
+        fill="#e84142"
+      />
     </svg>
   );
 }
@@ -150,11 +163,12 @@ function AvalancheMark(props: ChainMarkProps) {
 function ArbitrumMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <circle cx="16" cy="16" r="15.5" fill="#101d2f" />
-      <path d="M16 5.8 25 11v10l-9 5.2L7 21V11l9-5.2Z" fill="#f7fbff" />
-      <path d="M16 8.5 22.8 12.4v7.2L16 23.5 9.2 19.6v-7.2L16 8.5Z" fill="#14253b" />
-      <path d="m12.2 21 5.5-11.4h2.9L15 21h-2.8Z" fill="#28a0f0" />
-      <path d="m17.3 21 3.2-6.6 1.4 2.6-2 4h-2.6Z" fill="#8fd2ff" />
+      <circle cx="16" cy="16" r="15.5" fill="#05163d" />
+      <path d="M16 4.7 26.4 10.7v10.6L16 27.3 5.6 21.3V10.7L16 4.7Z" fill="#f7fbff" />
+      <path d="M16 7.6 23.9 12.2v7.6L16 24.4l-7.9-4.6v-7.6L16 7.6Z" fill="#071c3c" />
+      <path d="M11.2 21.5 17.7 9.2h3.3l-6.5 12.3h-3.3Z" fill="#016be5" />
+      <path d="M16.8 21.5 22 11.8l1.8 1v1.8l-3.7 6.9h-3.3Z" fill="#10e1ff" />
+      <path d="M8.1 12.2 16 7.6l7.9 4.6v1.7L16 9.4l-7.9 4.5v-1.7Z" fill="#9fefff" opacity=".45" />
     </svg>
   );
 }
@@ -163,10 +177,10 @@ function EthereumMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
       <circle cx="16" cy="16" r="15.5" fill="#fff" />
-      <path d="M16 4.8 9.2 16.2 16 19.9l6.8-3.7L16 4.8Z" fill="#8a92b2" />
-      <path d="M16 4.8v15.1l6.8-3.7L16 4.8Z" fill="#62688f" />
-      <path d="M9.2 17.6 16 27.2l6.8-9.6-6.8 3.9-6.8-3.9Z" fill="#62688f" />
-      <path d="M16 27.2v-5.7l6.8-3.9-6.8 9.6Z" fill="#454a75" />
+      <path d="M16 4.6 8.9 16.2 16 20.2l7.1-4L16 4.6Z" fill="#8a92b2" />
+      <path d="M16 4.6v15.6l7.1-4L16 4.6Z" fill="#62688f" />
+      <path d="M8.9 17.7 16 27.4l7.1-9.7-7.1 4.1-7.1-4.1Z" fill="#62688f" />
+      <path d="M16 27.4v-5.6l7.1-4.1-7.1 9.7Z" fill="#454a75" />
     </svg>
   );
 }
@@ -175,8 +189,8 @@ function LineaMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
       <circle cx="16" cy="16" r="15.5" fill="#7ee7f2" />
-      <path d="M10 8.5h4v11h8v4H10v-15Z" fill="#07151d" />
-      <circle cx="22.5" cy="9.5" r="2.2" fill="#07151d" />
+      <path d="M9.5 8.4h4.1v10.9h8.8v4.3H9.5V8.4Z" fill="#07151d" />
+      <circle cx="22.5" cy="9.5" r="2.25" fill="#07151d" />
     </svg>
   );
 }
@@ -186,9 +200,10 @@ function PolygonMark(props: ChainMarkProps) {
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
       <circle cx="16" cy="16" r="15.5" fill="#fff" />
       <path
-        d="M20.6 11.2 25 13.7v5.1l-4.4 2.6-4.4-2.6v-1.7l-2.4 1.4v1.7l-4.4 2.6L5 20.2v-5.1l4.4-2.6 4.4 2.6v1.7l2.4-1.4v-1.7l4.4-2.5Z"
+        d="m20.7 10.9 4.8 2.8v5.5L20.7 22l-4.8-2.8v-2.1l-2.2 1.3v2.1l-4.8 2.8-4.8-2.8V15l4.8-2.8 4.8 2.8v2.1l2.2-1.3v-2.1l4.8-2.8Z"
         stroke="#8247e5"
-        strokeWidth="2.3"
+        strokeWidth="2.4"
+        strokeLinecap="round"
         strokeLinejoin="round"
       />
     </svg>
@@ -200,9 +215,14 @@ function SonicMark(props: ChainMarkProps) {
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
       <circle cx="16" cy="16" r="15.5" fill="#101014" />
       <path
-        d="M7.5 11.2c6.5-3.6 12.6-3 17.1 1.5-6.8.4-12.7 2.5-17.1 6.9 6.6 3.7 12.9 3.2 17.6-1.7-6.1-.1-11.6-2.1-17.6-6.7Z"
+        d="M6.8 11.1c5.3-3.3 13.1-3.3 18.4 0l-3.1 3c-3.7-1.8-8.5-1.8-12.2 0l-3.1-3Z"
         fill="white"
       />
+      <path
+        d="M25.2 20.9c-5.3 3.3-13.1 3.3-18.4 0l3.1-3c3.7 1.8 8.5 1.8 12.2 0l3.1 3Z"
+        fill="white"
+      />
+      <path d="M10 16h12" stroke="white" strokeWidth="2.6" strokeLinecap="round" />
     </svg>
   );
 }
@@ -210,9 +230,16 @@ function SonicMark(props: ChainMarkProps) {
 function UnichainMark(props: ChainMarkProps) {
   return (
     <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <circle cx="16" cy="16" r="15.5" fill="#ff18d8" />
-      <path d="M16 4.8c.9 5.8 5.4 10.3 11.2 11.2-5.8.9-10.3 5.4-11.2 11.2-.9-5.8-5.4-10.3-11.2-11.2 5.8-.9 10.3-5.4 11.2-11.2Z" fill="white" opacity=".9" />
-      <path d="M16 8.8c.6 3.7 3.5 6.6 7.2 7.2-3.7.6-6.6 3.5-7.2 7.2-.6-3.7-3.5-6.6-7.2-7.2 3.7-.6 6.6-3.5 7.2-7.2Z" fill="#ff18d8" />
+      <circle cx="16" cy="16" r="15.5" fill="#f50db4" />
+      <path
+        d="M16 6.5 25.5 16 16 25.5 6.5 16 16 6.5Z"
+        fill="white"
+      />
+      <path
+        d="M16 10.7 21.3 16 16 21.3 10.7 16 16 10.7Z"
+        fill="#f50db4"
+      />
+      <path d="M7.4 16h17.2M16 7.4v17.2" stroke="white" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
