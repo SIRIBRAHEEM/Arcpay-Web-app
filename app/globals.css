@@ -100,7 +100,7 @@
   .dark .dark\:text-lime-50\/65,
   .dark .dark\:text-lime-50\/68,
   .dark .dark\:text-lime-50\/70 {
-    color: rgb(247 254 231 / 0.82);
+    color: rgb(247 254 231 / 0.82) !important;
   }
 
   .text-white\/35,
@@ -108,7 +108,7 @@
   .text-white\/45,
   .text-white\/50,
   .text-white\/55 {
-    color: rgb(255 255 255 / 0.68);
+    color: rgb(255 255 255 / 0.68) !important;
   }
 }
 
