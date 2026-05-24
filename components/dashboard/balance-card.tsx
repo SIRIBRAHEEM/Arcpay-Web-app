@@ -21,11 +21,11 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectTrigger,
-  SelectValue
+  SelectTrigger
 } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TransactionDialog } from "@/components/dashboard/transaction-dialog";
+import { ChainOption, SelectedChain } from "@/components/ui/chain-logo";
 import { depositUnifiedBalance, extractTransaction } from "@/lib/appkit-actions";
 import {
   BRIDGE_CHAINS,
@@ -183,12 +183,12 @@ export function BalanceCard() {
                         onValueChange={(value) => setChain(value as SupportedDepositChain)}
                       >
                         <SelectTrigger>
-                          <SelectValue />
+                          <SelectedChain chain={chain} />
                         </SelectTrigger>
                         <SelectContent>
                           {depositChains.map((item) => (
                             <SelectItem key={item.value} value={item.value}>
-                              {item.label}
+                              <ChainOption chain={item.value} />
                             </SelectItem>
                           ))}
                         </SelectContent>
