@@ -1,7 +1,7 @@
 import { AuthScreen } from "@/components/auth/auth-screen";
 
 export const metadata = {
-  title: "Log In | ArcPay"
+  title: "Log In"
 };
 
 export default function LoginPage() {
