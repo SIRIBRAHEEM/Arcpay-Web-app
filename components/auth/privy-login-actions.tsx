@@ -69,7 +69,6 @@ function getPrivyAddress(user: unknown, account: unknown) {
 
 function getPrivyLabel(user: unknown, account: unknown, fallback: string) {
   const userRecord = asRecord(user);
-  const accountRecord = asRecord(account);
 
   return (
     getNestedString(userRecord, ["name", "username"]) ||
