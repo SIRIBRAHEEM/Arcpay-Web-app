@@ -30,7 +30,7 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[calc(100vh-1rem)] overflow-hidden px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[radial-gradient(circle_at_18%_0%,rgba(190,242,100,0.28),transparent_24rem),linear-gradient(180deg,#eefaf5_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[radial-gradient(circle_at_18%_0%,rgba(190,242,100,0.12),transparent_24rem),linear-gradient(180deg,#03130f_0%,#061814_54%,rgba(6,24,20,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[linear-gradient(180deg,#f7f5ef_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,#111312_0%,#0b100e_54%,rgba(7,8,7,0)_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(14,92,67,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(190,242,100,0.045)_1px,transparent_1px)]" />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between">

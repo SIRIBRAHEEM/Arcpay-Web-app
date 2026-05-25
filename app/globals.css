@@ -76,14 +76,12 @@
   body {
     @apply min-h-screen bg-background text-foreground antialiased;
     background:
-      linear-gradient(180deg, #f5fbf8 0%, #ffffff 42%, #edf7f1 100%);
+      linear-gradient(180deg, #f7f5ef 0%, #ffffff 46%, #eef4ef 100%);
   }
 
   .dark body {
     background:
-      radial-gradient(circle at 18% 0%, rgba(190, 242, 100, 0.1), transparent 28rem),
-      radial-gradient(circle at 88% 18%, rgba(20, 184, 166, 0.12), transparent 26rem),
-      linear-gradient(180deg, #03130f 0%, #061814 44%, #020806 100%);
+      linear-gradient(180deg, #111312 0%, #0a0f0d 48%, #070807 100%);
   }
 
   ::selection {
@@ -113,6 +111,16 @@
 }
 
 @layer components {
+  .auth-shell {
+    background:
+      linear-gradient(180deg, #f6f4ee 0%, #ffffff 48%, #efeee8 100%);
+  }
+
+  .dark .auth-shell {
+    background:
+      linear-gradient(180deg, #111111 0%, #171717 46%, #0d0d0d 100%);
+  }
+
   .premium-dashboard-bg {
     --background: 165 35% 97%;
     --foreground: 160 50% 10%;
@@ -132,8 +140,7 @@
     --input: 164 22% 82%;
     --ring: 157 61% 22%;
     background:
-      radial-gradient(circle at 16% 0%, rgba(190, 242, 100, 0.26), transparent 26rem),
-      linear-gradient(180deg, #eefaf5 0%, #ffffff 44%, #edf7f1 100%);
+      linear-gradient(180deg, #f7f5ef 0%, #ffffff 42%, #edf4ef 100%);
   }
 
   .dark .premium-dashboard-bg {
@@ -155,8 +162,7 @@
     --input: 165 22% 18%;
     --ring: 82 78% 72%;
     background:
-      radial-gradient(circle at 16% 0%, rgba(190, 242, 100, 0.12), transparent 26rem),
-      linear-gradient(180deg, #03130f 0%, #061814 44%, #020806 100%);
+      linear-gradient(180deg, #111312 0%, #0b100e 45%, #070807 100%);
   }
 
   .premium-card {
