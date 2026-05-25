@@ -100,6 +100,9 @@ Activity history is stored locally in the browser for the connected wallet.
 
 ## Local Development
 
+The web3 dependency tree uses optional peer packages from Privy, Circle, viem,
+and wallet tooling, so npm is configured with `legacy-peer-deps=true`.
+
 ```bash
 npm install
 npm run dev
