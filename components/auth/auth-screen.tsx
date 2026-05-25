@@ -16,7 +16,6 @@ import {
   QrCode,
   ShieldCheck,
   Sparkles,
-  Smartphone,
   WalletCards,
   type LucideIcon
 } from "lucide-react";
@@ -26,6 +25,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { WalletLogo } from "@/components/ui/wallet-logo";
 import { connectWalletProvider } from "@/lib/connect-wallet";
 import {
   createLocalPasskey,
@@ -285,13 +285,13 @@ export function AuthScreen({ mode }: AuthScreenProps) {
   }
 
   return (
-    <main className="auth-shell min-h-screen text-zinc-950 dark:text-white">
-      <div className="relative mx-auto flex min-h-screen w-full max-w-5xl flex-col px-4 py-5 sm:px-6 lg:px-8">
+    <main className="auth-shell min-h-screen overflow-x-hidden text-slate-950 dark:text-white">
+      <div className="relative mx-auto flex min-h-[100svh] w-full max-w-5xl flex-col px-3 py-4 sm:px-6 sm:py-5 lg:px-8">
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
             size="icon"
-            className="rounded-full bg-white/70 text-zinc-900 shadow-sm hover:bg-white dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.12]"
+            className="rounded-full bg-white/80 text-slate-900 shadow-sm hover:bg-white dark:bg-white/[0.08] dark:text-white dark:hover:bg-white/[0.12]"
             asChild
           >
             <Link href="/" aria-label="Back to home">
@@ -299,27 +299,27 @@ export function AuthScreen({ mode }: AuthScreenProps) {
             </Link>
           </Button>
 
-          <ThemeToggle className="bg-white/70 shadow-sm dark:bg-white/[0.08]" />
+          <ThemeToggle className="bg-white/80 shadow-sm dark:bg-white/[0.08]" />
         </div>
 
-        <section className="flex flex-1 flex-col items-center justify-center py-7 sm:py-10">
-          <Link href="/" className="mb-7 flex items-center gap-4" aria-label="ArcPay home">
-            <ArcPayLogoMark className="size-14 rounded-2xl sm:size-16" active />
-            <span className="text-4xl font-black tracking-tight sm:text-5xl">ArcPay</span>
+        <section className="flex flex-1 flex-col items-center justify-center py-6 sm:py-10">
+          <Link href="/" className="mb-5 flex items-center gap-3 sm:mb-7 sm:gap-4" aria-label="ArcPay home">
+            <ArcPayLogoMark className="size-12 rounded-[1.2rem] sm:size-16 sm:rounded-2xl" active />
+            <span className="text-3xl font-black tracking-tight sm:text-5xl">ArcPay</span>
           </Link>
 
-          <div className="w-full max-w-[43rem] rounded-[2.35rem] border border-zinc-950/5 bg-white/90 p-5 shadow-[0_32px_120px_rgba(25,25,25,0.12)] backdrop-blur-2xl dark:border-white/[0.06] dark:bg-[#242424] dark:shadow-[0_30px_120px_rgba(0,0,0,0.36)] sm:p-8 lg:p-10">
+          <div className="w-full max-w-[42rem] rounded-[1.75rem] border border-slate-950/5 bg-white/95 p-4 shadow-[0_28px_100px_rgba(15,23,42,0.13)] backdrop-blur-2xl dark:border-white/[0.07] dark:bg-[#222326] dark:shadow-[0_30px_110px_rgba(0,0,0,0.38)] sm:rounded-[2.35rem] sm:p-8 lg:p-10">
             <div className="mx-auto max-w-[30rem] text-center">
-              <p className="text-base font-black text-zinc-600 dark:text-white/72">{title}</p>
-              <h1 className="mt-4 text-balance text-3xl font-black leading-[1.08] tracking-tight text-zinc-950 dark:text-white sm:text-4xl">
+              <p className="text-sm font-black text-slate-600 dark:text-white/72 sm:text-base">{title}</p>
+              <h1 className="mt-3 text-balance text-3xl font-black leading-[1.08] tracking-tight text-slate-950 dark:text-white sm:mt-4 sm:text-4xl">
                 {headline}
               </h1>
-              <p className="mt-4 text-sm font-medium leading-6 text-zinc-600 dark:text-white/58">
+              <p className="mt-3 text-sm font-medium leading-6 text-slate-600 dark:text-white/62 sm:mt-4">
                 {supportingCopy}
               </p>
             </div>
 
-            <div className="mx-auto mt-8 grid max-w-[33.5rem] gap-3">
+            <div className="mx-auto mt-6 grid max-w-[33.5rem] gap-3 sm:mt-8">
               {authPanels.map(({ value, icon: Icon, title: cardTitle, description }) => (
                 <AuthMethodCard
                   key={value}
@@ -335,14 +335,14 @@ export function AuthScreen({ mode }: AuthScreenProps) {
                       <div className="flex -space-x-2">
                         {(["rabby", "metamask", "binance", "coinbase"] as WalletId[]).map(
                           (wallet) => (
-                            <WalletBrandIcon key={wallet} wallet={wallet} compact />
+                            <WalletLogo key={wallet} wallet={wallet} compact />
                           )
                         )}
                       </div>
                     ) : value === "email" ? (
-                      <AtSign className="size-5 text-zinc-500 dark:text-white/72" />
+                      <AtSign className="size-5 text-slate-500 dark:text-white/72" />
                     ) : (
-                      <Sparkles className="size-5 text-zinc-500 dark:text-white/72" />
+                      <Sparkles className="size-5 text-slate-500 dark:text-white/72" />
                     )
                   }
                 />
@@ -380,18 +380,18 @@ export function AuthScreen({ mode }: AuthScreenProps) {
               ) : null}
             </div>
 
-            <div className="mt-8 text-center text-sm font-semibold text-zinc-600 dark:text-white/70">
+            <div className="mt-7 text-center text-sm font-semibold text-slate-600 dark:text-white/70 sm:mt-8">
               {alternateLabel}{" "}
               <Link
                 href={alternateHref}
-                className="text-emerald-700 underline underline-offset-4 hover:text-emerald-900 dark:text-white dark:hover:text-lime-100"
+                className="text-teal-700 underline underline-offset-4 hover:text-teal-900 dark:text-white dark:hover:text-lime-100"
               >
                 {alternateAction}
               </Link>
             </div>
           </div>
 
-          <p className="mx-auto mt-6 max-w-xl text-center text-xs font-bold leading-6 text-zinc-500 dark:text-white/42">
+          <p className="mx-auto mt-5 max-w-xl px-2 text-center text-xs font-bold leading-6 text-slate-500 dark:text-white/48 sm:mt-6">
             By continuing, you keep custody of funds and approve payments with your selected
             wallet or browser credential.
           </p>
@@ -422,18 +422,18 @@ function AuthMethodCard({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "group flex min-h-20 w-full items-center gap-4 rounded-[1.45rem] border px-5 py-4 text-left transition",
+        "group flex min-h-[4.5rem] w-full items-center gap-3 rounded-2xl border px-4 py-3 text-left transition sm:min-h-20 sm:gap-4 sm:rounded-[1.45rem] sm:px-5 sm:py-4",
         active
-          ? "border-emerald-800/20 bg-zinc-950 text-white shadow-[0_18px_55px_rgba(18,18,18,0.18)] dark:border-white/[0.08] dark:bg-[#101010]"
-          : "border-zinc-950/5 bg-zinc-100 text-zinc-950 hover:bg-zinc-200/80 dark:border-white/[0.06] dark:bg-[#121212] dark:text-white dark:hover:bg-[#171717]"
+          ? "border-teal-900/20 bg-slate-950 text-white shadow-[0_18px_55px_rgba(15,23,42,0.18)] dark:border-white/[0.08] dark:bg-[#101113]"
+          : "border-slate-950/5 bg-slate-100 text-slate-950 hover:bg-slate-200/80 dark:border-white/[0.06] dark:bg-[#151618] dark:text-white dark:hover:bg-[#1a1b1f]"
       )}
     >
       <span
         className={cn(
           "grid size-10 shrink-0 place-items-center rounded-2xl transition",
           active
-            ? "bg-lime-200 text-emerald-950"
-            : "bg-white text-zinc-700 shadow-sm dark:bg-white/[0.08] dark:text-white"
+            ? "bg-lime-200 text-teal-950"
+            : "bg-white text-slate-700 shadow-sm dark:bg-white/[0.08] dark:text-white"
         )}
       >
         <Icon className="size-5" />
@@ -443,7 +443,7 @@ function AuthMethodCard({
         <span
           className={cn(
             "mt-1 block truncate text-sm font-medium",
-            active ? "text-white/72" : "text-zinc-600 dark:text-white/58"
+            active ? "text-white/72" : "text-slate-600 dark:text-white/58"
           )}
         >
           {description}
@@ -464,7 +464,7 @@ function WalletPanel({
   onSelect: (wallet: WalletCatalogItem, provider?: Eip6963ProviderDetail) => void;
 }) {
   return (
-    <div className="max-h-[19rem] space-y-3 overflow-y-auto pr-2">
+    <div className="max-h-[45svh] space-y-3 overflow-y-auto pr-1.5 sm:max-h-80 sm:pr-2">
       {options.map(({ wallet, provider }) => {
         const installed = Boolean(provider);
         const busy = busyWallet === wallet.id;
@@ -479,18 +479,18 @@ function WalletPanel({
             className={cn(
               "flex min-h-14 w-full items-center gap-4 rounded-[1.35rem] border px-4 py-3 text-left transition",
               installed
-                ? "border-emerald-950/10 bg-emerald-950 text-white hover:border-lime-200/[0.35] hover:bg-emerald-900 dark:border-white/[0.08] dark:bg-[#101010] dark:hover:bg-[#151515]"
-                : "border-zinc-950/5 bg-zinc-100 text-zinc-950 hover:bg-zinc-200/80 dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10",
+                ? "border-teal-950/10 bg-slate-950 text-white hover:border-lime-200/[0.35] hover:bg-teal-950 dark:border-white/[0.08] dark:bg-[#101113] dark:hover:bg-[#17191d]"
+                : "border-slate-950/5 bg-slate-100 text-slate-950 hover:bg-slate-200/80 dark:border-white/[0.08] dark:bg-white/[0.06] dark:text-white dark:hover:bg-white/10",
               busyWallet && !busy ? "opacity-45" : "opacity-100"
             )}
           >
-            <WalletBrandIcon wallet={wallet.id} />
+            <WalletLogo wallet={wallet.id} providerIcon={provider?.info.icon} />
             <span className="min-w-0 flex-1">
               <span className="block truncate font-black">{wallet.name}</span>
               <span
                 className={cn(
                   "mt-0.5 block truncate text-xs font-semibold",
-                  installed ? "text-white/68" : "text-zinc-600 dark:text-white/58"
+                  installed ? "text-white/68" : "text-slate-600 dark:text-white/58"
                 )}
               >
                 {installed ? "Ready to connect" : wallet.description}
@@ -499,12 +499,12 @@ function WalletPanel({
             {busy ? (
               <Loader2 className="size-4 animate-spin text-lime-200" />
             ) : installed ? (
-              <Badge className="rounded-full bg-lime-200 text-emerald-950 dark:bg-lime-200/[0.16] dark:text-lime-100">
+              <Badge className="hidden rounded-full bg-lime-200 text-teal-950 dark:bg-lime-200/[0.16] dark:text-lime-100 sm:inline-flex">
                 <Check className="mr-1 size-3" />
                 Installed
               </Badge>
             ) : (
-              <ExternalLink className="size-4 text-zinc-500 dark:text-white/45" />
+              <ExternalLink className="size-4 text-slate-500 dark:text-white/45" />
             )}
           </button>
         );
@@ -535,7 +535,7 @@ function PasskeyPanel({
       {isSignup ? (
         <div className="mb-4">
           <label
-            className="mb-2 block text-sm font-bold text-zinc-700 dark:text-white/78"
+            className="mb-2 block text-sm font-bold text-slate-700 dark:text-white/78"
             htmlFor="passkey-email"
           >
             Email
@@ -546,25 +546,25 @@ function PasskeyPanel({
             value={email}
             onChange={(event) => onEmailChange(event.target.value)}
             placeholder="you@example.com"
-            className="h-12 rounded-2xl border-zinc-950/10 bg-white text-zinc-950 placeholder:text-zinc-400 dark:border-white/10 dark:bg-black/[0.24] dark:text-white dark:placeholder:text-white/35"
+            className="h-12 rounded-2xl border-slate-950/10 bg-white text-slate-950 placeholder:text-slate-400 dark:border-white/10 dark:bg-black/[0.24] dark:text-white dark:placeholder:text-white/35"
           />
         </div>
       ) : null}
 
-      <div className="overflow-hidden rounded-[1.35rem] border border-zinc-950/5 bg-zinc-100 dark:border-white/[0.06] dark:bg-[#17171b]">
+      <div className="overflow-hidden rounded-[1.35rem] border border-slate-950/5 bg-slate-100 dark:border-white/[0.06] dark:bg-[#17171b]">
         {passkeyChoices.map(({ icon: Icon, label }, index) => (
           <div
             key={label}
             className={cn(
               "flex items-center gap-4 px-5 py-4",
-              index ? "border-t border-zinc-950/10 dark:border-white/[0.12]" : ""
+              index ? "border-t border-slate-950/10 dark:border-white/[0.12]" : ""
             )}
           >
-            <Icon className="size-5 text-zinc-700 dark:text-white/72" />
-            <span className="flex-1 text-sm font-bold text-zinc-700 dark:text-white/78">
+            <Icon className="size-5 text-slate-700 dark:text-white/72" />
+            <span className="flex-1 text-sm font-bold text-slate-700 dark:text-white/78">
               {label}
             </span>
-            <ChevronRight className="size-4 text-zinc-400 dark:text-white/50" />
+            <ChevronRight className="size-4 text-slate-400 dark:text-white/50" />
           </div>
         ))}
       </div>
@@ -603,7 +603,7 @@ function EmailPanel({
 }) {
   return (
     <form className="mx-auto max-w-xl" onSubmit={onSubmit}>
-      <label className="mb-2 block text-sm font-bold text-zinc-700 dark:text-white/78" htmlFor="auth-email">
+      <label className="mb-2 block text-sm font-bold text-slate-700 dark:text-white/78" htmlFor="auth-email">
         Email address
       </label>
       <Input
@@ -612,91 +612,17 @@ function EmailPanel({
         value={email}
         onChange={(event) => onEmailChange(event.target.value)}
         placeholder="you@example.com"
-        className="h-12 rounded-2xl border-zinc-950/10 bg-white text-zinc-950 placeholder:text-zinc-400 dark:border-white/10 dark:bg-black/[0.24] dark:text-white dark:placeholder:text-white/35"
+        className="h-12 rounded-2xl border-slate-950/10 bg-white text-slate-950 placeholder:text-slate-400 dark:border-white/10 dark:bg-black/[0.24] dark:text-white dark:placeholder:text-white/35"
       />
 
       <Button
         type="submit"
         disabled={busy}
-        className="mt-5 h-12 w-full rounded-full bg-zinc-950 text-white hover:bg-zinc-800 dark:bg-lime-200 dark:text-emerald-950 dark:hover:bg-lime-100"
+        className="mt-5 h-12 w-full rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-lime-200 dark:text-teal-950 dark:hover:bg-lime-100"
       >
         {busy ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Mail className="mr-2 size-4" />}
         {mode === "signup" ? "Continue with email" : "Login with email"}
       </Button>
     </form>
-  );
-}
-
-function WalletBrandIcon({ wallet, compact = false }: { wallet: WalletId; compact?: boolean }) {
-  const baseClass =
-    "grid shrink-0 place-items-center overflow-hidden rounded-full shadow-sm ring-1 ring-white/20";
-  const sizeClass = compact ? "size-7" : "size-9";
-  const iconSize = compact ? "size-4" : "size-6";
-
-  if (wallet === "binance") {
-    return (
-      <span className={cn(baseClass, sizeClass, "bg-[#111]")}>
-        <svg viewBox="0 0 32 32" className={iconSize} aria-hidden="true">
-          <path d="M16 3.8 20.1 8 16 12.1 11.9 8 16 3.8Z" fill="#f0b90b" />
-          <path d="M8 11.9 12.1 16 8 20.1 3.9 16 8 11.9Z" fill="#f0b90b" />
-          <path d="M24 11.9 28.1 16 24 20.1 19.9 16 24 11.9Z" fill="#f0b90b" />
-          <path d="M16 19.9 20.1 24 16 28.1 11.9 24 16 19.9Z" fill="#f0b90b" />
-          <path d="M16 11.2 20.8 16 16 20.8 11.2 16 16 11.2Z" fill="#f0b90b" />
-        </svg>
-      </span>
-    );
-  }
-
-  if (wallet === "okx") {
-    return (
-      <span className={cn(baseClass, sizeClass, "bg-white")}>
-        <svg viewBox="0 0 32 32" className={iconSize} aria-hidden="true">
-          <path d="M4 4h8v8H4V4Zm16 0h8v8h-8V4ZM12 12h8v8h-8v-8ZM4 20h8v8H4v-8Zm16 0h8v8h-8v-8Z" fill="#050505" />
-        </svg>
-      </span>
-    );
-  }
-
-  if (wallet === "coinbase") {
-    return (
-      <span className={cn(baseClass, sizeClass, "bg-[#0052ff]")}>
-        <span className={cn("grid place-items-center rounded-full bg-white", compact ? "size-4" : "size-5")}>
-          <span className={cn("rounded-full bg-[#0052ff]", compact ? "size-2" : "size-2.5")} />
-        </span>
-      </span>
-    );
-  }
-
-  if (wallet === "metamask") {
-    return (
-      <span className={cn(baseClass, sizeClass, "bg-[#f5841f]")}>
-        <svg viewBox="0 0 32 32" className={iconSize} aria-hidden="true">
-          <path d="M5 7.5 13.3 4l5.4 4.1L27 7.5 24.5 23 17 28h-2L7.5 23 5 7.5Z" fill="#fff" opacity=".92" />
-          <path d="M8.5 11.4 15 15.6l-1.8 5.8-5-2.2.3-7.8Zm15 0-.3 7.8-5 2.2-1.8-5.8 6.5-4.2Z" fill="#f5841f" />
-        </svg>
-      </span>
-    );
-  }
-
-  if (wallet === "rabby") {
-    return (
-      <span className={cn(baseClass, sizeClass, "bg-[#6172ff] text-white")}>
-        <span className={cn("font-black", compact ? "text-xs" : "text-base")}>R</span>
-      </span>
-    );
-  }
-
-  if (wallet === "keplr") {
-    return (
-      <span className={cn(baseClass, sizeClass, "bg-[#0ab4ff]")}>
-        <Smartphone className={cn("text-white", compact ? "size-4" : "size-5")} />
-      </span>
-    );
-  }
-
-  return (
-    <span className={cn(baseClass, sizeClass, "bg-lime-200 text-emerald-950")}>
-      <WalletCards className={compact ? "size-4" : "size-5"} />
-    </span>
   );
 }

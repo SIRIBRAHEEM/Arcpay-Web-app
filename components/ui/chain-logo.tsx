@@ -283,7 +283,7 @@ export function SelectedChain({ chain }: { chain: AppKitChain }) {
   return (
     <span className="flex min-w-0 flex-1 items-center gap-2.5 overflow-hidden">
       <ChainLogo chain={chain} className="size-7 shadow-none" />
-      <span className="min-w-0 truncate font-medium leading-none text-emerald-950 dark:text-lime-50">
+      <span className="min-w-0 truncate font-medium leading-none text-teal-950 dark:text-lime-50">
         {config.label}
       </span>
     </span>

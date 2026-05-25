@@ -63,7 +63,7 @@ export function DashboardClient() {
   }
 
   return (
-    <main className="premium-dashboard-bg min-h-screen px-4 pb-14 pt-3 text-foreground sm:px-6 lg:px-8">
+    <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-12 pt-2 text-foreground sm:px-6 sm:pb-14 sm:pt-3 lg:px-8">
       <EventWatcher />
 
       <div className="mx-auto max-w-7xl">
@@ -73,7 +73,7 @@ export function DashboardClient() {
           <PremiumDashboardHero />
         </div>
 
-        <section className="mt-4 grid gap-4 xl:grid-cols-[1.12fr_0.88fr]">
+        <section className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
           <div className="grid gap-4">
             <SendPanel />
             <BridgePanel />

@@ -98,7 +98,7 @@ export function TxHistory() {
 
   return (
     <Card className="glass rounded-[1.5rem] shadow-card">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
+      <CardHeader className="flex flex-col gap-3 space-y-0 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div>
           <CardTitle>Activity</CardTitle>
           {transactions.length ? (
@@ -108,7 +108,7 @@ export function TxHistory() {
           ) : null}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 self-start sm:self-auto">
           <Badge variant="secondary" className="rounded-full">
             Local history
           </Badge>
@@ -126,7 +126,7 @@ export function TxHistory() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-5 pt-0">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
         {activityError ? (
           <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100">
             {activityError}
@@ -142,7 +142,7 @@ export function TxHistory() {
                 return (
                   <div
                     key={tx.id}
-                    className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]"
+                    className="flex flex-col gap-3 rounded-2xl border border-slate-950/10 bg-white/75 p-4 dark:border-white/10 dark:bg-white/[0.06] sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       <div
@@ -172,7 +172,7 @@ export function TxHistory() {
                       </div>
                     </div>
 
-                    <div className="flex shrink-0 items-center gap-2">
+                    <div className="flex w-full shrink-0 items-center justify-between gap-2 sm:w-auto sm:justify-end">
                       <Badge variant="outline" className="rounded-full">
                         {tx.state}
                       </Badge>
@@ -183,7 +183,7 @@ export function TxHistory() {
                           target="_blank"
                           rel="noreferrer"
                           aria-label="Open transaction on explorer"
-                          className="rounded-full p-2 text-muted-foreground hover:bg-emerald-950/5 hover:text-foreground dark:hover:bg-white/10"
+                          className="rounded-full p-2 text-muted-foreground hover:bg-slate-950/5 hover:text-foreground dark:hover:bg-white/10"
                         >
                           <ExternalLink className="size-4" />
                         </a>
@@ -226,7 +226,7 @@ export function TxHistory() {
             ) : null}
           </>
         ) : (
-          <div className="rounded-2xl border border-dashed border-emerald-950/15 bg-white/50 p-6 text-center dark:border-white/10 dark:bg-white/[0.035]">
+          <div className="rounded-2xl border border-dashed border-slate-950/15 bg-white/55 p-6 text-center dark:border-white/10 dark:bg-white/[0.04]">
             <p className="font-semibold">No local activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
               Sends, deposits, bridge transfers, requests, and detected transfers will stay in this browser.

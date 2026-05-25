@@ -30,8 +30,8 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[calc(100vh-1rem)] overflow-hidden px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[linear-gradient(180deg,#f7f5ef_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,#111312_0%,#0b100e_54%,rgba(7,8,7,0)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(14,92,67,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(14,92,67,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(190,242,100,0.045)_1px,transparent_1px)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[linear-gradient(180deg,#f8f6ef_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,#111318_0%,#0a1112_54%,rgba(7,9,12,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(15,118,110,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(15,118,110,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(45,212,191,0.045)_1px,transparent_1px)]" />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link
@@ -41,21 +41,21 @@ export function Hero() {
         >
           <ArcPayLogoMark className="size-10 rounded-[0.95rem]" />
           <div>
-            <p className="text-base font-black tracking-tight text-emerald-950 dark:text-lime-50">
+            <p className="text-base font-black tracking-tight text-teal-950 dark:text-lime-50">
               ArcPay
             </p>
-            <p className="text-xs text-emerald-950/60 dark:text-lime-50/55">Private-feeling payments</p>
+            <p className="text-xs text-teal-950/60 dark:text-lime-50/55">Private-feeling payments</p>
           </div>
         </Link>
 
-        <div className="relative z-10 hidden items-center gap-7 rounded-full border border-emerald-950/10 bg-white/65 px-5 py-3 text-sm font-semibold text-emerald-950/70 shadow-[0_20px_50px_rgba(55,83,57,0.12)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06] dark:text-lime-50/70 lg:flex">
-          <a href="#what-is-arcpay" className="hover:text-emerald-950 dark:hover:text-lime-50">
+        <div className="relative z-10 hidden items-center gap-7 rounded-full border border-slate-950/10 bg-white/70 px-5 py-3 text-sm font-semibold text-teal-950/70 shadow-[0_20px_50px_rgba(15,23,42,0.1)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.06] dark:text-lime-50/70 lg:flex">
+          <a href="#what-is-arcpay" className="hover:text-teal-950 dark:hover:text-lime-50">
             Product
           </a>
-          <a href="#how-it-works" className="hover:text-emerald-950 dark:hover:text-lime-50">
+          <a href="#how-it-works" className="hover:text-teal-950 dark:hover:text-lime-50">
             How it works
           </a>
-          <a href="#use-cases" className="hover:text-emerald-950 dark:hover:text-lime-50">
+          <a href="#use-cases" className="hover:text-teal-950 dark:hover:text-lime-50">
             Use cases
           </a>
         </div>
@@ -87,16 +87,16 @@ export function Hero() {
           transition={{ duration: 0.7 }}
           className="mx-auto max-w-4xl text-center"
         >
-          <Badge className="mb-5 gap-2 rounded-full border-emerald-950/10 bg-white/70 px-4 py-2 text-emerald-950 shadow-sm dark:border-lime-200/20 dark:bg-white/[0.07] dark:text-lime-100">
+          <Badge className="mb-5 gap-2 rounded-full border-slate-950/10 bg-white/75 px-4 py-2 text-teal-950 shadow-sm dark:border-lime-200/20 dark:bg-white/[0.07] dark:text-lime-100">
             <ShieldCheck className="size-3.5" />
             Built for ARC stablecoin payments
           </Badge>
 
-          <h1 className="text-balance text-5xl font-black leading-[0.98] tracking-tight text-emerald-950 dark:text-lime-50 sm:text-6xl lg:text-7xl">
+          <h1 className="text-balance text-5xl font-black leading-[0.98] tracking-tight text-teal-950 dark:text-lime-50 sm:text-6xl lg:text-7xl">
             Premium stablecoin payments
           </h1>
 
-          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-emerald-950/70 dark:text-lime-50/68 sm:text-xl">
+          <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-teal-950/70 dark:text-lime-50/68 sm:text-xl">
             Pay, request, bridge, and manage USDC on Arc Testnet with the simple
             payment flow people expect from everyday money apps.
           </p>
@@ -144,11 +144,11 @@ export function Hero() {
           transition={{ delay: 0.15, duration: 0.7 }}
           className="mx-auto w-full max-w-6xl"
         >
-          <div className="grid overflow-hidden rounded-[1.5rem] border border-emerald-950/10 bg-white shadow-[0_34px_120px_rgba(28,72,51,0.16)] dark:border-white/10 dark:bg-white/[0.055] lg:grid-cols-[0.68fr_1fr]">
-            <div className="border-b border-emerald-950/10 bg-emerald-950 p-5 text-white dark:border-white/10 dark:bg-[#06130f] lg:border-b-0 lg:border-r sm:p-6">
+          <div className="grid overflow-hidden rounded-[1.5rem] border border-slate-950/10 bg-white shadow-[0_34px_120px_rgba(15,23,42,0.15)] dark:border-white/10 dark:bg-white/[0.06] lg:grid-cols-[0.68fr_1fr]">
+            <div className="border-b border-slate-950/10 bg-teal-950 p-5 text-white dark:border-white/10 dark:bg-[#071114] lg:border-b-0 lg:border-r sm:p-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className="grid size-10 place-items-center rounded-full bg-lime-200 text-emerald-950">
+                  <div className="grid size-10 place-items-center rounded-full bg-lime-200 text-teal-950">
                     <WalletCards className="size-5" />
                   </div>
                   <div>
@@ -204,15 +204,15 @@ export function Hero() {
             <div className="p-5 sm:p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-semibold text-emerald-950/55 dark:text-lime-50/55">
+                  <p className="text-sm font-semibold text-teal-950/55 dark:text-lime-50/55">
                     Try it now
                   </p>
-                  <h2 className="mt-1 text-2xl font-black tracking-tight text-emerald-950 dark:text-lime-50">
+                  <h2 className="mt-1 text-2xl font-black tracking-tight text-teal-950 dark:text-lime-50">
                     {mode === "pay" ? "Pay" : "Request"}
                   </h2>
                 </div>
 
-                <div className="grid grid-cols-2 rounded-full border border-emerald-950/10 bg-emerald-950/5 p-1 dark:border-white/10 dark:bg-white/[0.06]">
+                <div className="grid grid-cols-2 rounded-full border border-slate-950/10 bg-slate-950/5 p-1 dark:border-white/10 dark:bg-white/[0.06]">
                   {(["pay", "request"] as const).map((item) => (
                     <button
                       key={item}
@@ -220,8 +220,8 @@ export function Hero() {
                       onClick={() => setMode(item)}
                       className={`rounded-full px-4 py-2 text-sm font-bold capitalize transition ${
                         mode === item
-                          ? "bg-emerald-950 text-white shadow-sm dark:bg-lime-200 dark:text-emerald-950"
-                          : "text-emerald-950/60 hover:text-emerald-950 dark:text-lime-50/60 dark:hover:text-lime-50"
+                          ? "bg-teal-950 text-white shadow-sm dark:bg-lime-200 dark:text-teal-950"
+                          : "text-teal-950/60 hover:text-teal-950 dark:text-lime-50/60 dark:hover:text-lime-50"
                       }`}
                     >
                       {item}
@@ -231,24 +231,24 @@ export function Hero() {
               </div>
 
               <div className="mt-6 grid gap-4">
-                <div className="rounded-[1.25rem] border border-emerald-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.055]">
+                <div className="rounded-[1.25rem] border border-slate-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.06]">
                   <div className="flex items-center justify-between gap-4">
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-emerald-950/50 dark:text-lime-50/50">
+                      <p className="text-sm font-semibold text-teal-950/50 dark:text-lime-50/50">
                         {mode === "pay" ? "Send" : "Amount"}
                       </p>
                       <Input
                         aria-label="Demo amount"
                         inputMode="decimal"
                         defaultValue="125.00"
-                        className="mt-1 h-auto border-0 bg-transparent p-0 text-5xl font-black tracking-tight text-emerald-950 shadow-none ring-0 focus-visible:ring-0 dark:text-lime-50"
+                        className="mt-1 h-auto border-0 bg-transparent p-0 text-5xl font-black tracking-tight text-teal-950 shadow-none ring-0 focus-visible:ring-0 dark:text-lime-50"
                       />
                     </div>
 
                     <div className="relative">
                       <button
                         type="button"
-                        className="flex items-center gap-2 rounded-full border border-emerald-950/10 bg-emerald-50 px-4 py-3 text-sm font-black text-emerald-950 dark:border-white/10 dark:bg-white/[0.08] dark:text-lime-50"
+                        className="flex items-center gap-2 rounded-full border border-slate-950/10 bg-teal-50 px-4 py-3 text-sm font-black text-teal-950 dark:border-white/10 dark:bg-white/[0.08] dark:text-lime-50"
                         onClick={() =>
                           setAsset((current) => {
                             const currentIndex = demoAssets.indexOf(current);
@@ -263,20 +263,20 @@ export function Hero() {
                   </div>
                 </div>
 
-                <div className="rounded-[1.25rem] border border-emerald-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.055]">
-                  <p className="text-sm font-semibold text-emerald-950/50 dark:text-lime-50/50">
+                <div className="rounded-[1.25rem] border border-slate-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.06]">
+                  <p className="text-sm font-semibold text-teal-950/50 dark:text-lime-50/50">
                     {mode === "pay" ? "Destination" : "Share with"}
                   </p>
-                  <div className="mt-3 flex items-center gap-3 rounded-2xl bg-emerald-50 px-4 py-3 text-emerald-950 dark:bg-white/[0.08] dark:text-lime-50">
+                  <div className="mt-3 flex items-center gap-3 rounded-2xl bg-teal-50 px-4 py-3 text-teal-950 dark:bg-white/[0.08] dark:text-lime-50">
                     {mode === "pay" ? (
-                      <Send className="size-4 text-emerald-700 dark:text-lime-200" />
+                      <Send className="size-4 text-teal-700 dark:text-lime-200" />
                     ) : (
-                      <Link2 className="size-4 text-emerald-700 dark:text-lime-200" />
+                      <Link2 className="size-4 text-teal-700 dark:text-lime-200" />
                     )}
-                    <span className="truncate text-sm font-semibold text-emerald-950/70 dark:text-lime-50/70">
+                    <span className="truncate text-sm font-semibold text-teal-950/70 dark:text-lime-50/70">
                       {mode === "pay" ? "0x7cA...ArcPay" : "payment.link/arcpay/125"}
                     </span>
-                    <Copy className="ml-auto size-4 text-emerald-950/40 dark:text-lime-50/40" />
+                    <Copy className="ml-auto size-4 text-teal-950/40 dark:text-lime-50/40" />
                   </div>
                 </div>
 

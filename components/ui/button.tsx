@@ -9,17 +9,17 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-emerald-950 text-lime-50 shadow-[0_16px_40px_rgba(13,69,52,0.18)] hover:bg-emerald-900 dark:bg-lime-200 dark:text-emerald-950 dark:hover:bg-lime-100",
+          "bg-teal-950 text-lime-50 shadow-[0_16px_40px_rgba(15,23,42,0.16)] hover:bg-teal-900 dark:bg-lime-200 dark:text-teal-950 dark:hover:bg-lime-100",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border border-emerald-950/15 bg-transparent text-emerald-950 hover:bg-emerald-950/5 dark:border-white/10 dark:text-lime-50 dark:hover:bg-white/10",
+          "border border-slate-950/15 bg-transparent text-teal-950 hover:bg-slate-950/5 dark:border-white/10 dark:text-lime-50 dark:hover:bg-white/10",
         secondary:
-          "border border-emerald-950/10 bg-white/75 text-emerald-950 hover:bg-white dark:border-white/10 dark:bg-white/[0.07] dark:text-lime-50 dark:hover:bg-white/[0.12]",
+          "border border-slate-950/10 bg-white/80 text-teal-950 hover:bg-white dark:border-white/10 dark:bg-white/[0.08] dark:text-lime-50 dark:hover:bg-white/[0.13]",
         ghost:
-          "text-emerald-950/70 hover:bg-emerald-950/5 hover:text-emerald-950 dark:text-lime-50/70 dark:hover:bg-white/10 dark:hover:text-lime-50",
+          "text-teal-950/70 hover:bg-slate-950/5 hover:text-teal-950 dark:text-lime-50/70 dark:hover:bg-white/10 dark:hover:text-lime-50",
         link:
-          "text-emerald-800 underline-offset-4 hover:text-emerald-950 hover:underline dark:text-lime-200 dark:hover:text-lime-100"
+          "text-teal-800 underline-offset-4 hover:text-teal-950 hover:underline dark:text-lime-200 dark:hover:text-lime-100"
       },
       size: {
         default: "h-10 px-4 py-2",

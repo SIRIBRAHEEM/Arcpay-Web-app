@@ -105,13 +105,13 @@ export function SendPanel() {
   return (
     <>
       <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-        <CardHeader className="space-y-3 p-5">
+        <CardHeader className="space-y-3 p-4 sm:p-5">
           <CardTitle className="flex items-center gap-2">
             <Send className="size-5 text-primary" />
             Pay
           </CardTitle>
 
-          <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.055]">
+          <div className="rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.06]">
             <p className="text-sm text-muted-foreground">Fast payment route</p>
             <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
               <WalletCards className="size-4 text-primary" />
@@ -122,11 +122,11 @@ export function SendPanel() {
           </div>
         </CardHeader>
 
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           <form onSubmit={submit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="send-amount">Amount</Label>
-              <div className="grid grid-cols-[1fr_132px] gap-2">
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_132px]">
                 <Input
                   id="send-amount"
                   inputMode="decimal"

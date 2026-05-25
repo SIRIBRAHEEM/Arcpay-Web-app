@@ -160,21 +160,21 @@ export function BridgePanel() {
   return (
     <>
       <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-        <CardHeader className="space-y-3 p-5">
+        <CardHeader className="space-y-3 p-4 sm:p-5">
           <CardTitle className="flex items-center gap-2">
             <Waypoints className="size-5 text-primary" />
             Bridge USDC
           </CardTitle>
 
-          <div className="rounded-[1.25rem] border border-emerald-950/10 bg-emerald-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.075]">
-            <p className="text-sm text-emerald-950/65 dark:text-lime-50/80">USDC bridge route</p>
-            <p className="mt-2 text-lg font-black tracking-tight text-emerald-950 dark:text-lime-50">
+          <div className="rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.075]">
+            <p className="text-sm text-teal-950/65 dark:text-lime-50/80">USDC bridge route</p>
+            <p className="mt-2 break-words text-lg font-black tracking-tight text-teal-950 dark:text-lime-50">
               {routeTitle}
             </p>
           </div>
         </CardHeader>
 
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           <form onSubmit={submit} className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="bridge-amount">Amount</Label>
@@ -187,7 +187,7 @@ export function BridgePanel() {
               />
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-[1fr_auto_1fr] sm:items-end">
+            <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
               <div className="grid gap-2">
                 <Label>From chain</Label>
                 <Select value={fromChain} onValueChange={handleFromChainChange}>
@@ -209,7 +209,7 @@ export function BridgePanel() {
                 type="button"
                 variant="secondary"
                 size="icon"
-                className="mx-auto rounded-2xl"
+                className="mx-auto size-10 rounded-2xl"
                 onClick={flipBridgeChains}
                 aria-label="Flip bridge chains"
               >
@@ -234,12 +234,12 @@ export function BridgePanel() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-emerald-950 dark:text-lime-50">
+            <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-teal-950 dark:text-lime-50">
               Keep source-chain USDC plus {getNativeGasSymbol(fromChain)} gas on{" "}
               {getChainLabel(fromChain)}.
             </div>
 
-            <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 text-sm text-emerald-950/70 dark:border-white/10 dark:bg-white/[0.075] dark:text-lime-50/80">
+            <div className="rounded-2xl border border-slate-950/10 bg-white/75 p-4 text-sm text-teal-950/70 dark:border-white/10 dark:bg-white/[0.075] dark:text-lime-50/80">
               Need test funds?{" "}
               <a
                 href="https://faucet.circle.com"

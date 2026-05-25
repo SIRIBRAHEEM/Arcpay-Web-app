@@ -124,10 +124,10 @@ export function BalanceCard() {
   return (
     <>
       <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-        <CardHeader className="flex flex-row items-start justify-between space-y-0 p-5">
+        <CardHeader className="flex flex-col gap-3 space-y-0 p-4 sm:flex-row sm:items-start sm:justify-between sm:p-5">
           <div>
             <CardTitle className="text-base text-muted-foreground">Unified Balance</CardTitle>
-            <div className="mt-3 flex items-baseline gap-2">
+            <div className="mt-3 flex flex-wrap items-baseline gap-2">
               {loading ? (
                 <Skeleton className="h-12 w-44" />
               ) : (
@@ -142,10 +142,10 @@ export function BalanceCard() {
             </p>
           </div>
 
-          <Badge className="rounded-full bg-primary/15 text-primary">USDC primary</Badge>
+          <Badge className="w-fit rounded-full bg-primary/15 text-primary">USDC primary</Badge>
         </CardHeader>
 
-        <CardContent className="p-5 pt-0">
+        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
           <div className="grid gap-3 sm:grid-cols-2">
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogTrigger asChild>
@@ -198,7 +198,7 @@ export function BalanceCard() {
                       </p>
                     </div>
 
-                    <div className="rounded-2xl border border-emerald-950/10 bg-lime-50 p-4 text-sm text-muted-foreground dark:border-white/10 dark:bg-white/[0.055]">
+                    <div className="rounded-2xl border border-slate-950/10 bg-lime-50 p-4 text-sm text-muted-foreground dark:border-white/10 dark:bg-white/[0.06]">
                       Need test USDC?{" "}
                       <a
                         href="https://faucet.circle.com"
@@ -231,14 +231,14 @@ export function BalanceCard() {
             </Button>
           </div>
 
-          <div className="mt-4 rounded-2xl border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
+          <div className="mt-4 rounded-2xl border border-slate-950/10 bg-white/75 p-4 dark:border-white/10 dark:bg-white/[0.06]">
             <p className="text-sm font-medium">Balance sources</p>
             {balance?.breakdown?.length ? (
               <div className="mt-3 grid gap-2">
                 {balance.breakdown.slice(0, 4).map((item, index) => (
                   <div
                     key={`${JSON.stringify(item)}-${index}`}
-                    className="flex items-center justify-between rounded-xl bg-emerald-950/[0.035] px-3 py-2 text-xs dark:bg-white/[0.055]"
+                    className="flex items-center justify-between rounded-xl bg-slate-950/[0.035] px-3 py-2 text-xs dark:bg-white/[0.06]"
                   >
                     <span className="max-w-[65%] truncate text-muted-foreground">
                       {item.chain ?? item.blockchain ?? item.source ?? `Source ${index + 1}`}

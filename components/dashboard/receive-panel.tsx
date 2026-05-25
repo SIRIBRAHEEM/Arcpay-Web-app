@@ -96,21 +96,21 @@ export function ReceivePanel() {
 
   return (
     <Card className="glass rounded-[1.5rem] shadow-card">
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-5">
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 p-4 sm:p-5">
         <CardTitle>Request Money</CardTitle>
         <Link2 className="size-5 text-primary" />
       </CardHeader>
 
-      <CardContent className="p-5 pt-0">
-        <div className="grid gap-4 sm:grid-cols-[164px_1fr] sm:items-center">
-          <div className="grid place-items-center rounded-2xl border border-emerald-950/10 bg-white p-3 dark:border-white/10">
+      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+        <div className="grid gap-4 md:grid-cols-[164px_1fr] md:items-center">
+          <div className="mx-auto grid w-full max-w-44 place-items-center rounded-2xl border border-slate-950/10 bg-white p-3 dark:border-white/10 md:mx-0">
             <QRCodeSVG value={shareLink || requestUri} size={132} bgColor="#ffffff" fgColor="#050914" />
           </div>
 
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="receive-address">Your Arc address</Label>
-              <div className="flex gap-2">
+              <div className="flex min-w-0 gap-2">
                 <Input id="receive-address" readOnly value={shortAddress(address, 8)} />
                 <Button
                   type="button"

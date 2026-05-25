@@ -129,7 +129,7 @@ export function RequestPaymentClient() {
   }
 
   return (
-    <main className="premium-dashboard-bg min-h-screen px-4 py-6 text-foreground sm:px-6">
+    <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 py-5 text-foreground sm:px-6 sm:py-6">
       <div className="mx-auto grid max-w-3xl gap-4">
         <Button
           type="button"
@@ -142,7 +142,7 @@ export function RequestPaymentClient() {
         </Button>
 
         <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-          <CardHeader className="space-y-3 p-5">
+          <CardHeader className="space-y-3 p-4 sm:p-5">
             <div className="flex flex-wrap items-center justify-between gap-3">
               <CardTitle className="flex items-center gap-2">
                 <WalletCards className="size-5 text-primary" />
@@ -157,24 +157,24 @@ export function RequestPaymentClient() {
             </p>
           </CardHeader>
 
-          <CardContent className="grid gap-5 p-5 pt-0">
+          <CardContent className="grid gap-5 p-4 pt-0 sm:p-5 sm:pt-0">
             {recipientError ? (
               <div className="rounded-2xl border border-destructive/20 bg-destructive/10 p-4 text-sm text-destructive">
                 This request link has an invalid recipient address.
               </div>
             ) : (
-              <div className="grid gap-4 sm:grid-cols-[164px_1fr] sm:items-center">
-                <div className="grid place-items-center rounded-2xl border border-emerald-950/10 bg-white p-3 dark:border-white/10">
+              <div className="grid gap-4 md:grid-cols-[164px_1fr] md:items-center">
+                <div className="mx-auto grid w-full max-w-44 place-items-center rounded-2xl border border-slate-950/10 bg-white p-3 dark:border-white/10 md:mx-0">
                   <QRCodeSVG value={requestUri} size={132} bgColor="#ffffff" fgColor="#050914" />
                 </div>
 
                 <div className="grid gap-3">
-                  <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
+                  <div className="rounded-2xl border border-slate-950/10 bg-white/75 p-4 dark:border-white/10 dark:bg-white/[0.06]">
                     <p className="text-xs text-muted-foreground">Recipient</p>
                     <p className="mt-1 font-semibold">{shortAddress(recipient, 10)}</p>
                   </div>
 
-                  <div className="rounded-2xl border border-emerald-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
+                  <div className="rounded-2xl border border-slate-950/10 bg-white/75 p-4 dark:border-white/10 dark:bg-white/[0.06]">
                     <p className="text-xs text-muted-foreground">Memo</p>
                     <p className="mt-1 font-semibold">{memo}</p>
                   </div>

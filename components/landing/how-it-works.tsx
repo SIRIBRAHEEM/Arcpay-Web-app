@@ -71,17 +71,17 @@ const benefits = [
 export function HowItWorks() {
   return (
     <>
-      <section id="how-it-works" className="bg-white px-4 py-16 dark:bg-[#03130f] sm:px-6 lg:px-8">
+      <section id="how-it-works" className="bg-white px-4 py-16 dark:bg-[#080d10] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
             <div>
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-emerald-800 dark:text-lime-200">
+              <p className="text-sm font-black uppercase tracking-[0.22em] text-teal-800 dark:text-lime-200">
                 How it works
               </p>
-              <h2 className="mt-3 max-w-xl text-4xl font-black tracking-tight text-emerald-950 dark:text-lime-50 sm:text-5xl">
+              <h2 className="mt-3 max-w-xl text-4xl font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-5xl">
                 A payment app, not a blockchain worksheet.
               </h2>
-              <p className="mt-4 max-w-xl text-lg leading-8 text-emerald-950/70 dark:text-lime-50/68">
+              <p className="mt-4 max-w-xl text-lg leading-8 text-teal-950/70 dark:text-lime-50/68">
                 ArcPay keeps the core actions close together: connect, fund,
                 pay, request, and review. The chain work is still there, but it
                 does not dominate the screen.
@@ -96,23 +96,23 @@ export function HowItWorks() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.08, duration: 0.45 }}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-emerald-950/10 bg-[#eefaf5] p-4 dark:border-white/10 dark:bg-white/[0.055]"
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-slate-950/10 bg-[#eff5f2] p-4 dark:border-white/10 dark:bg-white/[0.06]"
                 >
-                  <div className="grid size-11 place-items-center rounded-full bg-emerald-950 text-lime-100 dark:bg-lime-200 dark:text-emerald-950">
+                  <div className="grid size-11 place-items-center rounded-full bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
                     <step.icon className="size-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-black uppercase tracking-[0.18em] text-emerald-950/45 dark:text-lime-50/45">
+                    <p className="text-sm font-black uppercase tracking-[0.18em] text-teal-950/45 dark:text-lime-50/45">
                       0{index + 1}
                     </p>
-                    <h3 className="mt-1 text-lg font-black text-emerald-950 dark:text-lime-50">
+                    <h3 className="mt-1 text-lg font-black text-teal-950 dark:text-lime-50">
                       {step.title}
                     </h3>
-                    <p className="mt-1 text-sm leading-6 text-emerald-950/65 dark:text-lime-50/65">
+                    <p className="mt-1 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
                       {step.description}
                     </p>
                   </div>
-                  <ArrowRight className="hidden size-5 text-emerald-950/35 dark:text-lime-50/35 sm:block" />
+                  <ArrowRight className="hidden size-5 text-teal-950/35 dark:text-lime-50/35 sm:block" />
                 </motion.div>
               ))}
             </div>
@@ -120,14 +120,14 @@ export function HowItWorks() {
         </div>
       </section>
 
-      <section id="use-cases" className="bg-[#eefaf5] px-4 py-16 dark:bg-[#061814] sm:px-6 lg:px-8">
+      <section id="use-cases" className="bg-[#eff5f2] px-4 py-16 dark:bg-[#0a1112] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
             <div>
-              <p className="text-sm font-black uppercase tracking-[0.22em] text-emerald-800 dark:text-lime-200">
+              <p className="text-sm font-black uppercase tracking-[0.22em] text-teal-800 dark:text-lime-200">
                 The missing link for
               </p>
-              <h2 className="mt-3 text-4xl font-black tracking-tight text-emerald-950 dark:text-lime-50 sm:text-5xl">
+              <h2 className="mt-3 text-4xl font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-5xl">
                 Useful crypto payments.
               </h2>
             </div>
@@ -140,15 +140,15 @@ export function HowItWorks() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05, duration: 0.45 }}
-                  className="min-h-48 rounded-[1.5rem] border border-emerald-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.055] sm:p-6"
+                  className="min-h-48 rounded-[1.5rem] border border-slate-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.06] sm:p-6"
                 >
-                  <div className="grid size-12 place-items-center rounded-[1rem] bg-lime-200 text-emerald-950">
+                  <div className="grid size-12 place-items-center rounded-[1rem] bg-lime-200 text-teal-950">
                     <item.icon className="size-6" />
                   </div>
-                  <h3 className="mt-6 text-xl font-black text-emerald-950 dark:text-lime-50">
+                  <h3 className="mt-6 text-xl font-black text-teal-950 dark:text-lime-50">
                     {item.title}
                   </h3>
-                  <p className="mt-3 text-sm leading-6 text-emerald-950/65 dark:text-lime-50/65">
+                  <p className="mt-3 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
                     {item.description}
                   </p>
                 </motion.div>
@@ -158,7 +158,7 @@ export function HowItWorks() {
         </div>
       </section>
 
-      <section className="bg-emerald-950 px-4 py-16 text-white dark:bg-[#020806] sm:px-6 lg:px-8">
+      <section className="bg-teal-950 px-4 py-16 text-white dark:bg-[#05090c] sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.22em] text-lime-200">

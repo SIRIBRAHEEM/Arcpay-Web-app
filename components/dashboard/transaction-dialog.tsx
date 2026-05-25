@@ -30,7 +30,7 @@ export function TransactionDialog({
 }: TransactionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="overflow-hidden rounded-[1.5rem] border-emerald-950/10 bg-white p-0 shadow-card dark:border-white/10 dark:bg-[#06130f] sm:max-w-md">
+      <DialogContent className="overflow-hidden rounded-[1.5rem] border-slate-950/10 bg-white p-0 shadow-card dark:border-white/10 dark:bg-[#071114] sm:max-w-md">
         <div className="relative p-6">
           <div className="absolute inset-0 bg-primary/5 dark:bg-primary/10" />
 
@@ -52,7 +52,7 @@ export function TransactionDialog({
               </DialogDescription>
             </DialogHeader>
 
-            <div className="mt-6 rounded-2xl border border-emerald-950/10 bg-white/80 p-4 dark:border-white/10 dark:bg-white/[0.055]">
+            <div className="mt-6 rounded-2xl border border-slate-950/10 bg-white/80 p-4 dark:border-white/10 dark:bg-white/[0.06]">
               <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Transaction hash
               </p>
