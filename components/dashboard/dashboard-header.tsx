@@ -89,7 +89,9 @@ export function DashboardHeader() {
               ? "Passkey"
               : session?.method === "email"
                 ? "Email"
-                : "Non-custodial"}
+                : session?.method === "social"
+                  ? "Privy"
+                  : "Non-custodial"}
           </Badge>
 
           {chainId !== ARC_CHAIN_ID ? (

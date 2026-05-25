@@ -3,7 +3,7 @@
 import { create } from "zustand";
 import type { Address } from "viem";
 
-export type AuthMethod = "wallet" | "passkey" | "email";
+export type AuthMethod = "wallet" | "passkey" | "email" | "social";
 
 export type AuthSession = {
   method: AuthMethod;
@@ -11,6 +11,7 @@ export type AuthSession = {
   email?: string;
   address?: Address;
   credentialId?: string;
+  privyUserId?: string;
   createdAt: number;
 };
 

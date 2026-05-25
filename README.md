@@ -27,6 +27,9 @@ same browser.
 - Optional ERC-20 transfer watcher through viem.
 - Sonner toasts and transaction confirmation modal.
 - Mobile-first layout for phone, tablet, and desktop.
+- Privy-ready signup/login for email and social accounts.
+- EVM wallet signup/login with installed browser wallets and a Rainbow-style Web3
+  education link.
 
 ## Current Payment Flows
 
@@ -84,6 +87,12 @@ KIT_KEY=KIT_KEY:your-id:your-secret
 
 # Optional fallback for static/client-only builds:
 # NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
+
+# Privy social wallet login:
+NEXT_PUBLIC_PRIVY_APP_ID=your-privy-app-id
+
+# Optional, only if you use Privy app clients:
+# NEXT_PUBLIC_PRIVY_CLIENT_ID=your-privy-client-id
 
 ```
 

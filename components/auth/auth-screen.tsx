@@ -1,17 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
-  AtSign,
   Check,
   ChevronRight,
   ExternalLink,
+  Globe2,
   KeyRound,
   Loader2,
-  Mail,
   Monitor,
   QrCode,
   ShieldCheck,
@@ -21,6 +20,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { ArcPayLogoMark } from "@/components/arcpay-logo";
+import { PrivyLoginActions } from "@/components/auth/privy-login-actions";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -48,7 +48,7 @@ type AuthScreenProps = {
   mode: "signup" | "login";
 };
 
-type AuthPanel = "wallet" | "passkey" | "email";
+type AuthPanel = "social" | "wallet" | "passkey";
 
 const authPanels: Array<{
   value: AuthPanel;
@@ -57,22 +57,22 @@ const authPanels: Array<{
   description: string;
 }> = [
   {
+    value: "social",
+    icon: Globe2,
+    title: "Social wallet",
+    description: "Email, Google, Apple, X, Discord, or GitHub"
+  },
+  {
     value: "wallet",
     icon: WalletCards,
-    title: "Connect Wallet",
-    description: "Use your favorite browser wallet"
+    title: "EVM wallet",
+    description: "Use a wallet as your Web3 identity"
   },
   {
     value: "passkey",
     icon: KeyRound,
     title: "Passkey",
     description: "Secure this account with your device"
-  },
-  {
-    value: "email",
-    icon: Mail,
-    title: "Email",
-    description: "Continue with a simple email session"
   }
 ];
 
@@ -161,8 +161,8 @@ export function AuthScreen({ mode }: AuthScreenProps) {
   const [email, setEmail] = useState("");
   const [busyWallet, setBusyWallet] = useState<WalletId>();
   const [passkeyBusy, setPasskeyBusy] = useState(false);
-  const [emailBusy, setEmailBusy] = useState(false);
   const [passkeysReady, setPasskeysReady] = useState(false);
+  const privyEnabled = Boolean(process.env.NEXT_PUBLIC_PRIVY_APP_ID);
 
   useEffect(() => {
     setPasskeysReady(isPasskeySupported());
@@ -183,11 +183,11 @@ export function AuthScreen({ mode }: AuthScreenProps) {
   const alternateLabel = isSignup ? "Already have an account?" : "Need an account?";
   const alternateAction = isSignup ? "Log In" : "Sign Up";
   const headline = isSignup
-    ? "Create your account with wallet, email, or Passkey"
-    : "Log in with wallet, email, or Passkey";
+    ? "Create your account with social or EVM wallet"
+    : "Log in with social or EVM wallet";
   const supportingCopy = isSignup
-    ? "Choose how you want to start. ArcPay keeps payment actions non-custodial, so wallet flows still ask you to approve on-chain moves."
-    : "Welcome back. Pick the same method you used before, then connect a wallet when you are ready to pay or bridge.";
+    ? "Use Privy for fast social onboarding, or connect an EVM wallet directly when you are ready to approve on-chain payments."
+    : "Welcome back. Pick your Privy social session, EVM wallet, or passkey, then connect a wallet when you want to pay or bridge.";
 
   async function handleWalletSelect(
     wallet: WalletCatalogItem,
@@ -263,27 +263,6 @@ export function AuthScreen({ mode }: AuthScreenProps) {
     }
   }
 
-  function handleEmailSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-
-    const normalizedEmail = email.trim().toLowerCase();
-
-    if (!isValidEmail(normalizedEmail)) {
-      toast.error("Enter a valid email address.");
-      return;
-    }
-
-    setEmailBusy(true);
-    signIn({
-      method: "email",
-      label: normalizedEmail,
-      email: normalizedEmail,
-      createdAt: Date.now()
-    });
-    toast.success(isSignup ? "Email signup saved" : "Email login complete");
-    router.push("/dashboard");
-  }
-
   return (
     <main className="auth-shell min-h-screen overflow-x-hidden text-slate-950 dark:text-white">
       <div className="relative mx-auto flex min-h-[100svh] w-full max-w-5xl flex-col px-3 py-4 sm:px-6 sm:py-5 lg:px-8">
@@ -331,7 +310,13 @@ export function AuthScreen({ mode }: AuthScreenProps) {
                     setPanel((current) => (current === value ? null : value))
                   }
                   rightSlot={
-                    value === "wallet" ? (
+                    value === "social" ? (
+                      <div className="flex -space-x-2">
+                        {["G", "A", "X", "D"].map((label) => (
+                          <SocialIcon key={label} label={label} compact />
+                        ))}
+                      </div>
+                    ) : value === "wallet" ? (
                       <div className="flex -space-x-2">
                         {(["rabby", "metamask", "binance", "coinbase"] as WalletId[]).map(
                           (wallet) => (
@@ -339,8 +324,6 @@ export function AuthScreen({ mode }: AuthScreenProps) {
                           )
                         )}
                       </div>
-                    ) : value === "email" ? (
-                      <AtSign className="size-5 text-slate-500 dark:text-white/72" />
                     ) : (
                       <Sparkles className="size-5 text-slate-500 dark:text-white/72" />
                     )
@@ -350,8 +333,14 @@ export function AuthScreen({ mode }: AuthScreenProps) {
             </div>
 
             <div className="mx-auto mt-6 max-w-[33.5rem]">
+              {panel === "social" ? (
+                <SocialPanel mode={mode} privyEnabled={privyEnabled} />
+              ) : null}
+
               {panel === "wallet" ? (
-                <WalletPanel
+                <EvmWalletPanel
+                  mode={mode}
+                  privyEnabled={privyEnabled}
                   options={walletOptions}
                   busyWallet={busyWallet}
                   onSelect={handleWalletSelect}
@@ -366,16 +355,6 @@ export function AuthScreen({ mode }: AuthScreenProps) {
                   busy={passkeyBusy}
                   onEmailChange={setEmail}
                   onSubmit={handlePasskey}
-                />
-              ) : null}
-
-              {panel === "email" ? (
-                <EmailPanel
-                  mode={mode}
-                  email={email}
-                  busy={emailBusy}
-                  onEmailChange={setEmail}
-                  onSubmit={handleEmailSubmit}
                 />
               ) : null}
             </div>
@@ -451,6 +430,136 @@ function AuthMethodCard({
       </span>
       <span className="shrink-0">{rightSlot}</span>
     </button>
+  );
+}
+
+function SocialIcon({ label, compact = false }: { label: string; compact?: boolean }) {
+  const styles: Record<string, string> = {
+    G: "bg-white text-[#4285f4] ring-slate-950/10",
+    A: "bg-slate-950 text-white ring-white/20",
+    X: "bg-black text-white ring-white/20",
+    D: "bg-[#5865f2] text-white ring-white/20",
+    GH: "bg-[#24292f] text-white ring-white/20",
+    M: "bg-teal-700 text-white ring-white/20"
+  };
+
+  return (
+    <span
+      className={cn(
+        "grid shrink-0 place-items-center rounded-full text-xs font-black ring-2",
+        compact ? "size-8" : "size-10",
+        styles[label] ?? "bg-slate-200 text-slate-900 ring-slate-950/10"
+      )}
+      aria-hidden="true"
+    >
+      {label}
+    </span>
+  );
+}
+
+function PrivySetupNotice() {
+  return (
+    <div className="rounded-[1.25rem] border border-amber-400/30 bg-amber-100 px-4 py-3 text-sm font-semibold leading-6 text-amber-950 dark:bg-amber-300/10 dark:text-amber-100">
+      Add <span className="font-black">NEXT_PUBLIC_PRIVY_APP_ID</span> in Vercel to turn on
+      live Privy social login. The direct wallet connector below still works without it.
+    </div>
+  );
+}
+
+function SocialPanel({
+  mode,
+  privyEnabled
+}: {
+  mode: "signup" | "login";
+  privyEnabled: boolean;
+}) {
+  return (
+    <div className="space-y-4 rounded-[1.4rem] border border-slate-950/5 bg-slate-100 p-4 dark:border-white/[0.06] dark:bg-[#17171b] sm:p-5">
+      <div className="flex flex-wrap items-center gap-2">
+        <SocialIcon label="G" />
+        <SocialIcon label="A" />
+        <SocialIcon label="X" />
+        <SocialIcon label="D" />
+        <SocialIcon label="GH" />
+        <SocialIcon label="M" />
+      </div>
+
+      <div>
+        <p className="text-base font-black text-slate-950 dark:text-white">
+          Privy social wallet login
+        </p>
+        <p className="mt-1 text-sm font-medium leading-6 text-slate-600 dark:text-white/62">
+          Continue with email or social accounts, then ArcPay can create an embedded
+          EVM wallet for users who do not already have one.
+        </p>
+      </div>
+
+      {privyEnabled ? (
+        <PrivyLoginActions mode={mode} kind="social" />
+      ) : (
+        <PrivySetupNotice />
+      )}
+    </div>
+  );
+}
+
+function EvmWalletPanel({
+  mode,
+  privyEnabled,
+  options,
+  busyWallet,
+  onSelect
+}: {
+  mode: "signup" | "login";
+  privyEnabled: boolean;
+  options: Array<{ wallet: WalletCatalogItem; provider?: Eip6963ProviderDetail }>;
+  busyWallet?: WalletId;
+  onSelect: (wallet: WalletCatalogItem, provider?: Eip6963ProviderDetail) => void;
+}) {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-[1.4rem] border border-teal-900/10 bg-white p-4 shadow-sm dark:border-white/[0.06] dark:bg-[#17171b] sm:p-5">
+        <div className="flex items-start gap-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-lime-200 text-teal-950">
+            <WalletCards className="size-5" />
+          </span>
+          <div className="min-w-0">
+            <p className="font-black text-slate-950 dark:text-white">
+              Wallet as your Web3 identity
+            </p>
+            <p className="mt-1 text-sm font-medium leading-6 text-slate-600 dark:text-white/62">
+              Your EVM wallet signs in, approves payments, and keeps your on-chain
+              identity portable across ArcPay.
+            </p>
+            <a
+              href="https://learn.rainbow.me/understanding-web3"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-black text-teal-700 hover:text-teal-950 dark:text-lime-200 dark:hover:text-lime-100"
+            >
+              Learn Web3 with Rainbow
+              <ExternalLink className="size-3.5" />
+            </a>
+          </div>
+        </div>
+
+        {privyEnabled ? (
+          <PrivyLoginActions
+            mode={mode}
+            kind="evm"
+            className="mt-5 bg-slate-950 text-white hover:bg-slate-800 dark:bg-lime-200 dark:text-teal-950 dark:hover:bg-lime-100"
+          />
+        ) : null}
+      </div>
+
+      <div className="flex items-center gap-3 text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-white/45">
+        <span className="h-px flex-1 bg-slate-950/10 dark:bg-white/10" />
+        <span>Installed wallets</span>
+        <span className="h-px flex-1 bg-slate-950/10 dark:bg-white/10" />
+      </div>
+
+      <WalletPanel options={options} busyWallet={busyWallet} onSelect={onSelect} />
+    </div>
   );
 }
 
@@ -585,44 +694,5 @@ function PasskeyPanel({
         {isSignup ? "Create your Passkey" : "Login with Passkey"}
       </Button>
     </div>
-  );
-}
-
-function EmailPanel({
-  mode,
-  email,
-  busy,
-  onEmailChange,
-  onSubmit
-}: {
-  mode: "signup" | "login";
-  email: string;
-  busy: boolean;
-  onEmailChange: (value: string) => void;
-  onSubmit: (event: FormEvent<HTMLFormElement>) => void;
-}) {
-  return (
-    <form className="mx-auto max-w-xl" onSubmit={onSubmit}>
-      <label className="mb-2 block text-sm font-bold text-slate-700 dark:text-white/78" htmlFor="auth-email">
-        Email address
-      </label>
-      <Input
-        id="auth-email"
-        type="email"
-        value={email}
-        onChange={(event) => onEmailChange(event.target.value)}
-        placeholder="you@example.com"
-        className="h-12 rounded-2xl border-slate-950/10 bg-white text-slate-950 placeholder:text-slate-400 dark:border-white/10 dark:bg-black/[0.24] dark:text-white dark:placeholder:text-white/35"
-      />
-
-      <Button
-        type="submit"
-        disabled={busy}
-        className="mt-5 h-12 w-full rounded-full bg-slate-950 text-white hover:bg-slate-800 dark:bg-lime-200 dark:text-teal-950 dark:hover:bg-lime-100"
-      >
-        {busy ? <Loader2 className="mr-2 size-4 animate-spin" /> : <Mail className="mr-2 size-4" />}
-        {mode === "signup" ? "Continue with email" : "Login with email"}
-      </Button>
-    </form>
   );
 }
