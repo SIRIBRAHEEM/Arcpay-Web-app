@@ -1,0 +1,109 @@
+/* Final ArcPay dark-mode polish
+   Loaded after all global styles so the marked dark-mode areas stay premium and readable. */
+
+.dark .bg-\[\#eff5f2\],
+.dark .bg-teal-50,
+.dark .bg-teal-100,
+.dark .bg-white,
+.dark .bg-white\/70,
+.dark .bg-white\/75,
+.dark .bg-white\/90,
+.dark .bg-white\/95 {
+  background-color: rgba(7, 26, 58, 0.72) !important;
+}
+
+.dark .dark\:bg-white\/\[0\.06\],
+.dark .dark\:bg-white\/\[0\.07\],
+.dark .dark\:bg-white\/\[0\.075\],
+.dark .dark\:bg-white\/\[0\.08\],
+.dark .dark\:bg-white\/\[0\.10\],
+.dark .dark\:bg-white\/10 {
+  background-color: rgba(255, 255, 255, 0.09) !important;
+}
+
+.dark .rounded-\[1\.25rem\].dark\:bg-white\/\[0\.06\],
+.dark .rounded-2xl.dark\:bg-white\/\[0\.08\],
+.dark .rounded-\[1\.25rem\].bg-white,
+.dark .rounded-2xl.bg-teal-50 {
+  background: linear-gradient(145deg, rgba(255,255,255,0.12), rgba(11,99,229,0.10)) !important;
+  border-color: rgba(255,255,255,0.14) !important;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 16px 48px rgba(0,0,0,0.22) !important;
+}
+
+.dark input,
+.dark .dark\:text-lime-50,
+.dark .dark\:text-lime-50\/70,
+.dark .dark\:text-lime-50\/68,
+.dark .dark\:text-lime-50\/65,
+.dark .dark\:text-lime-50\/60,
+.dark .dark\:text-lime-50\/55,
+.dark .dark\:text-lime-50\/50 {
+  color: #eef6ff !important;
+}
+
+.dark .text-teal-950,
+.dark .text-teal-950\/80,
+.dark .text-teal-950\/70,
+.dark .text-teal-950\/65,
+.dark .text-teal-950\/60,
+.dark .text-teal-950\/55,
+.dark .text-teal-950\/50,
+.dark .text-teal-950\/45,
+.dark .text-teal-950\/40,
+.dark .text-teal-950\/35 {
+  color: #eef6ff !important;
+}
+
+.dark .text-teal-700,
+.dark .dark\:text-lime-200 {
+  color: #ffb45f !important;
+}
+
+.dark .rounded-full.bg-teal-50,
+.dark button.bg-teal-50,
+.dark .dark\:bg-white\/\[0\.08\].rounded-full {
+  background: linear-gradient(135deg, rgba(255,255,255,0.16), rgba(11,99,229,0.12)) !important;
+  color: #eef6ff !important;
+  border-color: rgba(255,255,255,0.16) !important;
+}
+
+.dark .text-5xl,
+.dark input.text-5xl {
+  color: #f3f8ff !important;
+  text-shadow: 0 6px 24px rgba(11,99,229,0.24);
+}
+
+.dark .grid.grid-cols-2.rounded-full {
+  background: rgba(255,255,255,0.1) !important;
+  border-color: rgba(255,255,255,0.16) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.dark .bg-teal-950 {
+  background:
+    radial-gradient(circle at 10% 0%, rgba(11,99,229,0.22), transparent 34%),
+    linear-gradient(180deg, #071f46 0%, #061733 100%) !important;
+}
+
+.dark .bg-lime-200,
+.dark .dark\:bg-lime-200 {
+  background: linear-gradient(135deg, #ff8200, #ffb45f) !important;
+  color: #061a3f !important;
+}
+
+.dark footer {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(11,99,229,0.18), transparent 28%),
+    linear-gradient(180deg, #071a3a 0%, #06142d 100%) !important;
+}
+
+.dark footer p,
+.dark footer a {
+  color: rgba(238,246,255,0.72);
+}
+
+.dark footer a:hover {
+  color: #ffb45f !important;
+}
