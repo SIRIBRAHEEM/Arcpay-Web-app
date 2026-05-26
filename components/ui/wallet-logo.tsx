@@ -38,10 +38,10 @@ const officialWalletAssets: Partial<Record<WalletId, OfficialWalletAsset>> = {
     background: "bg-white"
   },
   keplr: {
-    src: "https://drive.usercontent.google.com/uc?export=download&id=16LPtetX2E-7OT09Y0UyN86tsl11UBHdL",
+    src: "https://cdn.prod.website-files.com/667dc891bc7b863b5397495b/68a4ca95f93a9ab64dc67ab4_keplr-symbol.svg",
     alt: "Keplr Wallet logo",
     shape: "squircle",
-    fit: "cover",
+    fit: "contain",
     background: "bg-[#14AFEB]"
   },
   okx: {
@@ -79,6 +79,23 @@ function CoinbaseMark(props: WalletMarkProps) {
       <circle cx="16" cy="16" r="16" fill="#0052FF" />
       <circle cx="16" cy="16" r="8.5" fill="#fff" />
       <rect x="15.2" y="13.3" width="7.2" height="5.4" rx="2.7" fill="#0052FF" />
+    </svg>
+  );
+}
+
+function MetaMaskMark(props: WalletMarkProps) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
+      <rect width="32" height="32" rx="16" fill="#FFF3E4" />
+      <path d="m5.2 6.4 8.6 6.4-1.6-7.6-7 1.2ZM26.8 6.4l-8.7 6.5 1.7-7.7 7 1.2Z" fill="#E17726" />
+      <path d="m8.3 21.3-2.3 7 7.7-2.1-2.1-4.7-3.3-.2ZM23.7 21.3l-3.3.2-2.1 4.7 7.7 2.1-2.3-7Z" fill="#E27625" />
+      <path d="m13.3 13.9-1.5 2.3 7.8.1-1.5-2.4h-4.8ZM13.7 26.2l2.3-1.1 2.3 1.1-1.1-3.4h-2.4l-1.1 3.4Z" fill="#D5BFB2" />
+      <path d="m11.6 21.5 2.2 4.7 1-3.4-3.2-1.3ZM20.4 21.5l-3.2 1.3 1.1 3.4 2.1-4.7Z" fill="#233447" />
+      <path d="m11.5 16.2 2.6.8-.9-3.1-1.7 2.3ZM20.5 16.2l-1.7-2.3-.9 3.1 2.6-.8Z" fill="#CC6228" />
+      <path d="m8.3 21.3 3.4.2-.1-3.2-3.3 3ZM20.3 21.5l3.4-.2-3.3-3-.1 3.2Z" fill="#E27525" />
+      <path d="m14.1 17-2.5-.8 1.8 2.8.7-2ZM17.9 17l.7 2 1.8-2.8-2.5.8Z" fill="#F5841F" />
+      <path d="m13.7 20.6 1.1 2.2h2.4l1.1-2.2-1.9.9h-.8l-1.9-.9Z" fill="#C0AD9E" />
+      <path d="m13.4 19 2.2 1.5h.8l2.2-1.5-.7-2-1.5 1.1h-.8L14.1 17l-.7 2Z" fill="#161616" />
     </svg>
   );
 }
@@ -127,6 +144,7 @@ function BrowserMark(props: WalletMarkProps) {
 function walletFallback(wallet: WalletId, iconClass: string) {
   if (wallet === "binance") return <BinanceMark className={iconClass} />;
   if (wallet === "coinbase") return <CoinbaseMark className={iconClass} />;
+  if (wallet === "metamask") return <MetaMaskMark className={iconClass} />;
   if (wallet === "okx") return <OkxMark className={iconClass} />;
   if (wallet === "rabby") return <RabbyMark className={iconClass} />;
   if (wallet === "keplr") return <KeplrMark className={iconClass} />;
