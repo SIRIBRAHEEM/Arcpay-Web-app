@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   ArrowLeft,
   Check,
-  ChevronRight,
   ExternalLink,
   KeyRound,
   Loader2,
@@ -18,7 +18,6 @@ import {
   type LucideIcon
 } from "lucide-react";
 import { toast } from "sonner";
-import { ArcPayLogoMark } from "@/components/arcpay-logo";
 import { PrivyLoginActions } from "@/components/auth/privy-login-actions";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
@@ -275,9 +274,15 @@ export function AuthScreen({ mode }: AuthScreenProps) {
         </div>
 
         <section className="flex flex-1 flex-col items-center justify-center py-6 sm:py-10">
-          <Link href="/" className="mb-5 flex items-center gap-3 sm:mb-7 sm:gap-4" aria-label="ArcPay home">
-            <ArcPayLogoMark className="size-12 rounded-[1.2rem] sm:size-16 sm:rounded-2xl" active />
-            <span className="text-3xl font-black tracking-tight sm:text-5xl">ArcPay</span>
+          <Link href="/" className="mb-5 grid place-items-center sm:mb-7" aria-label="ArcPay home">
+            <Image
+              src="/arcpay-wordmark.svg"
+              alt="ArcPay"
+              width={300}
+              height={92}
+              priority
+              className="h-auto w-[210px] drop-shadow-[0_14px_36px_rgba(11,99,229,0.2)] sm:w-[300px]"
+            />
           </Link>
 
           <div className="w-full max-w-[42rem] rounded-[1.75rem] border border-slate-950/5 bg-white/95 p-4 shadow-[0_28px_100px_rgba(15,23,42,0.13)] backdrop-blur-2xl dark:border-white/[0.07] dark:bg-[#222326] dark:shadow-[0_30px_110px_rgba(0,0,0,0.38)] sm:rounded-[2.35rem] sm:p-8 lg:p-10">
@@ -560,7 +565,7 @@ function PasskeyPanel({
             className="mb-2 block text-sm font-bold text-slate-700 dark:text-white/78"
             htmlFor="passkey-email"
           >
-            Email
+            Email for this passkey
           </label>
           <Input
             id="passkey-email"
@@ -568,44 +573,39 @@ function PasskeyPanel({
             value={email}
             onChange={(event) => onEmailChange(event.target.value)}
             placeholder="you@example.com"
-            className="h-12 rounded-2xl border-slate-950/10 bg-white text-slate-950 placeholder:text-slate-400 dark:border-white/10 dark:bg-black/[0.24] dark:text-white dark:placeholder:text-white/35"
+            className="h-12 rounded-2xl"
           />
         </div>
       ) : null}
 
-      <div className="overflow-hidden rounded-[1.35rem] border border-slate-950/5 bg-slate-100 dark:border-white/[0.06] dark:bg-[#17171b]">
-        {passkeyChoices.map(({ icon: Icon, label }, index) => (
+      <div className="grid gap-3">
+        {passkeyChoices.map(({ icon: Icon, label }) => (
           <div
             key={label}
-            className={cn(
-              "flex items-center gap-4 px-5 py-4",
-              index ? "border-t border-slate-950/10 dark:border-white/[0.12]" : ""
-            )}
+            className="flex items-center gap-3 rounded-2xl border border-slate-950/5 bg-slate-100 px-4 py-3 text-sm font-semibold text-slate-700 dark:border-white/[0.06] dark:bg-white/[0.06] dark:text-white/68"
           >
-            <Icon className="size-5 text-slate-700 dark:text-white/72" />
-            <span className="flex-1 text-sm font-bold text-slate-700 dark:text-white/78">
-              {label}
-            </span>
-            <ChevronRight className="size-4 text-slate-400 dark:text-white/50" />
+            <Icon className="size-4 text-slate-500 dark:text-white/55" />
+            {label}
           </div>
         ))}
       </div>
 
-      {!passkeysReady ? (
-        <div className="mt-4 rounded-2xl border border-amber-400/30 bg-amber-100 px-4 py-3 text-sm font-semibold text-amber-900 dark:bg-amber-300/10 dark:text-amber-100">
-          This browser does not expose passkey APIs on the current connection.
-        </div>
-      ) : null}
-
       <Button
         type="button"
-        onClick={onSubmit}
+        size="lg"
+        className="mt-5 w-full rounded-2xl"
         disabled={busy || !passkeysReady}
-        className="mx-auto mt-7 flex h-12 min-w-52 rounded-full bg-[#ef3f4a] px-7 text-white shadow-[0_18px_45px_rgba(239,63,74,0.22)] hover:bg-[#ff4d58]"
+        onClick={onSubmit}
       >
         {busy ? <Loader2 className="mr-2 size-4 animate-spin" /> : <KeyRound className="mr-2 size-4" />}
-        {isSignup ? "Create your Passkey" : "Login with Passkey"}
+        {isSignup ? "Create passkey" : "Continue with passkey"}
       </Button>
+
+      {!passkeysReady ? (
+        <p className="mt-3 text-center text-xs text-slate-500 dark:text-white/45">
+          Passkeys are not supported in this browser profile.
+        </p>
+      ) : null}
     </div>
   );
 }
