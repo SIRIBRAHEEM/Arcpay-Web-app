@@ -1,0 +1,145 @@
+/* ArcPay brand compatibility layer
+   This file intentionally overrides old teal/lime/emerald utility classes that still exist
+   in legacy components, so the whole app renders with the new blue/orange logo system. */
+
+:root {
+  --arcpay-blue-950: #061a3f;
+  --arcpay-blue-900: #08245c;
+  --arcpay-blue-800: #063b9f;
+  --arcpay-blue-700: #0b4fd8;
+  --arcpay-blue-600: #0b63e5;
+  --arcpay-blue-100: #eaf3ff;
+  --arcpay-blue-50: #f4f8ff;
+  --arcpay-orange-600: #ff8200;
+  --arcpay-orange-500: #ff930f;
+  --arcpay-orange-300: #ffb45f;
+  --arcpay-orange-200: #ffd7a3;
+  --arcpay-orange-100: #fff0dc;
+}
+
+/* Text: old green/teal names become ArcPay blue or orange */
+.text-teal-950,
+.text-teal-900,
+.text-teal-800,
+.hover\:text-teal-950:hover,
+.hover\:text-teal-900:hover {
+  color: var(--arcpay-blue-950) !important;
+}
+
+.text-teal-700,
+.hover\:text-teal-700:hover {
+  color: var(--arcpay-blue-700) !important;
+}
+
+.text-teal-950\/80 { color: rgb(6 26 63 / 0.8) !important; }
+.text-teal-950\/70 { color: rgb(6 26 63 / 0.7) !important; }
+.text-teal-950\/68 { color: rgb(6 26 63 / 0.68) !important; }
+.text-teal-950\/65 { color: rgb(6 26 63 / 0.65) !important; }
+.text-teal-950\/60 { color: rgb(6 26 63 / 0.6) !important; }
+.text-teal-950\/55 { color: rgb(6 26 63 / 0.55) !important; }
+.text-teal-950\/50 { color: rgb(6 26 63 / 0.5) !important; }
+.text-teal-950\/45 { color: rgb(6 26 63 / 0.45) !important; }
+.text-teal-950\/40 { color: rgb(6 26 63 / 0.4) !important; }
+.text-teal-950\/35 { color: rgb(6 26 63 / 0.35) !important; }
+
+.text-lime-50,
+.text-lime-100,
+.text-lime-200,
+.text-emerald-800,
+.dark .dark\:text-lime-50,
+.dark .dark\:text-lime-100,
+.dark .dark\:text-lime-200,
+.dark .dark\:text-emerald-200,
+.dark .dark\:hover\:text-lime-50:hover,
+.dark .dark\:hover\:text-lime-100:hover {
+  color: var(--arcpay-orange-200) !important;
+}
+
+.dark .dark\:text-lime-50\/90 { color: rgb(235 245 255 / 0.9) !important; }
+.dark .dark\:text-lime-50\/80 { color: rgb(235 245 255 / 0.8) !important; }
+.dark .dark\:text-lime-50\/70 { color: rgb(235 245 255 / 0.7) !important; }
+.dark .dark\:text-lime-50\/68 { color: rgb(235 245 255 / 0.68) !important; }
+.dark .dark\:text-lime-50\/65 { color: rgb(235 245 255 / 0.65) !important; }
+.dark .dark\:text-lime-50\/60 { color: rgb(235 245 255 / 0.6) !important; }
+.dark .dark\:text-lime-50\/55 { color: rgb(235 245 255 / 0.55) !important; }
+.dark .dark\:text-lime-50\/50 { color: rgb(235 245 255 / 0.5) !important; }
+.dark .dark\:text-lime-50\/45 { color: rgb(235 245 255 / 0.45) !important; }
+.dark .dark\:text-lime-50\/40 { color: rgb(235 245 255 / 0.4) !important; }
+.dark .dark\:text-lime-50\/35 { color: rgb(235 245 255 / 0.35) !important; }
+
+/* Backgrounds: old teal/lime surfaces become blue/orange brand surfaces */
+.bg-teal-950,
+.hover\:bg-teal-950:hover {
+  background-color: var(--arcpay-blue-950) !important;
+}
+
+.bg-teal-100,
+.bg-teal-50,
+.bg-\[\#eff5f2\] {
+  background-color: var(--arcpay-blue-50) !important;
+}
+
+.bg-lime-50,
+.bg-lime-100,
+.bg-orange-100,
+.bg-emerald-100 {
+  background-color: var(--arcpay-orange-100) !important;
+}
+
+.bg-lime-200,
+.dark .dark\:bg-lime-200 {
+  background-color: var(--arcpay-orange-500) !important;
+  color: #061a3f !important;
+}
+
+.bg-lime-200\/15 { background-color: rgb(255 130 0 / 0.15) !important; }
+.bg-lime-200\/16 { background-color: rgb(255 130 0 / 0.16) !important; }
+.dark .dark\:bg-lime-200\/16 { background-color: rgb(255 130 0 / 0.16) !important; }
+.dark .dark\:bg-emerald-400\/10 { background-color: rgb(11 99 229 / 0.12) !important; }
+
+.dark .dark\:bg-\[\#071114\],
+.dark .dark\:bg-\[\#080d10\],
+.dark .dark\:bg-\[\#0a1112\],
+.dark .dark\:bg-\[\#05090c\],
+.dark .dark\:bg-\[\#101114\],
+.dark .dark\:bg-\[\#17181b\],
+.dark .dark\:bg-\[\#222326\] {
+  background-color: #061833 !important;
+}
+
+/* Borders and rings */
+.border-teal-900\/10,
+.border-teal-950\/10,
+.dark .dark\:border-lime-200\/15,
+.dark .dark\:border-lime-200\/20,
+.dark .dark\:border-lime-200\/25 {
+  border-color: rgb(11 99 229 / 0.18) !important;
+}
+
+.hover\:border-lime-200\/\[0\.35\]:hover {
+  border-color: rgb(255 130 0 / 0.35) !important;
+}
+
+/* Gradients and section backgrounds */
+.bg-\[linear-gradient\(180deg\,\#f8f6ef_0\%\,\#ffffff_54\%\,rgba\(255\,255\,255\,0\)_100\%\)\] {
+  background-image: linear-gradient(180deg, #f4f8ff 0%, #ffffff 54%, rgba(255,255,255,0) 100%) !important;
+}
+
+.dark .dark\:bg-\[linear-gradient\(180deg\,\#111318_0\%\,\#0a1112_54\%\,rgba\(7\,9\,12\,0\)_100\%\)\] {
+  background-image: linear-gradient(180deg, #061833 0%, #07101f 54%, rgba(5,7,13,0) 100%) !important;
+}
+
+/* Icons and activity accents */
+.text-emerald-800,
+.dark .dark\:text-emerald-200 {
+  color: var(--arcpay-blue-700) !important;
+}
+
+.bg-emerald-100 {
+  background-color: var(--arcpay-blue-100) !important;
+}
+
+/* Small helpers for remaining legacy names */
+.to-teal-50\/75 { --tw-gradient-to: rgb(239 246 255 / 0.75) var(--tw-gradient-to-position) !important; }
+.dark .dark\:to-cyan-200 { --tw-gradient-to: #fed7aa var(--tw-gradient-to-position) !important; }
+.dark .dark\:via-lime-100 { --tw-gradient-stops: var(--tw-gradient-from), #dbeafe var(--tw-gradient-via-position), var(--tw-gradient-to) !important; }
