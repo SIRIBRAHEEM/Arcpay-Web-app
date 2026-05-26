@@ -8,7 +8,6 @@ import {
   Check,
   ChevronRight,
   ExternalLink,
-  Globe2,
   KeyRound,
   Loader2,
   Monitor,
@@ -48,7 +47,7 @@ type AuthScreenProps = {
   mode: "signup" | "login";
 };
 
-type AuthPanel = "social" | "wallet" | "passkey";
+type AuthPanel = "wallet" | "passkey";
 
 const authPanels: Array<{
   value: AuthPanel;
@@ -56,12 +55,6 @@ const authPanels: Array<{
   title: string;
   description: string;
 }> = [
-  {
-    value: "social",
-    icon: Globe2,
-    title: "Social wallet",
-    description: "Email, Google, Apple, X, Discord, or GitHub"
-  },
   {
     value: "wallet",
     icon: WalletCards,
@@ -157,7 +150,7 @@ export function AuthScreen({ mode }: AuthScreenProps) {
   const providers = useInjectedWalletProviders();
   const signIn = useAuthStore((state) => state.signIn);
   const setConnected = useWalletStore((state) => state.setConnected);
-  const [panel, setPanel] = useState<AuthPanel | null>(null);
+  const [panel, setPanel] = useState<AuthPanel | null>("wallet");
   const [email, setEmail] = useState("");
   const [busyWallet, setBusyWallet] = useState<WalletId>();
   const [passkeyBusy, setPasskeyBusy] = useState(false);
@@ -183,11 +176,11 @@ export function AuthScreen({ mode }: AuthScreenProps) {
   const alternateLabel = isSignup ? "Already have an account?" : "Need an account?";
   const alternateAction = isSignup ? "Log In" : "Sign Up";
   const headline = isSignup
-    ? "Create your account with social or EVM wallet"
-    : "Log in with social or EVM wallet";
+    ? "Create your account with EVM wallet or passkey"
+    : "Log in with EVM wallet or passkey";
   const supportingCopy = isSignup
-    ? "Use Privy for fast social onboarding, or connect an EVM wallet directly when you are ready to approve on-chain payments."
-    : "Welcome back. Pick your Privy social session, EVM wallet, or passkey, then connect a wallet when you want to pay or bridge.";
+    ? "Connect an EVM wallet directly or create a device passkey for secure access to ArcPay."
+    : "Welcome back. Pick your EVM wallet or passkey, then continue to your ArcPay dashboard.";
 
   async function handleWalletSelect(
     wallet: WalletCatalogItem,
@@ -310,13 +303,7 @@ export function AuthScreen({ mode }: AuthScreenProps) {
                     setPanel((current) => (current === value ? null : value))
                   }
                   rightSlot={
-                    value === "social" ? (
-                      <div className="flex -space-x-2">
-                        {["G", "A", "X", "D"].map((label) => (
-                          <SocialIcon key={label} label={label} compact />
-                        ))}
-                      </div>
-                    ) : value === "wallet" ? (
+                    value === "wallet" ? (
                       <div className="flex -space-x-2">
                         {(["rabby", "metamask", "binance", "coinbase"] as WalletId[]).map(
                           (wallet) => (
@@ -333,10 +320,6 @@ export function AuthScreen({ mode }: AuthScreenProps) {
             </div>
 
             <div className="mx-auto mt-6 max-w-[33.5rem]">
-              {panel === "social" ? (
-                <SocialPanel mode={mode} privyEnabled={privyEnabled} />
-              ) : null}
-
               {panel === "wallet" ? (
                 <EvmWalletPanel
                   mode={mode}
@@ -430,76 +413,6 @@ function AuthMethodCard({
       </span>
       <span className="shrink-0">{rightSlot}</span>
     </button>
-  );
-}
-
-function SocialIcon({ label, compact = false }: { label: string; compact?: boolean }) {
-  const styles: Record<string, string> = {
-    G: "bg-white text-[#4285f4] ring-slate-950/10",
-    A: "bg-slate-950 text-white ring-white/20",
-    X: "bg-black text-white ring-white/20",
-    D: "bg-[#5865f2] text-white ring-white/20",
-    GH: "bg-[#24292f] text-white ring-white/20",
-    M: "bg-teal-700 text-white ring-white/20"
-  };
-
-  return (
-    <span
-      className={cn(
-        "grid shrink-0 place-items-center rounded-full text-xs font-black ring-2",
-        compact ? "size-8" : "size-10",
-        styles[label] ?? "bg-slate-200 text-slate-900 ring-slate-950/10"
-      )}
-      aria-hidden="true"
-    >
-      {label}
-    </span>
-  );
-}
-
-function PrivySetupNotice() {
-  return (
-    <div className="rounded-[1.25rem] border border-amber-400/30 bg-amber-100 px-4 py-3 text-sm font-semibold leading-6 text-amber-950 dark:bg-amber-300/10 dark:text-amber-100">
-      Add <span className="font-black">NEXT_PUBLIC_PRIVY_APP_ID</span> in Vercel to turn on
-      live Privy social login. The direct wallet connector below still works without it.
-    </div>
-  );
-}
-
-function SocialPanel({
-  mode,
-  privyEnabled
-}: {
-  mode: "signup" | "login";
-  privyEnabled: boolean;
-}) {
-  return (
-    <div className="space-y-4 rounded-[1.4rem] border border-slate-950/5 bg-slate-100 p-4 dark:border-white/[0.06] dark:bg-[#17171b] sm:p-5">
-      <div className="flex flex-wrap items-center gap-2">
-        <SocialIcon label="G" />
-        <SocialIcon label="A" />
-        <SocialIcon label="X" />
-        <SocialIcon label="D" />
-        <SocialIcon label="GH" />
-        <SocialIcon label="M" />
-      </div>
-
-      <div>
-        <p className="text-base font-black text-slate-950 dark:text-white">
-          Privy social wallet login
-        </p>
-        <p className="mt-1 text-sm font-medium leading-6 text-slate-600 dark:text-white/62">
-          Continue with email or social accounts, then ArcPay can create an embedded
-          EVM wallet for users who do not already have one.
-        </p>
-      </div>
-
-      {privyEnabled ? (
-        <PrivyLoginActions mode={mode} kind="social" />
-      ) : (
-        <PrivySetupNotice />
-      )}
-    </div>
   );
 }
 
