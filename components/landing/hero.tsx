@@ -202,7 +202,7 @@ export function Hero() {
             </div>
 
             <div className="p-5 sm:p-6">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <div>
                   <p className="text-sm font-semibold text-teal-950/55 dark:text-lime-50/55">
                     Try it now
@@ -212,7 +212,7 @@ export function Hero() {
                   </h2>
                 </div>
 
-                <div className="grid grid-cols-2 rounded-full border border-slate-950/10 bg-slate-950/5 p-1 dark:border-white/10 dark:bg-white/[0.06]">
+                <div className="grid shrink-0 grid-cols-2 rounded-full border border-slate-950/10 bg-slate-950/5 p-1 dark:border-white/10 dark:bg-white/[0.06]">
                   {(["pay", "request"] as const).map((item) => (
                     <button
                       key={item}
@@ -231,35 +231,33 @@ export function Hero() {
               </div>
 
               <div className="mt-6 grid gap-4">
-                <div className="rounded-[1.25rem] border border-slate-950/10 bg-white p-4 dark:border-white/10 dark:bg-white/[0.06]">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-teal-950/50 dark:text-lime-50/50">
-                        {mode === "pay" ? "Send" : "Amount"}
-                      </p>
+                <div className="rounded-[1.35rem] border border-slate-950/10 bg-white/95 p-4 dark:border-white/10 dark:bg-white/[0.07]">
+                  <p className="text-sm font-semibold text-teal-950/50 dark:text-lime-50/55">
+                    {mode === "pay" ? "Send" : "Amount"}
+                  </p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                    <div className="min-w-0 rounded-[1.15rem] bg-slate-950/[0.045] px-4 py-3 dark:bg-white/[0.08]">
                       <Input
                         aria-label="Demo amount"
                         inputMode="decimal"
                         defaultValue="125.00"
-                        className="mt-1 h-auto border-0 bg-transparent p-0 text-5xl font-black tracking-tight text-teal-950 shadow-none ring-0 focus-visible:ring-0 dark:text-lime-50"
+                        className="h-auto min-w-0 border-0 bg-transparent p-0 text-[3.15rem] font-black leading-none tracking-tight text-teal-950 shadow-none ring-0 focus-visible:ring-0 dark:text-lime-50 sm:text-5xl"
                       />
                     </div>
 
-                    <div className="relative">
-                      <button
-                        type="button"
-                        className="flex items-center gap-2 rounded-full border border-slate-950/10 bg-teal-50 px-4 py-3 text-sm font-black text-teal-950 dark:border-white/10 dark:bg-white/[0.08] dark:text-lime-50"
-                        onClick={() =>
-                          setAsset((current) => {
-                            const currentIndex = demoAssets.indexOf(current);
-                            return demoAssets[(currentIndex + 1) % demoAssets.length];
-                          })
-                        }
-                      >
-                        {asset}
-                        <ChevronDown className="size-4" />
-                      </button>
-                    </div>
+                    <button
+                      type="button"
+                      className="flex h-12 items-center justify-center gap-2 rounded-full border border-slate-950/10 bg-teal-50 px-5 text-sm font-black text-teal-950 dark:border-white/10 dark:bg-white/[0.1] dark:text-lime-50 sm:h-14"
+                      onClick={() =>
+                        setAsset((current) => {
+                          const currentIndex = demoAssets.indexOf(current);
+                          return demoAssets[(currentIndex + 1) % demoAssets.length];
+                        })
+                      }
+                    >
+                      {asset}
+                      <ChevronDown className="size-4" />
+                    </button>
                   </div>
                 </div>
 
