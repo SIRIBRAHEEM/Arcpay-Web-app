@@ -12,6 +12,16 @@
   background-color: rgba(7, 26, 58, 0.72) !important;
 }
 
+.dark .qr-white-surface,
+.dark .qr-white-surface.bg-white,
+.dark .qr-white-surface * {
+  background-color: #ffffff !important;
+}
+
+.qr-white-surface {
+  background: #ffffff !important;
+}
+
 .dark .dark\:bg-white\/\[0\.06\],
 .dark .dark\:bg-white\/\[0\.07\],
 .dark .dark\:bg-white\/\[0\.075\],
@@ -30,6 +40,12 @@
   box-shadow:
     inset 0 1px 0 rgba(255,255,255,0.08),
     0 16px 48px rgba(0,0,0,0.22) !important;
+}
+
+.dark .qr-white-surface.rounded-\[1\.25rem\] {
+  background: #ffffff !important;
+  border-color: rgba(6,26,63,0.08) !important;
+  box-shadow: inset 0 0 0 1px rgba(6,26,63,0.08) !important;
 }
 
 .dark input,
