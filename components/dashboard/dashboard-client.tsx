@@ -10,6 +10,7 @@ import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-h
 import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
 import { SendPanel } from "@/components/dashboard/send-panel";
+import { TokenExchangePanel } from "@/components/dashboard/token-exchange-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
@@ -76,6 +77,7 @@ export function DashboardClient() {
         <section className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
           <div className="grid gap-4">
             <SendPanel />
+            <TokenExchangePanel />
             <BridgePanel />
             <TxHistory />
           </div>
