@@ -6,7 +6,6 @@ import type { ArcStableToken, WalletAdapter } from "@/lib/appkit-actions";
 const decimalAmountRegex = /^(?:0|[1-9]\d*)(?:\.\d{1,18})?$/;
 const actionName = ["s", "w", "a", "p"].join("");
 const configName = ["k", "i", "t", "K", "e", "y"].join("");
-const envName = ["NEXT", "PUBLIC", "KIT", "KEY"].join("_");
 
 function normalizeAmount(value: string) {
   const cleaned = value.trim();
@@ -25,10 +24,10 @@ function normalizeAmount(value: string) {
 }
 
 function getPublicCredential() {
-  const value = process.env[envName];
+  const value = process.env.NEXT_PUBLIC_KIT_KEY;
 
   if (!value) {
-    throw new Error("Circle App Kit public credential is missing. Add it in Vercel environment variables, then redeploy.");
+    throw new Error("Circle App Kit public credential is missing. Add NEXT_PUBLIC_KIT_KEY in Vercel environment variables, then redeploy.");
   }
 
   return value;
