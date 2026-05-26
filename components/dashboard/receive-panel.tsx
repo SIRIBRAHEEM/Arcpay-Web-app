@@ -28,9 +28,7 @@ export function ReceivePanel() {
   const requestUri = useMemo(() => {
     if (!address) return "";
     const trimmed = requestAmount.trim();
-
     if (!trimmed) return `ethereum:${address}@${ARC_CHAIN_ID}`;
-
     return `ethereum:${address}@${ARC_CHAIN_ID}?value=${encodeURIComponent(trimmed)}`;
   }, [address, requestAmount]);
 
@@ -45,7 +43,6 @@ export function ReceivePanel() {
 
     const trimmedAmount = requestAmount.trim();
     const trimmedMemo = memo.trim();
-
     if (trimmedAmount) params.set("amount", trimmedAmount);
     if (trimmedMemo) params.set("memo", trimmedMemo);
 
@@ -97,10 +94,10 @@ export function ReceivePanel() {
   const displayAmount = requestAmount.trim() || "0.00";
 
   return (
-    <Card className="stable-money-qr-card rounded-[1.5rem] shadow-card">
-      <CardHeader className="relative z-10 flex flex-row items-start justify-between space-y-0 p-4 sm:p-5">
+    <Card className="stable-money-qr-card overflow-hidden rounded-[1.5rem] shadow-card">
+      <CardHeader className="relative z-10 flex flex-row items-start justify-between gap-3 space-y-0 p-4 sm:p-5">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-full stable-money-chip px-3 py-1 text-xs font-black uppercase tracking-[0.16em]">
+          <div className="inline-flex items-center gap-2 rounded-full stable-money-chip px-3 py-1 text-[0.68rem] font-black uppercase tracking-[0.14em] sm:text-xs sm:tracking-[0.16em]">
             <Sparkles className="size-3.5" />
             Stable money request
           </div>
@@ -111,25 +108,25 @@ export function ReceivePanel() {
             Generate a polished USDC request link and QR code your sender can open instantly.
           </p>
         </div>
-        <Link2 className="size-5 text-primary" />
+        <Link2 className="mt-1 size-5 shrink-0 text-primary" />
       </CardHeader>
 
       <CardContent className="relative z-10 p-4 pt-0 sm:p-5 sm:pt-0">
-        <div className="grid gap-6 lg:grid-cols-[230px_1fr] lg:items-start">
-          <div className="mx-auto w-full max-w-[230px] lg:mx-0">
-            <div className="stable-money-qr-box rounded-[1.65rem] p-3.5 sm:p-4">
-              <div className="qr-white-surface rounded-[1.25rem] p-3.5 shadow-[inset_0_0_0_1px_rgba(6,26,63,0.08)]">
+        <div className="grid gap-5 lg:grid-cols-[200px_1fr] lg:items-start">
+          <div className="mx-auto w-full max-w-[198px] lg:mx-0">
+            <div className="stable-money-qr-box rounded-[1.45rem] p-3">
+              <div className="qr-white-surface rounded-[1.05rem] p-3 shadow-[inset_0_0_0_1px_rgba(6,26,63,0.08)]">
                 <QRCodeSVG
                   value={shareLink || requestUri}
-                  size={172}
+                  size={148}
                   bgColor="#ffffff"
                   fgColor="#061A3F"
                   level="Q"
                   includeMargin
-                  className="mx-auto block max-w-full"
+                  className="mx-auto block h-auto max-w-full"
                 />
               </div>
-              <div className="mt-3 flex items-center justify-between rounded-[1rem] bg-[#f4f8ff] px-4 py-3 text-xs font-black text-[#061a3f] shadow-[inset_0_0_0_1px_rgba(11,99,229,0.06)]">
+              <div className="mt-3 flex items-center justify-between rounded-[0.95rem] bg-[#f4f8ff] px-3.5 py-2.5 text-xs font-black text-[#061a3f] shadow-[inset_0_0_0_1px_rgba(11,99,229,0.06)]">
                 <span>USDC</span>
                 <span>{displayAmount}</span>
               </div>
