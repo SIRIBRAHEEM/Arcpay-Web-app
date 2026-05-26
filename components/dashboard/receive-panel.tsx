@@ -115,20 +115,21 @@ export function ReceivePanel() {
       </CardHeader>
 
       <CardContent className="relative z-10 p-4 pt-0 sm:p-5 sm:pt-0">
-        <div className="grid gap-5 lg:grid-cols-[190px_1fr] lg:items-start">
-          <div className="arcpay-float-soft mx-auto w-full max-w-[190px] lg:mx-0">
-            <div className="stable-money-qr-box rounded-[1.35rem] p-4">
-              <div className="rounded-[1rem] bg-white p-3">
+        <div className="grid gap-6 lg:grid-cols-[230px_1fr] lg:items-start">
+          <div className="mx-auto w-full max-w-[230px] lg:mx-0">
+            <div className="stable-money-qr-box rounded-[1.65rem] p-3.5 sm:p-4">
+              <div className="qr-white-surface rounded-[1.25rem] p-3.5 shadow-[inset_0_0_0_1px_rgba(6,26,63,0.08)]">
                 <QRCodeSVG
                   value={shareLink || requestUri}
-                  size={142}
+                  size={172}
                   bgColor="#ffffff"
                   fgColor="#061A3F"
-                  level="M"
-                  includeMargin={false}
+                  level="Q"
+                  includeMargin
+                  className="mx-auto block max-w-full"
                 />
               </div>
-              <div className="mt-3 flex items-center justify-between rounded-full bg-[#f4f8ff] px-3 py-2 text-xs font-black text-[#061a3f]">
+              <div className="mt-3 flex items-center justify-between rounded-[1rem] bg-[#f4f8ff] px-4 py-3 text-xs font-black text-[#061a3f] shadow-[inset_0_0_0_1px_rgba(11,99,229,0.06)]">
                 <span>USDC</span>
                 <span>{displayAmount}</span>
               </div>
