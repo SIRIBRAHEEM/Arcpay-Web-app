@@ -62,13 +62,28 @@ const officialWalletAssets: Partial<Record<WalletId, OfficialWalletAsset>> = {
 
 function BinanceMark(props: WalletMarkProps) {
   return (
-    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}>
-      <rect width="32" height="32" rx="16" fill="#181A20" />
-      <path d="M16 3.9 20.1 8 16 12.1 11.9 8 16 3.9Z" fill="#F0B90B" />
-      <path d="M8 11.9 12.1 16 8 20.1 3.9 16 8 11.9Z" fill="#F0B90B" />
-      <path d="M24 11.9 28.1 16 24 20.1 19.9 16 24 11.9Z" fill="#F0B90B" />
-      <path d="M16 19.9 20.1 24 16 28.1 11.9 24 16 19.9Z" fill="#F0B90B" />
-      <path d="M16 11.2 20.8 16 16 20.8 11.2 16 16 11.2Z" fill="#F0B90B" />
+    <svg viewBox="0 0 300 300" fill="none" aria-hidden="true" {...props}>
+      <circle cx="150" cy="150" r="150" fill="#F3BA2F" />
+      <path
+        d="M188 133.5 150 95.5 111 133.5 88.5 111 150 50.5 210.5 111 188 133.5Z"
+        fill="#131415"
+      />
+      <path
+        d="M73 171.5 50.5 150 72 127.5 94.5 149 73 171.5Z"
+        fill="#131415"
+      />
+      <path
+        d="M150 172.5 127.5 150 149 127.5 172.5 150 150 172.5Z"
+        fill="#131415"
+      />
+      <path
+        d="M227 171.5 204.5 150 226 127.5 248.5 149 227 171.5Z"
+        fill="#131415"
+      />
+      <path
+        d="M150 248.5 88.5 188 111 165.5 149 203.5 188 166.5 210.5 188 150 248.5Z"
+        fill="#131415"
+      />
     </svg>
   );
 }
