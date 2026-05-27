@@ -23,7 +23,7 @@ export function Footer() {
               rel="noreferrer"
               className="font-bold text-[#ffb45f] hover:underline"
             >
-              @siribraheem33
+              SIRIBRAHEEM
             </a>
           </p>
         </div>
