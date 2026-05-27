@@ -261,35 +261,51 @@ export function ReceivePanel() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-3">
-              <Button
-                type="button"
-                variant="secondary"
-                className="h-11 gap-2 rounded-2xl"
-                onClick={() => void copyShareLink()}
-              >
-                <Copy className="size-4" />
-                Copy link
-              </Button>
+            <div className="rounded-[1.35rem] border border-slate-950/10 bg-white/65 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] dark:border-white/10 dark:bg-white/[0.055] sm:p-4">
+              <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+                <div>
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-white/45">
+                    Invoice actions
+                  </p>
+                  <p className="mt-1 text-xs text-slate-600 dark:text-white/55">
+                    Copy or share this request with your payer.
+                  </p>
+                </div>
+                <span className="rounded-full bg-blue-100 px-3 py-1 text-[0.68rem] font-black text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
+                  {displayAmount} USDC
+                </span>
+              </div>
 
-              <Button
-                type="button"
-                variant="secondary"
-                className="h-11 gap-2 rounded-2xl"
-                onClick={() => void copyInvoiceSummary()}
-              >
-                <FileText className="size-4" />
-                Copy invoice
-              </Button>
+              <div className="grid gap-3 md:grid-cols-2">
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl px-4 text-sm font-black"
+                  onClick={() => void copyShareLink()}
+                >
+                  <Copy className="size-4 shrink-0" />
+                  Copy link
+                </Button>
 
-              <Button
-                type="button"
-                className="h-11 gap-2 rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600"
-                onClick={() => void shareRequest()}
-              >
-                <Share2 className="size-4" />
-                Share
-              </Button>
+                <Button
+                  type="button"
+                  variant="secondary"
+                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl px-4 text-sm font-black"
+                  onClick={() => void copyInvoiceSummary()}
+                >
+                  <FileText className="size-4 shrink-0" />
+                  Copy invoice
+                </Button>
+
+                <Button
+                  type="button"
+                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 px-4 text-sm font-black shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600 md:col-span-2"
+                  onClick={() => void shareRequest()}
+                >
+                  <Share2 className="size-4 shrink-0" />
+                  Share invoice
+                </Button>
+              </div>
             </div>
           </div>
         </div>
