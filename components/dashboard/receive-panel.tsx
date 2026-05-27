@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { Copy, Link2, Share2, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
+import { Copy, FileText, Link2, Share2, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -14,15 +14,28 @@ import { shortAddress } from "@/lib/utils";
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard";
 import { useWalletStore } from "@/store/wallet-store";
 
+function createInvoiceId() {
+  const date = new Date();
+  const stamp = `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(
+    date.getDate()
+  ).padStart(2, "0")}`;
+  const suffix = Math.random().toString(36).slice(2, 6).toUpperCase();
+
+  return `AP-${stamp}-${suffix}`;
+}
+
 export function ReceivePanel() {
   const address = useWalletStore((state) => state.address);
   const copy = useCopyToClipboard();
   const [requestAmount, setRequestAmount] = useState("");
   const [memo, setMemo] = useState("");
+  const [merchantName, setMerchantName] = useState("ArcPay merchant");
+  const [invoiceId, setInvoiceId] = useState("");
   const [origin, setOrigin] = useState("https://arcpay-web-app.vercel.app");
 
   useEffect(() => {
     setOrigin(window.location.origin);
+    setInvoiceId((current) => current || createInvoiceId());
   }, []);
 
   const requestUri = useMemo(() => {
@@ -43,14 +56,31 @@ export function ReceivePanel() {
 
     const trimmedAmount = requestAmount.trim();
     const trimmedMemo = memo.trim();
+    const trimmedMerchant = merchantName.trim();
+    const trimmedInvoiceId = invoiceId.trim();
+
     if (trimmedAmount) params.set("amount", trimmedAmount);
     if (trimmedMemo) params.set("memo", trimmedMemo);
+    if (trimmedMerchant) params.set("merchant", trimmedMerchant);
+    if (trimmedInvoiceId) params.set("invoice", trimmedInvoiceId);
 
-    return `${origin}/request?${params.toString()}`;
-  }, [address, memo, origin, requestAmount]);
+    return `${origin}/pay?${params.toString()}`;
+  }, [address, invoiceId, memo, merchantName, origin, requestAmount]);
+
+  const invoiceSummary = useMemo(() => {
+    const amount = requestAmount.trim() || "0.00";
+    const note = memo.trim() || "ArcPay USDC payment request";
+    const merchant = merchantName.trim() || "ArcPay merchant";
+    const invoice = invoiceId.trim() || "New invoice";
+
+    return `${merchant}\n${invoice}\nAmount: ${amount} USDC\nMemo: ${note}\nPay: ${shareLink}`;
+  }, [invoiceId, memo, merchantName, requestAmount, shareLink]);
 
   function recordRequest() {
     if (!address) return;
+
+    const invoice = invoiceId.trim() || "ArcPay invoice";
+    const note = memo.trim() || "Shareable payment request";
 
     void saveTransaction(address, {
       id: crypto.randomUUID(),
@@ -59,13 +89,18 @@ export function ReceivePanel() {
       amount: requestAmount.trim() || "0",
       chain: "Arc_Testnet",
       state: "pending",
-      memo: memo.trim() || "Shareable payment request",
+      memo: `${invoice} • ${note}`,
       createdAt: Date.now()
     });
   }
 
   async function copyShareLink() {
-    await copy(shareLink, "Request link copied");
+    await copy(shareLink, "Invoice link copied");
+    recordRequest();
+  }
+
+  async function copyInvoiceSummary() {
+    await copy(invoiceSummary, "Invoice summary copied");
     recordRequest();
   }
 
@@ -77,7 +112,7 @@ export function ReceivePanel() {
 
     try {
       await navigator.share({
-        title: "ArcPay payment request",
+        title: invoiceId.trim() || "ArcPay payment request",
         text: requestAmount.trim()
           ? `Requesting ${requestAmount.trim()} USDC on ArcPay`
           : "ArcPay payment request",
@@ -92,6 +127,7 @@ export function ReceivePanel() {
   if (!address) return null;
 
   const displayAmount = requestAmount.trim() || "0.00";
+  const displayInvoice = invoiceId.trim() || "AP-INVOICE";
 
   return (
     <Card className="stable-money-qr-card overflow-hidden rounded-[1.5rem] shadow-card">
@@ -99,13 +135,13 @@ export function ReceivePanel() {
         <div>
           <div className="inline-flex items-center gap-2 rounded-full stable-money-chip px-3 py-1 text-[0.68rem] font-black uppercase tracking-[0.14em] sm:text-xs sm:tracking-[0.16em]">
             <Sparkles className="size-3.5" />
-            Stable money request
+            Payment link + QR invoice
           </div>
           <CardTitle className="mt-3 brand-gradient-text text-2xl font-black tracking-tight">
             Request Money
           </CardTitle>
           <p className="mt-2 max-w-md text-sm leading-6 text-slate-600 dark:text-white/68">
-            Generate a polished USDC request link and QR code your sender can open instantly.
+            Create a polished USDC invoice link with amount, memo, merchant name, and a scannable QR code.
           </p>
         </div>
         <Link2 className="mt-1 size-5 shrink-0 text-primary" />
@@ -126,9 +162,12 @@ export function ReceivePanel() {
                   className="mx-auto block h-auto max-w-full"
                 />
               </div>
-              <div className="mt-3 flex items-center justify-between rounded-[0.95rem] bg-[#f4f8ff] px-3.5 py-2.5 text-xs font-black text-[#061a3f] shadow-[inset_0_0_0_1px_rgba(11,99,229,0.06)]">
-                <span>USDC</span>
-                <span>{displayAmount}</span>
+              <div className="mt-3 rounded-[0.95rem] bg-[#f4f8ff] px-3.5 py-2.5 text-[#061a3f] shadow-[inset_0_0_0_1px_rgba(11,99,229,0.06)]">
+                <div className="flex items-center justify-between text-xs font-black">
+                  <span>USDC</span>
+                  <span>{displayAmount}</span>
+                </div>
+                <p className="mt-1 truncate text-[0.65rem] font-bold text-[#061a3f]/55">{displayInvoice}</p>
               </div>
             </div>
             <div className="mt-3 flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 dark:text-white/55">
@@ -176,6 +215,38 @@ export function ReceivePanel() {
               </div>
             </div>
 
+            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <div className="grid gap-2">
+                <Label htmlFor="merchant-name">Merchant name</Label>
+                <Input
+                  id="merchant-name"
+                  placeholder="Your business or creator name"
+                  value={merchantName}
+                  onChange={(event) => setMerchantName(event.target.value)}
+                />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="invoice-id">Invoice ID</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="invoice-id"
+                    placeholder="AP-20260527-0001"
+                    value={invoiceId}
+                    onChange={(event) => setInvoiceId(event.target.value)}
+                  />
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={() => setInvoiceId(createInvoiceId())}
+                    aria-label="Generate invoice ID"
+                  >
+                    <FileText className="size-4" />
+                  </Button>
+                </div>
+              </div>
+            </div>
+
             <div className="rounded-[1.25rem] border border-blue-500/15 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
               <div className="flex items-start gap-3">
                 <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
@@ -184,13 +255,13 @@ export function ReceivePanel() {
                 <div>
                   <p className="text-sm font-black text-slate-950 dark:text-white">Clean payment handoff</p>
                   <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-white/62">
-                    The QR uses your Arc address, USDC token context, and optional amount so the request feels like a real payment invoice.
+                    The QR opens a real ArcPay invoice page where the payer can review the request, connect wallet, and pay on Arc Testnet.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid gap-3 sm:grid-cols-3">
               <Button
                 type="button"
                 variant="secondary"
@@ -203,11 +274,21 @@ export function ReceivePanel() {
 
               <Button
                 type="button"
+                variant="secondary"
+                className="h-11 gap-2 rounded-2xl"
+                onClick={() => void copyInvoiceSummary()}
+              >
+                <FileText className="size-4" />
+                Copy invoice
+              </Button>
+
+              <Button
+                type="button"
                 className="h-11 gap-2 rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600"
                 onClick={() => void shareRequest()}
               >
                 <Share2 className="size-4" />
-                Share request
+                Share
               </Button>
             </div>
           </div>
