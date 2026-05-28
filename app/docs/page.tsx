@@ -461,7 +461,16 @@ export default function DocsPage() {
           </div>
 
           <div className="mt-8 text-center text-sm font-black text-slate-500 dark:text-white/50">
-            Built by SIRIBRAHEEM.
+            Built by{" "}
+            <a
+              href="https://x.com/siribraheem33"
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-700 underline underline-offset-4 hover:text-blue-900 dark:text-orange-200 dark:hover:text-orange-100"
+            >
+              SIRIBRAHEEM
+            </a>
+            .
           </div>
         </article>
       </section>
