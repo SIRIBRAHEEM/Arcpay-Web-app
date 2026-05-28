@@ -30,6 +30,13 @@ export function Footer() {
 
         <div className="flex flex-wrap gap-4 md:justify-end">
           <Link
+            href="/docs"
+            className="font-semibold hover:text-[#0b63e5] dark:hover:text-[#ffb45f]"
+          >
+            Docs
+          </Link>
+
+          <Link
             href="/dashboard"
             className="font-semibold hover:text-[#0b63e5] dark:hover:text-[#ffb45f]"
           >
