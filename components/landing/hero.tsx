@@ -36,16 +36,15 @@ export function Hero() {
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link
           href="/"
-          className="relative z-10 flex items-center gap-3 rounded-[1.35rem] border border-slate-950/[0.08] bg-white/78 px-3 py-2 shadow-[0_18px_55px_rgba(6,26,63,0.10)] ring-1 ring-white/70 backdrop-blur-2xl transition hover:-translate-y-0.5 hover:shadow-[0_22px_70px_rgba(6,26,63,0.14)] dark:border-white/[0.13] dark:bg-[#071a3a]/86 dark:shadow-[0_20px_70px_rgba(0,0,0,0.34),0_0_34px_rgba(11,99,229,0.12)] dark:ring-white/[0.06]"
+          className="relative z-10 flex items-center gap-3"
           aria-label="ArcPay home"
         >
-          <ArcPayLogoMark className="size-11 rounded-[1rem] bg-white shadow-[0_14px_36px_rgba(11,99,229,0.22)] ring-[#0b63e5]/20 dark:bg-[#08245c] dark:shadow-[0_14px_40px_rgba(0,0,0,0.42),0_0_24px_rgba(11,99,229,0.18)] dark:ring-white/12" />
-          <div className="leading-tight">
-            <p className="text-base font-black tracking-tight">
-              <span className="text-[#0b4fd8] dark:text-[#8fbdff]">Arc</span>
-              <span className="text-[#ff8200] dark:text-[#ffb45f]">Pay</span>
+          <ArcPayLogoMark className="size-10 rounded-[0.95rem]" />
+          <div>
+            <p className="text-base font-black tracking-tight text-teal-950 dark:text-white">
+              ArcPay
             </p>
-            <p className="mt-0.5 text-xs font-semibold text-[#061a3f]/65 dark:text-[#eef6ff]/78">
+            <p className="text-xs font-medium text-teal-950/60 dark:text-white/70">
               Private-feeling payments
             </p>
           </div>
