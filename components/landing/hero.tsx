@@ -31,7 +31,7 @@ export function Hero() {
   return (
     <section className="relative min-h-[calc(100vh-1rem)] overflow-hidden px-4 pb-10 pt-4 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[linear-gradient(180deg,#f8f6ef_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,#061833_0%,#07101f_54%,rgba(5,7,13,0)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(15,118,110,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(15,118,110,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(90deg,rgba(11,99,229,0.09)_1px,transparent_1px),linear-gradient(180deg,rgba(255,130,0,0.055)_1px,transparent_1px)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(15,118,110,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(15,118,110,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:opacity-0" />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link
