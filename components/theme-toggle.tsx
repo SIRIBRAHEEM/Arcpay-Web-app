@@ -11,9 +11,14 @@ type ThemeToggleProps = {
 };
 
 export function ThemeToggle({ className }: ThemeToggleProps) {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, preference, toggleTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const isDark = theme === "dark";
+  const title = preference === "system"
+    ? "Following your device theme. Tap to override."
+    : isDark
+      ? "Dark mode selected. Tap for system mode."
+      : "Light mode selected. Tap for dark mode.";
 
   useEffect(() => {
     setMounted(true);
@@ -26,8 +31,8 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       size="icon"
       onClick={toggleTheme}
       className={cn("rounded-full", className)}
-      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      title={isDark ? "Light mode" : "Dark mode"}
+      aria-label={title}
+      title={title}
     >
       {mounted && isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
     </Button>
