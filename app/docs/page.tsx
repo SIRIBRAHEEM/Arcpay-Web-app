@@ -17,6 +17,7 @@ import {
   WalletCards
 } from "lucide-react";
 import { ArcPayLogoFull } from "@/components/arcpay-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
@@ -230,12 +231,13 @@ export default function DocsPage() {
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_8%,rgba(11,99,229,0.18),transparent_32%),radial-gradient(circle_at_88%_6%,rgba(255,130,0,0.16),transparent_30%)]" />
 
         <div className="relative mx-auto max-w-6xl">
-          <div className="flex items-center justify-between gap-4">
-            <Link href="/" className="inline-flex items-center gap-3" aria-label="ArcPay home">
-              <ArcPayLogoFull markClassName="size-10" textClassName="text-2xl sm:text-3xl" />
+          <div className="flex items-center justify-between gap-4 rounded-[1.4rem] border border-white/70 bg-white/70 px-3 py-3 shadow-[0_18px_60px_rgba(6,26,63,0.08)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.06] sm:px-4">
+            <Link href="/" className="inline-flex min-w-0 items-center gap-3" aria-label="ArcPay home">
+              <ArcPayLogoFull markClassName="size-9 sm:size-10" textClassName="hidden text-2xl sm:inline sm:text-3xl" />
             </Link>
 
             <div className="flex items-center gap-2">
+              <ThemeToggle className="bg-white/80 shadow-sm dark:bg-white/[0.08]" />
               <Button variant="secondary" className="rounded-full" asChild>
                 <Link href="/">
                   <ArrowLeft className="mr-2 size-4" />
@@ -252,15 +254,15 @@ export default function DocsPage() {
           </div>
 
           <div className="mx-auto mt-14 max-w-4xl text-center sm:mt-20">
-            <Badge className="mb-5 rounded-full border-blue-500/15 bg-white/75 px-4 py-2 text-blue-950 shadow-sm dark:border-white/10 dark:bg-white/[0.08] dark:text-orange-100">
+            <Badge className="mb-5 rounded-full border-blue-500/15 bg-white/80 px-4 py-2 text-blue-950 shadow-sm dark:border-white/10 dark:bg-white/[0.08] dark:text-orange-100">
               <BookOpen className="mr-2 size-3.5" />
               ArcPay Product Document
             </Badge>
 
-            <h1 className="text-balance text-4xl font-black tracking-tight sm:text-6xl">
+            <h1 className="text-balance text-4xl font-black tracking-tight text-slate-950 dark:text-white sm:text-6xl">
               ArcPay: Building a simple stablecoin payment app on Arc Testnet
             </h1>
-            <p className="mx-auto mt-5 max-w-2xl text-lg leading-8 text-slate-600 dark:text-white/68">
+            <p className="mx-auto mt-5 max-w-2xl text-lg font-medium leading-8 text-slate-700 dark:text-white/76">
               Stablecoin payments should feel simple. That is the main reason ArcPay is being built.
             </p>
 
@@ -283,7 +285,7 @@ export default function DocsPage() {
       </section>
 
       <section className="relative px-4 pb-16 sm:px-6 lg:px-8">
-        <article className="mx-auto max-w-4xl rounded-[2rem] border border-slate-950/10 bg-white/90 p-5 shadow-[0_30px_110px_rgba(6,26,63,0.12)] backdrop-blur-2xl dark:border-white/10 dark:bg-white/[0.07] sm:p-8 lg:p-10">
+        <article className="mx-auto max-w-5xl rounded-[2rem] border border-slate-950/10 bg-white/92 p-4 shadow-[0_30px_110px_rgba(6,26,63,0.12)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#071a3a]/82 sm:p-6 lg:p-7">
           <DocSection icon={<Sparkles className="size-5" />} title="Introduction">
             <p>
               ArcPay is a non-custodial stablecoin payment app built for Arc Testnet. The goal is to
@@ -339,14 +341,14 @@ export default function DocsPage() {
           <DocSection icon={<Layers3 className="size-5" />} title="Core features of ArcPay">
             <div className="grid gap-4">
               {coreFeatures.map((feature, index) => (
-                <div key={feature.title} className="rounded-[1.5rem] border border-blue-500/10 bg-blue-50/70 p-5 dark:border-white/10 dark:bg-white/[0.06]">
+                <div key={feature.title} className="rounded-[1.5rem] border border-blue-500/10 bg-blue-50/80 p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.065]">
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">
                     Feature {index + 1}
                   </p>
                   <h3 className="mt-2 text-xl font-black text-slate-950 dark:text-white">
                     {feature.title}
                   </h3>
-                  <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-white/68">
+                  <p className="mt-2 text-[0.98rem] font-medium leading-8 text-slate-700 dark:text-white/76">
                     {feature.body}
                   </p>
                 </div>
@@ -389,7 +391,7 @@ export default function DocsPage() {
           <DocSection icon={<Map className="size-5" />} title="Current roadmap">
             <div className="grid gap-4">
               {roadmap.map((item) => (
-                <div key={item.phase} className="rounded-[1.5rem] border border-slate-950/10 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.055]">
+                <div key={item.phase} className="rounded-[1.5rem] border border-slate-950/10 bg-slate-50 p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.055]">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div>
                       <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">
@@ -403,7 +405,7 @@ export default function DocsPage() {
                       {item.status}
                     </Badge>
                   </div>
-                  <ul className="mt-4 grid gap-2 text-sm leading-6 text-slate-600 dark:text-white/68 sm:grid-cols-2">
+                  <ul className="mt-4 grid gap-2 text-sm font-medium leading-6 text-slate-700 dark:text-white/76 sm:grid-cols-2">
                     {item.points.map((point) => (
                       <li key={point} className="flex gap-2">
                         <span className="mt-2 size-1.5 shrink-0 rounded-full bg-orange-500" />
@@ -447,10 +449,10 @@ export default function DocsPage() {
             </p>
           </DocSection>
 
-          <div className="mt-10 rounded-[1.5rem] border border-orange-500/20 bg-orange-50 p-5 dark:border-orange-300/20 dark:bg-orange-400/10">
+          <div className="mt-6 rounded-[1.5rem] border border-orange-500/20 bg-orange-50 p-5 dark:border-orange-300/20 dark:bg-orange-400/10">
             <div className="flex items-start gap-3">
               <ShieldCheck className="mt-0.5 size-5 shrink-0 text-orange-500" />
-              <p className="text-sm leading-6 text-slate-700 dark:text-white/72">
+              <p className="text-sm font-medium leading-7 text-slate-700 dark:text-white/76">
                 ArcPay is currently testnet software. It is not financial advice and should not be used
                 with real funds unless the product is audited, production-ready, and configured for a
                 supported mainnet environment.
@@ -477,16 +479,21 @@ function DocSection({
   children: ReactNode;
 }) {
   return (
-    <section className="mt-12 first:mt-0">
-      <div className="mb-4 flex items-center gap-3">
-        <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
+    <section className="mt-5 first:mt-0 rounded-[1.75rem] border border-slate-950/[0.07] bg-white/86 p-5 shadow-[0_18px_55px_rgba(6,26,63,0.06)] dark:border-white/10 dark:bg-[#081f46]/72 sm:p-6">
+      <div className="mb-5 flex items-start gap-3">
+        <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-blue-100 text-blue-700 ring-1 ring-blue-600/10 dark:bg-blue-400/10 dark:text-blue-200 dark:ring-white/10">
           {icon}
         </span>
-        <h2 className="text-2xl font-black tracking-tight text-slate-950 dark:text-white">
-          {title}
-        </h2>
+        <div>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-orange-500">
+            ArcPay docs
+          </p>
+          <h2 className="mt-1 text-2xl font-black tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+            {title}
+          </h2>
+        </div>
       </div>
-      <div className="space-y-4 text-base leading-8 text-slate-600 dark:text-white/70">
+      <div className="space-y-4 text-[1rem] font-medium leading-8 text-slate-700 dark:text-white/78 sm:text-[1.03rem]">
         {children}
       </div>
     </section>
@@ -495,7 +502,7 @@ function DocSection({
 
 function InfoPill({ children }: { children: ReactNode }) {
   return (
-    <div className="rounded-2xl border border-blue-500/10 bg-white p-4 text-sm font-black text-blue-950 shadow-sm dark:border-white/10 dark:bg-white/[0.06] dark:text-white">
+    <div className="rounded-2xl border border-blue-500/10 bg-white p-4 text-sm font-black text-blue-950 shadow-sm dark:border-white/10 dark:bg-white/[0.07] dark:text-white">
       {children}
     </div>
   );
@@ -503,9 +510,9 @@ function InfoPill({ children }: { children: ReactNode }) {
 
 function CheckCard({ children }: { children: ReactNode }) {
   return (
-    <div className="flex gap-3 rounded-2xl border border-blue-500/10 bg-blue-50/70 p-4 dark:border-white/10 dark:bg-white/[0.06]">
+    <div className="flex gap-3 rounded-2xl border border-blue-500/10 bg-blue-50/80 p-4 shadow-sm dark:border-white/10 dark:bg-white/[0.07]">
       <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-orange-500" />
-      <span className="text-sm font-semibold leading-6">{children}</span>
+      <span className="text-sm font-semibold leading-6 text-slate-700 dark:text-white/78">{children}</span>
     </div>
   );
 }
@@ -514,7 +521,7 @@ function TagGrid({ items }: { items: string[] }) {
   return (
     <div className="flex flex-wrap gap-2">
       {items.map((item) => (
-        <span key={item} className="rounded-full border border-blue-500/15 bg-white px-3 py-1.5 text-sm font-bold text-blue-950 dark:border-white/10 dark:bg-white/[0.08] dark:text-white">
+        <span key={item} className="rounded-full border border-blue-500/15 bg-white px-3 py-1.5 text-sm font-bold text-blue-950 shadow-sm dark:border-white/10 dark:bg-white/[0.08] dark:text-white">
           {item}
         </span>
       ))}
