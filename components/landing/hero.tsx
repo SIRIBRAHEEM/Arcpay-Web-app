@@ -30,21 +30,24 @@ export function Hero() {
 
   return (
     <section className="relative min-h-[calc(100vh-1rem)] overflow-hidden px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[linear-gradient(180deg,#f8f6ef_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,#111318_0%,#0a1112_54%,rgba(7,9,12,0)_100%)]" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(15,118,110,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(15,118,110,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(90deg,rgba(190,242,100,0.055)_1px,transparent_1px),linear-gradient(180deg,rgba(45,212,191,0.045)_1px,transparent_1px)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[36rem] bg-[linear-gradient(180deg,#f8f6ef_0%,#ffffff_54%,rgba(255,255,255,0)_100%)] dark:bg-[linear-gradient(180deg,#061833_0%,#07101f_54%,rgba(5,7,13,0)_100%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-full bg-[linear-gradient(90deg,rgba(15,118,110,0.07)_1px,transparent_1px),linear-gradient(180deg,rgba(15,118,110,0.07)_1px,transparent_1px)] bg-[size:64px_64px] opacity-45 dark:bg-[linear-gradient(90deg,rgba(11,99,229,0.09)_1px,transparent_1px),linear-gradient(180deg,rgba(255,130,0,0.055)_1px,transparent_1px)]" />
 
       <div className="mx-auto flex max-w-7xl items-center justify-between">
         <Link
           href="/"
-          className="relative z-10 flex items-center gap-3"
+          className="relative z-10 flex items-center gap-3 rounded-[1.35rem] border border-slate-950/[0.08] bg-white/78 px-3 py-2 shadow-[0_18px_55px_rgba(6,26,63,0.10)] ring-1 ring-white/70 backdrop-blur-2xl transition hover:-translate-y-0.5 hover:shadow-[0_22px_70px_rgba(6,26,63,0.14)] dark:border-white/[0.13] dark:bg-[#071a3a]/86 dark:shadow-[0_20px_70px_rgba(0,0,0,0.34),0_0_34px_rgba(11,99,229,0.12)] dark:ring-white/[0.06]"
           aria-label="ArcPay home"
         >
-          <ArcPayLogoMark className="size-10 rounded-[0.95rem]" />
-          <div>
-            <p className="text-base font-black tracking-tight text-teal-950 dark:text-lime-50">
-              ArcPay
+          <ArcPayLogoMark className="size-11 rounded-[1rem] bg-white shadow-[0_14px_36px_rgba(11,99,229,0.22)] ring-[#0b63e5]/20 dark:bg-[#08245c] dark:shadow-[0_14px_40px_rgba(0,0,0,0.42),0_0_24px_rgba(11,99,229,0.18)] dark:ring-white/12" />
+          <div className="leading-tight">
+            <p className="text-base font-black tracking-tight">
+              <span className="text-[#0b4fd8] dark:text-[#8fbdff]">Arc</span>
+              <span className="text-[#ff8200] dark:text-[#ffb45f]">Pay</span>
             </p>
-            <p className="text-xs text-teal-950/60 dark:text-lime-50/55">Private-feeling payments</p>
+            <p className="mt-0.5 text-xs font-semibold text-[#061a3f]/65 dark:text-[#eef6ff]/78">
+              Private-feeling payments
+            </p>
           </div>
         </Link>
 
