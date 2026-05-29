@@ -17,13 +17,13 @@ import {
 import { exchangeArcToken } from "@/lib/exchange-actions";
 import type { ArcStableToken } from "@/lib/appkit-actions";
 import { getChainParams, getNativeGasBalance, requestSwitchChain } from "@/lib/arc";
+import { createBrowserAdapter } from "@/lib/kit";
 import { validateAmount } from "@/lib/validators";
 import { useWalletStore } from "@/store/wallet-store";
 
 const exchangeTokens: ArcStableToken[] = ["USDC", "EURC", "cirBTC"];
 
 export function TokenExchangePanel() {
-  const adapter = useWalletStore((state) => state.adapter);
   const provider = useWalletStore((state) => state.provider);
   const address = useWalletStore((state) => state.address);
   const [amount, setAmount] = useState("");
@@ -61,7 +61,7 @@ export function TokenExchangePanel() {
       return;
     }
 
-    if (!adapter || !provider || !address) {
+    if (!provider || !address) {
       toast.error("Connect your wallet first.");
       return;
     }
@@ -81,8 +81,10 @@ export function TokenExchangePanel() {
         throw new Error("Arc Testnet needs USDC gas for network fees. Add test USDC, then try again.");
       }
 
+      const freshAdapter = await createBrowserAdapter(provider);
+
       await exchangeArcToken({
-        adapter,
+        adapter: freshAdapter,
         amount,
         fromToken,
         toToken
