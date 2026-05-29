@@ -4,8 +4,6 @@ import { getAppKit } from "@/lib/kit";
 import type { ArcStableToken, WalletAdapter } from "@/lib/appkit-actions";
 
 const decimalAmountRegex = /^(?:0|[1-9]\d*)(?:\.\d{1,18})?$/;
-const actionName = ["s", "w", "a", "p"].join("");
-const configName = ["k", "i", "t", "K", "e", "y"].join("");
 
 function normalizeAmount(value: string) {
   const cleaned = value.trim();
@@ -74,7 +72,7 @@ function userError(error: unknown) {
   }
 
   if (lower.includes("not supported") || lower.includes("unsupported") || lower.includes("route") || lower.includes("token")) {
-    return new Error("This pair is not supported right now. On Arc Testnet, use USDC or EURC first, then try other assets later.");
+    return new Error("This pair is not supported right now. Try USDC to EURC on Arc Testnet first.");
   }
 
   if (lower.includes("unauthorized") || lower.includes("401")) {
@@ -83,6 +81,16 @@ function userError(error: unknown) {
 
   if (lower.includes("context") || lower.includes("undefined")) {
     return new Error("Circle App Kit could not read the active wallet context. Disconnect, refresh ArcPay, reconnect your wallet, then try USDC to EURC again.");
+  }
+
+  if (
+    lower.includes("service_unknown_error") ||
+    lower.includes("createswap") ||
+    lower.includes("maximum retry") ||
+    lower.includes("failed to fetch") ||
+    lower.includes("stablecoin service")
+  ) {
+    return new Error("Circle Swap service could not create this swap right now. Try USDC to EURC again, disable Brave Shields/ad blockers for ArcPay, or retry in Chrome/MetaMask Mobile. If it still fails, the Arc Testnet swap backend is temporarily unreachable.");
   }
 
   return new Error(message || "Circle App Kit could not complete the exchange.");
@@ -107,10 +115,12 @@ export async function exchangeArcToken({
     throw new Error("You are offline. Check your internet connection and try again.");
   }
 
-  const kit = getAppKit() as unknown as Record<string, (params: unknown) => Promise<unknown>>;
-  const exchange = kit[actionName];
+  const kit = getAppKit() as unknown as {
+    estimateSwap: (params: unknown) => Promise<unknown>;
+    swap: (params: unknown) => Promise<unknown>;
+  };
 
-  if (typeof exchange !== "function") {
+  if (typeof kit.swap !== "function") {
     throw new Error("This App Kit version does not expose exchange support yet.");
   }
 
@@ -123,12 +133,18 @@ export async function exchangeArcToken({
     tokenOut: toToken,
     amountIn: normalizeAmount(amount),
     config: {
-      [configName]: getPublicCredential()
+      kitKey: getPublicCredential(),
+      slippageBps: 300,
+      allowanceStrategy: "approve"
     }
   };
 
   try {
-    return await exchange.call(kit, params);
+    if (typeof kit.estimateSwap === "function") {
+      await kit.estimateSwap(params);
+    }
+
+    return await kit.swap(params);
   } catch (error) {
     console.error("[ArcPay exchange]", errorText(error));
     throw userError(error);
