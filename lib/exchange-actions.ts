@@ -36,7 +36,12 @@ function getPublicCredential() {
 function errorText(value: unknown) {
   if (value instanceof Error) return value.message;
   if (typeof value === "string") return value;
-  return "Circle App Kit could not complete the exchange.";
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return "Circle App Kit could not complete the exchange.";
+  }
 }
 
 function userError(error: unknown) {
@@ -57,6 +62,10 @@ function userError(error: unknown) {
 
   if (lower.includes("unauthorized") || lower.includes("401")) {
     return new Error("Circle App Kit public credential is missing or invalid. Update Vercel environment variables, then redeploy.");
+  }
+
+  if (lower.includes("context")) {
+    return new Error("Circle App Kit could not read its wallet context. Reconnect your wallet, refresh the page, and try the exchange again.");
   }
 
   return new Error(message || "Circle App Kit could not complete the exchange.");
@@ -88,19 +97,21 @@ export async function exchangeArcToken({
     throw new Error("This App Kit version does not expose exchange support yet.");
   }
 
+  const params = {
+    from: {
+      adapter,
+      chain: "Arc_Testnet"
+    },
+    tokenIn: fromToken,
+    tokenOut: toToken,
+    amountIn: normalizeAmount(amount),
+    config: {
+      [configName]: getPublicCredential()
+    }
+  };
+
   try {
-    return await exchange({
-      from: {
-        adapter,
-        chain: "Arc_Testnet"
-      },
-      tokenIn: fromToken,
-      tokenOut: toToken,
-      amountIn: normalizeAmount(amount),
-      config: {
-        [configName]: getPublicCredential()
-      }
-    });
+    return await exchange.call(kit, params);
   } catch (error) {
     console.error("[ArcPay exchange]", errorText(error));
     throw userError(error);
