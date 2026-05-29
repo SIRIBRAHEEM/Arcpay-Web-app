@@ -21,7 +21,7 @@ import { createBrowserAdapter } from "@/lib/kit";
 import { validateAmount } from "@/lib/validators";
 import { useWalletStore } from "@/store/wallet-store";
 
-const exchangeTokens: ArcStableToken[] = ["USDC", "EURC", "cirBTC"];
+const exchangeTokens: ArcStableToken[] = ["USDC", "EURC"];
 
 export function TokenExchangePanel() {
   const provider = useWalletStore((state) => state.provider);
@@ -111,7 +111,7 @@ export function TokenExchangePanel() {
           Token Exchange
         </CardTitle>
         <p className="text-sm leading-6 text-slate-600 dark:text-white/68">
-          Same-chain Arc Testnet exchange between USDC, EURC, and cirBTC.
+          Same-chain Arc Testnet exchange between USDC and EURC. cirBTC will be enabled after its route is confirmed.
         </p>
       </CardHeader>
       <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
@@ -173,7 +173,7 @@ export function TokenExchangePanel() {
           </div>
 
           <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-slate-700 dark:text-white/78">
-            Arc Testnet only. Keep enough USDC gas for network fees.
+            Arc Testnet only. Test with USDC ↔ EURC first, keep enough USDC gas, and disable browser shields if the service cannot fetch.
           </div>
 
           <Button
