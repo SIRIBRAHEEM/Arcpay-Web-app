@@ -33,9 +33,26 @@ function getPublicCredential() {
   return value;
 }
 
+function collectErrorText(value: unknown, depth = 0): string {
+  if (depth > 4) return "";
+  if (value instanceof Error) {
+    return [value.name, value.message, collectErrorText(value.cause, depth + 1)].filter(Boolean).join(" | ");
+  }
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  if (!value || typeof value !== "object") return "";
+
+  const record = value as Record<string, unknown>;
+  const parts = [record.name, record.message, record.reason, record.shortMessage, record.details, record.code]
+    .map((item) => collectErrorText(item, depth + 1))
+    .filter(Boolean);
+
+  if (record.cause) parts.push(collectErrorText(record.cause, depth + 1));
+  return parts.join(" | ");
+}
+
 function errorText(value: unknown) {
-  if (value instanceof Error) return value.message;
-  if (typeof value === "string") return value;
+  const collected = collectErrorText(value).trim();
+  if (collected) return collected;
 
   try {
     return JSON.stringify(value);
@@ -57,15 +74,15 @@ function userError(error: unknown) {
   }
 
   if (lower.includes("not supported") || lower.includes("unsupported") || lower.includes("route") || lower.includes("token")) {
-    return new Error("This pair is not supported right now. On Arc Testnet, use USDC, EURC, or cirBTC only.");
+    return new Error("This pair is not supported right now. On Arc Testnet, use USDC or EURC first, then try other assets later.");
   }
 
   if (lower.includes("unauthorized") || lower.includes("401")) {
     return new Error("Circle App Kit public credential is missing or invalid. Update Vercel environment variables, then redeploy.");
   }
 
-  if (lower.includes("context")) {
-    return new Error("Circle App Kit could not read its wallet context. Reconnect your wallet, refresh the page, and try the exchange again.");
+  if (lower.includes("context") || lower.includes("undefined")) {
+    return new Error("Circle App Kit could not read the active wallet context. Disconnect, refresh ArcPay, reconnect your wallet, then try USDC to EURC again.");
   }
 
   return new Error(message || "Circle App Kit could not complete the exchange.");
