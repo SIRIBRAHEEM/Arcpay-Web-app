@@ -97,9 +97,9 @@ export function TxHistory() {
   }
 
   return (
-    <Card className="glass rounded-[1.5rem] shadow-card">
-      <CardHeader className="flex flex-col gap-3 space-y-0 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-        <div>
+    <Card className="glass w-full min-w-0 rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+      <CardHeader className="flex flex-col gap-3 space-y-0 p-3.5 sm:flex-row sm:items-center sm:justify-between sm:p-5">
+        <div className="min-w-0">
           <CardTitle>Activity</CardTitle>
           {transactions.length ? (
             <p className="mt-1 text-xs text-muted-foreground">
@@ -108,7 +108,7 @@ export function TxHistory() {
           ) : null}
         </div>
 
-        <div className="flex items-center gap-2 self-start sm:self-auto">
+        <div className="flex min-w-0 items-center gap-2 self-start sm:self-auto">
           <Badge variant="secondary" className="rounded-full">
             Local history
           </Badge>
@@ -126,23 +126,23 @@ export function TxHistory() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
+      <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
         {activityError ? (
-          <div className="mb-4 rounded-2xl border border-amber-500/20 bg-amber-100 p-4 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100">
+          <div className="mb-4 w-full min-w-0 rounded-2xl border border-amber-500/20 bg-amber-100 p-3.5 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100 sm:p-4">
             {activityError}
           </div>
         ) : null}
 
         {transactions.length ? (
           <>
-            <div className="grid gap-3">
+            <div className="grid w-full min-w-0 gap-2.5 sm:gap-3">
               {visibleTransactions.map((tx) => {
                 const Icon = iconByType[tx.type];
 
                 return (
                   <div
                     key={tx.id}
-                    className="flex flex-col gap-3 rounded-2xl border border-slate-950/10 bg-white/75 p-4 dark:border-white/10 dark:bg-white/[0.06] sm:flex-row sm:items-center sm:justify-between"
+                    className="flex min-w-0 flex-col gap-3 rounded-2xl border border-slate-950/10 bg-white/75 p-3.5 dark:border-white/10 dark:bg-white/[0.06] sm:flex-row sm:items-center sm:justify-between sm:p-4"
                   >
                     <div className="flex min-w-0 items-center gap-3">
                       <div
@@ -172,7 +172,7 @@ export function TxHistory() {
                       </div>
                     </div>
 
-                    <div className="flex w-full shrink-0 items-center justify-between gap-2 sm:w-auto sm:justify-end">
+                    <div className="flex w-full min-w-0 shrink-0 items-center justify-between gap-2 sm:w-auto sm:justify-end">
                       <Badge variant="outline" className="rounded-full">
                         {tx.state}
                       </Badge>
@@ -195,7 +195,7 @@ export function TxHistory() {
             </div>
 
             {canViewMore || canCollapse ? (
-              <div className="mt-5 flex flex-col gap-2 sm:flex-row">
+              <div className="mt-5 flex w-full min-w-0 flex-col gap-2 sm:flex-row">
                 {canViewMore ? (
                   <Button
                     type="button"
@@ -226,7 +226,7 @@ export function TxHistory() {
             ) : null}
           </>
         ) : (
-          <div className="rounded-2xl border border-dashed border-slate-950/15 bg-white/55 p-6 text-center dark:border-white/10 dark:bg-white/[0.04]">
+          <div className="w-full min-w-0 rounded-2xl border border-dashed border-slate-950/15 bg-white/55 p-5 text-center dark:border-white/10 dark:bg-white/[0.04] sm:p-6">
             <p className="font-semibold">No local activity yet</p>
             <p className="mt-2 text-sm text-muted-foreground">
               Sends, deposits, bridge transfers, requests, and detected transfers will stay in this browser.
