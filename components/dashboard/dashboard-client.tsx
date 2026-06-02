@@ -64,25 +64,25 @@ export function DashboardClient() {
   }
 
   return (
-    <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-12 pt-2 text-foreground sm:px-6 sm:pb-14 sm:pt-3 lg:px-8">
+    <main className="premium-dashboard-bg min-h-screen overflow-x-clip px-2.5 pb-10 pt-2 text-foreground sm:px-6 sm:pb-14 sm:pt-3 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto max-w-7xl">
+      <div className="mx-auto w-full max-w-7xl min-w-0">
         <DashboardHeader />
 
-        <div className="mt-4">
+        <div className="mt-3 sm:mt-4">
           <PremiumDashboardHero />
         </div>
 
-        <section className="mt-4 grid gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
-          <div className="grid gap-4">
+        <section className="mt-3 grid w-full min-w-0 gap-3 sm:mt-4 sm:gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
+          <div className="grid w-full min-w-0 gap-3 sm:gap-4">
             <SendPanel />
             <TokenExchangePanel />
             <BridgePanel />
             <TxHistory />
           </div>
 
-          <div className="grid content-start gap-4">
+          <div className="grid w-full min-w-0 content-start gap-3 sm:gap-4">
             <BalanceCard />
             <ReceivePanel />
             <ProtocolStatusCard />
