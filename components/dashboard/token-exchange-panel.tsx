@@ -104,19 +104,19 @@ export function TokenExchangePanel() {
   }
 
   return (
-    <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card arcpay-shine">
-      <CardHeader className="space-y-3 p-4 sm:p-5">
-        <CardTitle className="flex items-center gap-2">
-          <Repeat2 className="size-5 text-primary" />
+    <Card className="glass arcpay-shine w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+      <CardHeader className="space-y-3 p-3.5 sm:p-5">
+        <CardTitle className="flex min-w-0 items-center gap-2">
+          <Repeat2 className="size-5 shrink-0 text-primary" />
           Token Exchange
         </CardTitle>
         <p className="text-sm leading-6 text-slate-600 dark:text-white/68">
           Same-chain Arc Testnet exchange between USDC and EURC. cirBTC will be enabled after its route is confirmed.
         </p>
       </CardHeader>
-      <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-        <form onSubmit={submit} className="grid gap-4">
-          <div className="grid gap-2">
+      <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
+        <form onSubmit={submit} className="grid w-full min-w-0 gap-4">
+          <div className="grid min-w-0 gap-2">
             <Label htmlFor="exchange-amount">Amount</Label>
             <Input
               id="exchange-amount"
@@ -127,8 +127,8 @@ export function TokenExchangePanel() {
             />
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
-            <div className="grid gap-2">
+          <div className="grid w-full min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
+            <div className="grid min-w-0 gap-2">
               <Label>From token</Label>
               <Select value={fromToken} onValueChange={handleFromToken}>
                 <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
@@ -155,7 +155,7 @@ export function TokenExchangePanel() {
               <ArrowDownUp className="size-4" />
             </Button>
 
-            <div className="grid gap-2">
+            <div className="grid min-w-0 gap-2">
               <Label>To token</Label>
               <Select value={toToken} onValueChange={handleToToken}>
                 <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
@@ -172,7 +172,7 @@ export function TokenExchangePanel() {
             </div>
           </div>
 
-          <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-slate-700 dark:text-white/78">
+          <div className="w-full min-w-0 rounded-2xl border border-primary/20 bg-primary/10 p-3.5 text-sm leading-6 text-slate-700 dark:text-white/78 sm:p-4">
             Arc Testnet only. Test with USDC ↔ EURC first, keep enough USDC gas, and disable browser shields if the service cannot fetch.
           </div>
 
@@ -180,7 +180,7 @@ export function TokenExchangePanel() {
             type="submit"
             size="lg"
             disabled={loading}
-            className="h-12 rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600"
+            className="h-12 w-full rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600"
           >
             {loading ? (
               "Submitting..."
