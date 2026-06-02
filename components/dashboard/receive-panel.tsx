@@ -130,12 +130,12 @@ export function ReceivePanel() {
   const displayInvoice = invoiceId.trim() || "AP-INVOICE";
 
   return (
-    <Card className="stable-money-qr-card overflow-hidden rounded-[1.5rem] shadow-card">
-      <CardHeader className="relative z-10 flex flex-row items-start justify-between gap-3 space-y-0 p-4 sm:p-5">
-        <div>
-          <div className="inline-flex items-center gap-2 rounded-full stable-money-chip px-3 py-1 text-[0.68rem] font-black uppercase tracking-[0.14em] sm:text-xs sm:tracking-[0.16em]">
-            <Sparkles className="size-3.5" />
-            Payment link + QR invoice
+    <Card className="stable-money-qr-card w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+      <CardHeader className="relative z-10 flex flex-row items-start justify-between gap-3 space-y-0 p-3.5 sm:p-5">
+        <div className="min-w-0">
+          <div className="inline-flex max-w-full items-center gap-2 rounded-full stable-money-chip px-3 py-1 text-[0.65rem] font-black uppercase tracking-[0.12em] sm:text-xs sm:tracking-[0.16em]">
+            <Sparkles className="size-3.5 shrink-0" />
+            <span className="truncate">Payment link + QR invoice</span>
           </div>
           <CardTitle className="mt-3 brand-gradient-text text-2xl font-black tracking-tight">
             Request Money
@@ -147,9 +147,9 @@ export function ReceivePanel() {
         <Link2 className="mt-1 size-5 shrink-0 text-primary" />
       </CardHeader>
 
-      <CardContent className="relative z-10 p-4 pt-0 sm:p-5 sm:pt-0">
-        <div className="grid gap-5 lg:grid-cols-[200px_1fr] lg:items-start">
-          <div className="mx-auto w-full max-w-[198px] lg:mx-0">
+      <CardContent className="relative z-10 p-3.5 pt-0 sm:p-5 sm:pt-0">
+        <div className="grid w-full min-w-0 gap-4 sm:gap-5 lg:grid-cols-[200px_minmax(0,1fr)] lg:items-start">
+          <div className="mx-auto w-full max-w-[188px] sm:max-w-[198px] lg:mx-0">
             <div className="stable-money-qr-box rounded-[1.45rem] p-3">
               <div className="qr-white-surface rounded-[1.05rem] p-3 shadow-[inset_0_0_0_1px_rgba(6,26,63,0.08)]">
                 <QRCodeSVG
@@ -163,37 +163,38 @@ export function ReceivePanel() {
                 />
               </div>
               <div className="mt-3 rounded-[0.95rem] bg-[#f4f8ff] px-3.5 py-2.5 text-[#061a3f] shadow-[inset_0_0_0_1px_rgba(11,99,229,0.06)]">
-                <div className="flex items-center justify-between text-xs font-black">
+                <div className="flex min-w-0 items-center justify-between gap-2 text-xs font-black">
                   <span>USDC</span>
-                  <span>{displayAmount}</span>
+                  <span className="truncate">{displayAmount}</span>
                 </div>
                 <p className="mt-1 truncate text-[0.65rem] font-bold text-[#061a3f]/55">{displayInvoice}</p>
               </div>
             </div>
             <div className="mt-3 flex items-center justify-center gap-2 text-xs font-semibold text-slate-500 dark:text-white/55">
-              <ShieldCheck className="size-3.5 text-primary" />
+              <ShieldCheck className="size-3.5 shrink-0 text-primary" />
               Wallet-signed request
             </div>
           </div>
 
-          <div className="grid gap-4">
-            <div className="grid gap-2">
+          <div className="grid w-full min-w-0 gap-4">
+            <div className="grid min-w-0 gap-2">
               <Label htmlFor="receive-address">Your Arc address</Label>
               <div className="flex min-w-0 gap-2">
-                <Input id="receive-address" readOnly value={shortAddress(address, 8)} />
+                <Input id="receive-address" readOnly value={shortAddress(address, 8)} className="min-w-0" />
                 <Button
                   type="button"
                   variant="secondary"
                   onClick={() => void copy(address, "Address copied")}
                   aria-label="Copy address"
+                  className="shrink-0"
                 >
                   <Copy className="size-4" />
                 </Button>
               </div>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              <div className="grid gap-2">
+            <div className="grid w-full min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <div className="grid min-w-0 gap-2">
                 <Label htmlFor="request-amount">Amount</Label>
                 <Input
                   id="request-amount"
@@ -204,7 +205,7 @@ export function ReceivePanel() {
                 />
               </div>
 
-              <div className="grid gap-2">
+              <div className="grid min-w-0 gap-2">
                 <Label htmlFor="request-memo">Memo</Label>
                 <Input
                   id="request-memo"
@@ -215,8 +216,8 @@ export function ReceivePanel() {
               </div>
             </div>
 
-            <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
-              <div className="grid gap-2">
+            <div className="grid w-full min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+              <div className="grid min-w-0 gap-2">
                 <Label htmlFor="merchant-name">Merchant name</Label>
                 <Input
                   id="merchant-name"
@@ -226,20 +227,22 @@ export function ReceivePanel() {
                 />
               </div>
 
-              <div className="grid gap-2">
+              <div className="grid min-w-0 gap-2">
                 <Label htmlFor="invoice-id">Invoice ID</Label>
-                <div className="flex gap-2">
+                <div className="flex min-w-0 gap-2">
                   <Input
                     id="invoice-id"
                     placeholder="AP-20260527-0001"
                     value={invoiceId}
                     onChange={(event) => setInvoiceId(event.target.value)}
+                    className="min-w-0"
                   />
                   <Button
                     type="button"
                     variant="secondary"
                     onClick={() => setInvoiceId(createInvoiceId())}
                     aria-label="Generate invoice ID"
+                    className="shrink-0"
                   >
                     <FileText className="size-4" />
                   </Button>
@@ -247,12 +250,12 @@ export function ReceivePanel() {
               </div>
             </div>
 
-            <div className="rounded-[1.25rem] border border-blue-500/15 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.055]">
-              <div className="flex items-start gap-3">
+            <div className="w-full min-w-0 rounded-[1.25rem] border border-blue-500/15 bg-white/70 p-3.5 dark:border-white/10 dark:bg-white/[0.055] sm:p-4">
+              <div className="flex min-w-0 items-start gap-3">
                 <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
                   <WalletCards className="size-4" />
                 </span>
-                <div>
+                <div className="min-w-0">
                   <p className="text-sm font-black text-slate-950 dark:text-white">Clean payment handoff</p>
                   <p className="mt-1 text-xs leading-5 text-slate-600 dark:text-white/62">
                     The QR opens a real ArcPay invoice page where the payer can review the request, connect wallet, and pay on Arc Testnet.
@@ -261,9 +264,9 @@ export function ReceivePanel() {
               </div>
             </div>
 
-            <div className="rounded-[1.35rem] border border-slate-950/10 bg-white/65 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] dark:border-white/10 dark:bg-white/[0.055] sm:p-4">
-              <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
-                <div>
+            <div className="w-full min-w-0 rounded-[1.35rem] border border-slate-950/10 bg-white/65 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.75)] dark:border-white/10 dark:bg-white/[0.055] sm:p-4">
+              <div className="mb-3 flex min-w-0 flex-wrap items-end justify-between gap-2">
+                <div className="min-w-0">
                   <p className="text-xs font-black uppercase tracking-[0.18em] text-slate-500 dark:text-white/45">
                     Invoice actions
                   </p>
@@ -276,11 +279,11 @@ export function ReceivePanel() {
                 </span>
               </div>
 
-              <div className="grid gap-3 md:grid-cols-2">
+              <div className="grid w-full min-w-0 gap-2.5 md:grid-cols-2 md:gap-3">
                 <Button
                   type="button"
                   variant="secondary"
-                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl px-4 text-sm font-black"
+                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl px-3 text-sm font-black sm:px-4"
                   onClick={() => void copyShareLink()}
                 >
                   <Copy className="size-4 shrink-0" />
@@ -290,7 +293,7 @@ export function ReceivePanel() {
                 <Button
                   type="button"
                   variant="secondary"
-                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl px-4 text-sm font-black"
+                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl px-3 text-sm font-black sm:px-4"
                   onClick={() => void copyInvoiceSummary()}
                 >
                   <FileText className="size-4 shrink-0" />
@@ -299,7 +302,7 @@ export function ReceivePanel() {
 
                 <Button
                   type="button"
-                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 px-4 text-sm font-black shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600 md:col-span-2"
+                  className="h-12 w-full min-w-0 justify-center gap-2 whitespace-nowrap rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 px-3 text-sm font-black shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600 sm:px-4 md:col-span-2"
                   onClick={() => void shareRequest()}
                 >
                   <Share2 className="size-4 shrink-0" />
