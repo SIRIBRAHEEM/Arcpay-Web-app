@@ -159,24 +159,24 @@ export function BridgePanel() {
 
   return (
     <>
-      <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-        <CardHeader className="space-y-3 p-4 sm:p-5">
-          <CardTitle className="flex items-center gap-2">
-            <Waypoints className="size-5 text-primary" />
+      <Card className="glass w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+        <CardHeader className="space-y-3 p-3.5 sm:p-5">
+          <CardTitle className="flex min-w-0 items-center gap-2">
+            <Waypoints className="size-5 shrink-0 text-primary" />
             Bridge USDC
           </CardTitle>
 
-          <div className="rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.075]">
+          <div className="w-full min-w-0 rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-3.5 dark:border-white/10 dark:bg-white/[0.075] sm:p-4">
             <p className="text-sm text-teal-950/65 dark:text-lime-50/80">USDC bridge route</p>
-            <p className="mt-2 break-words text-lg font-black tracking-tight text-teal-950 dark:text-lime-50">
+            <p className="mt-2 break-words text-base font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-lg">
               {routeTitle}
             </p>
           </div>
         </CardHeader>
 
-        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-          <form onSubmit={submit} className="grid gap-4">
-            <div className="grid gap-2">
+        <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
+          <form onSubmit={submit} className="grid w-full min-w-0 gap-4">
+            <div className="grid min-w-0 gap-2">
               <Label htmlFor="bridge-amount">Amount</Label>
               <Input
                 id="bridge-amount"
@@ -187,8 +187,8 @@ export function BridgePanel() {
               />
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
-              <div className="grid gap-2">
+            <div className="grid w-full min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
+              <div className="grid min-w-0 gap-2">
                 <Label>From chain</Label>
                 <Select value={fromChain} onValueChange={handleFromChainChange}>
                   <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
@@ -216,7 +216,7 @@ export function BridgePanel() {
                 <ArrowLeftRight className="size-4" />
               </Button>
 
-              <div className="grid gap-2">
+              <div className="grid min-w-0 gap-2">
                 <Label>To chain</Label>
                 <Select value={toChain} onValueChange={handleToChainChange}>
                   <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
@@ -234,12 +234,12 @@ export function BridgePanel() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-primary/20 bg-primary/10 p-4 text-sm leading-6 text-teal-950 dark:text-lime-50">
+            <div className="w-full min-w-0 rounded-2xl border border-primary/20 bg-primary/10 p-3.5 text-sm leading-6 text-teal-950 dark:text-lime-50 sm:p-4">
               Keep source-chain USDC plus {getNativeGasSymbol(fromChain)} gas on{" "}
               {getChainLabel(fromChain)}.
             </div>
 
-            <div className="rounded-2xl border border-slate-950/10 bg-white/75 p-4 text-sm text-teal-950/70 dark:border-white/10 dark:bg-white/[0.075] dark:text-lime-50/80">
+            <div className="w-full min-w-0 rounded-2xl border border-slate-950/10 bg-white/75 p-3.5 text-sm text-teal-950/70 dark:border-white/10 dark:bg-white/[0.075] dark:text-lime-50/80 sm:p-4">
               Need test funds?{" "}
               <a
                 href="https://faucet.circle.com"
@@ -251,7 +251,7 @@ export function BridgePanel() {
               </a>
             </div>
 
-            <Button type="submit" size="lg" disabled={loading} className="h-12 rounded-2xl">
+            <Button type="submit" size="lg" disabled={loading} className="h-12 w-full rounded-2xl">
               {loading ? (
                 "Bridging..."
               ) : (
