@@ -104,29 +104,29 @@ export function SendPanel() {
 
   return (
     <>
-      <Card className="glass overflow-hidden rounded-[1.5rem] shadow-card">
-        <CardHeader className="space-y-3 p-4 sm:p-5">
-          <CardTitle className="flex items-center gap-2">
-            <Send className="size-5 text-primary" />
+      <Card className="glass w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+        <CardHeader className="space-y-3 p-3.5 sm:p-5">
+          <CardTitle className="flex min-w-0 items-center gap-2">
+            <Send className="size-5 shrink-0 text-primary" />
             Pay
           </CardTitle>
 
-          <div className="rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-4 dark:border-white/10 dark:bg-white/[0.06]">
+          <div className="w-full min-w-0 rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-3.5 dark:border-white/10 dark:bg-white/[0.06] sm:p-4">
             <p className="text-sm text-muted-foreground">Fast payment route</p>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-sm font-semibold">
-              <WalletCards className="size-4 text-primary" />
-              Unified Balance
-              <ArrowRight className="size-4 text-muted-foreground" />
-              Recipient on Arc Testnet
+            <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2 text-sm font-semibold">
+              <WalletCards className="size-4 shrink-0 text-primary" />
+              <span>Unified Balance</span>
+              <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
+              <span>Recipient on Arc Testnet</span>
             </div>
           </div>
         </CardHeader>
 
-        <CardContent className="p-4 pt-0 sm:p-5 sm:pt-0">
-          <form onSubmit={submit} className="grid gap-4">
-            <div className="grid gap-2">
+        <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
+          <form onSubmit={submit} className="grid w-full min-w-0 gap-4">
+            <div className="grid min-w-0 gap-2">
               <Label htmlFor="send-amount">Amount</Label>
-              <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_132px]">
+              <div className="grid w-full min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_132px]">
                 <Input
                   id="send-amount"
                   inputMode="decimal"
@@ -149,7 +149,7 @@ export function SendPanel() {
               </div>
             </div>
 
-            <div className="grid gap-2">
+            <div className="grid min-w-0 gap-2">
               <Label htmlFor="send-recipient">Destination</Label>
               <Input
                 id="send-recipient"
@@ -159,7 +159,7 @@ export function SendPanel() {
               />
             </div>
 
-            <Button type="submit" size="lg" disabled={loading} className="h-11 rounded-2xl">
+            <Button type="submit" size="lg" disabled={loading} className="h-11 w-full rounded-2xl">
               {loading ? (
                 "Submitting payment..."
               ) : (
