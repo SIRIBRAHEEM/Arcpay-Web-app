@@ -29,12 +29,12 @@ const points = [
 
 export function PremiumDashboardHero() {
   return (
-    <Card className="glass overflow-hidden rounded-[1.25rem]">
-      <CardContent className="relative p-4 sm:p-6">
-        <div className="relative">
-          <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] lg:items-end">
-            <div>
-              <h1 className="max-w-3xl text-2xl font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-4xl">
+    <Card className="glass w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
+      <CardContent className="relative p-3.5 sm:p-6">
+        <div className="relative w-full min-w-0">
+          <div className="grid w-full min-w-0 gap-4 sm:gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)] lg:items-end">
+            <div className="min-w-0">
+              <h1 className="max-w-3xl text-balance text-2xl font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-4xl">
                 Pay, request, and bridge stablecoins on ARC.
               </h1>
 
@@ -43,7 +43,7 @@ export function PremiumDashboardHero() {
                 bridging funds, and checking local wallet activity without leaving the app.
               </p>
 
-              <div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-4 flex min-w-0 flex-wrap gap-2">
                 <Badge variant="secondary">USDC</Badge>
                 <Badge variant="secondary">EURC</Badge>
                 <Badge variant="secondary">Arc Testnet</Badge>
@@ -51,14 +51,14 @@ export function PremiumDashboardHero() {
               </div>
             </div>
 
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="grid w-full min-w-0 gap-2.5 sm:grid-cols-2 sm:gap-3">
               {points.map((point) => (
                 <div
                   key={point.label}
-                  className="flex min-w-0 items-center gap-3 rounded-[1rem] border border-slate-950/10 bg-white/75 p-3.5 dark:border-white/10 dark:bg-white/[0.06]"
+                  className="flex min-w-0 items-center gap-3 rounded-[1rem] border border-slate-950/10 bg-white/75 p-3 dark:border-white/10 dark:bg-white/[0.06] sm:p-3.5"
                 >
-                  <div className="grid size-10 shrink-0 place-items-center rounded-2xl bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
-                    <point.icon className="size-5" />
+                  <div className="grid size-9 shrink-0 place-items-center rounded-2xl bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950 sm:size-10">
+                    <point.icon className="size-4 sm:size-5" />
                   </div>
 
                   <div className="min-w-0">
