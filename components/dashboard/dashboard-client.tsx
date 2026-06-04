@@ -75,8 +75,8 @@ export function DashboardClient() {
           <PremiumDashboardHero />
         </div>
 
-        <section className="mt-3 grid w-full min-w-0 gap-3 sm:mt-4 sm:gap-4 xl:grid-cols-[minmax(0,1.12fr)_minmax(0,0.88fr)]">
-          <div className="grid w-full min-w-0 gap-3 sm:gap-4">
+        <section className="dashboard-masonry mt-3 w-full min-w-0 sm:mt-4">
+          <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Pay"
               description="Send USDC or EURC to another Arc wallet"
@@ -84,21 +84,46 @@ export function DashboardClient() {
             >
               <SendPanel />
             </MobileDashboardSection>
+          </div>
 
+          <div className="dashboard-masonry-item">
+            <MobileDashboardSection
+              title="Unified Balance"
+              description="View deposits and balance sources"
+              defaultOpen
+            >
+              <BalanceCard />
+            </MobileDashboardSection>
+          </div>
+
+          <div className="dashboard-masonry-item">
+            <MobileDashboardSection
+              title="Request Money"
+              description="Unwrap to create QR invoice links"
+            >
+              <ReceivePanel />
+            </MobileDashboardSection>
+          </div>
+
+          <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Token Exchange"
               description="Unwrap to swap USDC and EURC on Arc Testnet"
             >
               <TokenExchangePanel />
             </MobileDashboardSection>
+          </div>
 
+          <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Bridge USDC"
               description="Unwrap to move USDC across supported chains"
             >
               <BridgePanel />
             </MobileDashboardSection>
+          </div>
 
+          <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Activity"
               description="Unwrap to view local payment history"
@@ -107,22 +132,7 @@ export function DashboardClient() {
             </MobileDashboardSection>
           </div>
 
-          <div className="grid w-full min-w-0 content-start gap-3 sm:gap-4">
-            <MobileDashboardSection
-              title="Unified Balance"
-              description="View deposits and balance sources"
-              defaultOpen
-            >
-              <BalanceCard />
-            </MobileDashboardSection>
-
-            <MobileDashboardSection
-              title="Request Money"
-              description="Unwrap to create QR invoice links"
-            >
-              <ReceivePanel />
-            </MobileDashboardSection>
-
+          <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Protocol Status"
               description="Network, gas, and custody details"
