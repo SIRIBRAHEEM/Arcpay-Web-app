@@ -112,7 +112,7 @@
   background-color: rgba(255, 130, 0, 0.16) !important;
 }
 
-:global(.dark) .docsPage [class*="dark:bg-orange-400"] {
+:global(.dark) .docsPage [class*="rounded-full"][class*="dark:bg-orange-400"] {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
