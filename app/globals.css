@@ -255,4 +255,84 @@
   .safe-bottom {
     padding-bottom: env(safe-area-inset-bottom);
   }
+
+  .premium-dashboard-bg section[class*="rounded-"] > button {
+    min-height: 54px;
+    padding-top: 0.65rem !important;
+    padding-bottom: 0.65rem !important;
+  }
+
+  .premium-dashboard-bg section[class*="rounded-"] > button + div {
+    padding: 0 !important;
+  }
+
+  .premium-dashboard-bg .stable-money-qr-card {
+    border-radius: 1.05rem !important;
+    box-shadow: 0 12px 34px rgba(6, 26, 63, 0.08) !important;
+  }
+
+  .premium-dashboard-bg .stable-money-qr-card > div {
+    padding: 0.8rem !important;
+  }
+
+  .premium-dashboard-bg .stable-money-qr-card h3 {
+    margin-top: 0.55rem !important;
+    font-size: 1.35rem !important;
+    line-height: 1.12 !important;
+  }
+
+  .premium-dashboard-bg .stable-money-qr-card p {
+    font-size: 0.78rem !important;
+    line-height: 1.45 !important;
+  }
+
+  .premium-dashboard-bg .stable-money-qr-box {
+    max-width: 158px !important;
+    padding: 0.65rem !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 1rem !important;
+  }
+
+  .premium-dashboard-bg .qr-white-surface {
+    padding: 0.55rem !important;
+    border-radius: 0.85rem !important;
+  }
+
+  .premium-dashboard-bg .qr-white-surface > svg {
+    width: 122px !important;
+    height: 122px !important;
+  }
+
+  .premium-dashboard-bg .stable-money-qr-card input,
+  .premium-dashboard-bg .stable-money-qr-card button {
+    min-height: 2.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .premium-dashboard-bg .stable-money-qr-card [class*="lg:grid-cols"] {
+      grid-template-columns: 170px minmax(0, 1fr) !important;
+      gap: 0.9rem !important;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .premium-dashboard-bg {
+      padding-left: 0.65rem !important;
+      padding-right: 0.65rem !important;
+    }
+
+    .premium-dashboard-bg .stable-money-qr-card > div {
+      padding: 0.7rem !important;
+    }
+
+    .premium-dashboard-bg .stable-money-qr-box {
+      max-width: 150px !important;
+    }
+
+    .premium-dashboard-bg .qr-white-surface > svg {
+      width: 116px !important;
+      height: 116px !important;
+    }
+  }
 }
