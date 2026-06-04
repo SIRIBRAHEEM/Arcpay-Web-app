@@ -10,7 +10,7 @@ const fallbackChainLogoConfig: ChainLogoConfig = { label: "Unknown chain", class
 
 const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
   Arc_Testnet: { label: "Arc Testnet", className: "bg-[#09294a] ring-sky-300/30", icon: ArcMark },
-  Base_Sepolia: { label: "Base Sepolia", className: "bg-transparent ring-blue-400/25", icon: BaseMark },
+  Base_Sepolia: { label: "Base Sepolia", className: "bg-white ring-[#0000ff]/30", icon: BaseMark },
   Optimism_Sepolia: { label: "Optimism Sepolia", className: "bg-[#ff0420] ring-red-300/35", icon: OptimismMark },
   Avalanche_Fuji: { label: "Avalanche Fuji", className: "bg-[#e84142] ring-red-300/35", icon: AvalancheMark },
   Arbitrum_Sepolia: { label: "Arbitrum Sepolia", className: "bg-[#061a3f] ring-sky-200/35", icon: ArbitrumMark },
@@ -22,7 +22,7 @@ const chainLogoConfig: Record<AppKitChain, ChainLogoConfig> = {
 };
 
 function QuestionMark(props: ChainMarkProps) { return <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}><circle cx="16" cy="16" r="15" fill="currentColor" opacity="0.12"/><path d="M14 13a3 3 0 0 1 5 2c0 2-3 3-3 5" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round"/><circle cx="16" cy="24" r="1.5" fill="currentColor"/></svg>; }
-function BaseMark(props: ChainMarkProps) { return <svg viewBox="0 0 1280 1280" fill="none" aria-hidden="true" {...props}><path fill="blue" d="M0,101.12c0-34.64,0-51.95,6.53-65.28,6.25-12.76,16.56-23.07,29.32-29.32C49.17,0,66.48,0,101.12,0h1077.76c34.63,0,51.96,0,65.28,6.53,12.75,6.25,23.06,16.56,29.32,29.32,6.52,13.32,6.52,30.64,6.52,65.28v1077.76c0,34.63,0,51.96-6.52,65.28-6.26,12.75-16.57,23.06-29.32,29.32-13.32,6.52-30.65,6.52-65.28,6.52H101.12c-34.64,0-51.95,0-65.28-6.52-12.76-6.26-23.07-16.57-29.32-29.32-6.53-13.32-6.53-30.65-6.53-65.28V101.12Z"/></svg>; }
+function BaseMark(props: ChainMarkProps) { return <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}><circle cx="16" cy="16" r="15.5" fill="white"/><rect x="8" y="8" width="16" height="16" rx="1.2" fill="#0000FF"/></svg>; }
 function EthereumMark(props: ChainMarkProps) { return <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}><circle cx="16" cy="16" r="15.5" fill="#fff"/><path d="M16 4 9 16l7 4 7-4-7-12Z" fill="#8a92b2"/><path d="M16 4v16l7-4-7-12Z" fill="#62688f"/><path d="M9 18l7 10 7-10-7 4-7-4Z" fill="#62688f"/></svg>; }
 function LineaMark(props: ChainMarkProps) { return <svg viewBox="0 0 32 32" fill="none" aria-hidden="true" {...props}><circle cx="16" cy="16" r="15.5" fill="#7ee7f2"/><path d="M10 8h4v11h9v5H10V8Z" fill="#07151d"/><circle cx="23" cy="10" r="2.2" fill="#07151d"/></svg>; }
 
