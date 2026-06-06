@@ -22,10 +22,21 @@ function normalizeAmount(value: string) {
 }
 
 function getPublicCredential() {
-  const value = process.env.NEXT_PUBLIC_KIT_KEY;
+  // Support the documented name + common fallbacks from older examples/docs.
+  // Prefer NEXT_PUBLIC_* so it is inlined for the client bundle on Vercel.
+  const candidates = [
+    process.env.NEXT_PUBLIC_KIT_KEY,
+    process.env.KIT_KEY,
+    process.env.CIRCLE_KIT_KEY,
+    process.env.NEXT_PUBLIC_CIRCLE_KIT_KEY,
+  ];
+
+  const value = candidates.find((v) => v && v.length > 5);
 
   if (!value) {
-    throw new Error("Missing Circle App Kit key. Add NEXT_PUBLIC_KIT_KEY in Vercel env vars.");
+    throw new Error(
+      "Missing Circle App Kit key. Add NEXT_PUBLIC_KIT_KEY (preferred) in Vercel Environment Variables for Production."
+    );
   }
 
   return value;
@@ -76,7 +87,7 @@ function userError(error: unknown) {
   }
 
   if (lower.includes("unauthorized") || lower.includes("401") || lower.includes("kit key")) {
-    return new Error("Invalid or missing App Kit key. Check NEXT_PUBLIC_KIT_KEY in Vercel.");
+    return new Error("Invalid or missing App Kit key. Check NEXT_PUBLIC_KIT_KEY in Vercel (or KIT_KEY / CIRCLE_KIT_KEY as fallback).");
   }
 
   if (lower.includes("context") || lower.includes("undefined")) {
