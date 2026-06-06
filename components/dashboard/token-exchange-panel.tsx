@@ -78,7 +78,7 @@ export function TokenExchangePanel() {
 
       const gasBalance = await getNativeGasBalance(provider, address);
       if (gasBalance <= 0n) {
-        throw new Error("Arc Testnet needs USDC gas for network fees. Add test USDC, then try again.");
+        throw new Error("Need USDC on Arc Testnet for gas. Get test funds from faucet.circle.com.");
       }
 
       const freshAdapter = await createBrowserAdapter(provider);
@@ -90,14 +90,12 @@ export function TokenExchangePanel() {
         toToken
       });
 
-      toast.success("Token exchange submitted", {
-        description: `${fromToken} to ${toToken} on Arc Testnet`
+      toast.success(`Swapped ${amount} ${fromToken} → ${toToken}`, {
+        description: "Check your updated balance in a few seconds."
       });
       setAmount("");
     } catch (error) {
-      toast.error("Token exchange failed", {
-        description: error instanceof Error ? error.message : "Please try again."
-      });
+      toast.error(error instanceof Error ? error.message : "Swap failed. Try a small amount of USDC.");
     } finally {
       setLoading(false);
     }
@@ -111,7 +109,7 @@ export function TokenExchangePanel() {
           Token Exchange
         </CardTitle>
         <p className="text-sm leading-6 text-slate-600 dark:text-white/68">
-          Same-chain Arc Testnet exchange between USDC and EURC. cirBTC will be enabled after its route is confirmed.
+          Same-chain swap USDC ↔ EURC on Arc Testnet. (cirBTC coming soon)
         </p>
       </CardHeader>
       <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
@@ -121,7 +119,7 @@ export function TokenExchangePanel() {
             <Input
               id="exchange-amount"
               inputMode="decimal"
-              placeholder="25.00"
+              placeholder="1.00"
               value={amount}
               onChange={(event) => setAmount(event.target.value)}
             />
@@ -129,7 +127,7 @@ export function TokenExchangePanel() {
 
           <div className="grid w-full min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
             <div className="grid min-w-0 gap-2">
-              <Label>From token</Label>
+              <Label>From</Label>
               <Select value={fromToken} onValueChange={handleFromToken}>
                 <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
                   <SelectValue />
@@ -150,13 +148,13 @@ export function TokenExchangePanel() {
               size="icon"
               className="mx-auto size-10 rounded-2xl"
               onClick={flipTokens}
-              aria-label="Flip exchange tokens"
+              aria-label="Flip tokens"
             >
               <ArrowDownUp className="size-4" />
             </Button>
 
             <div className="grid min-w-0 gap-2">
-              <Label>To token</Label>
+              <Label>To</Label>
               <Select value={toToken} onValueChange={handleToToken}>
                 <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
                   <SelectValue />
@@ -173,7 +171,7 @@ export function TokenExchangePanel() {
           </div>
 
           <div className="w-full min-w-0 rounded-2xl border border-primary/20 bg-primary/10 p-3.5 text-sm leading-6 text-slate-700 dark:text-white/78 sm:p-4">
-            Arc Testnet only. Test with USDC ↔ EURC first, keep enough USDC gas, and disable browser shields if the service cannot fetch.
+            Arc Testnet only. Need USDC balance + gas. Get test funds at faucet.circle.com
           </div>
 
           <Button
@@ -183,7 +181,7 @@ export function TokenExchangePanel() {
             className="h-12 w-full rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600"
           >
             {loading ? (
-              "Submitting..."
+              "Swapping..."
             ) : (
               <>
                 <Repeat2 className="mr-2 size-4" />
