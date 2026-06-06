@@ -91,7 +91,7 @@ function userError(error: unknown) {
     lower.includes("stablecoin service") ||
     lower.includes("could not create this swap")
   ) {
-    return new Error("Swap service temporarily unavailable. Try again in a few minutes, use Chrome/MetaMask, or check faucet for test funds.");
+    return new Error("Swap service temporarily unavailable. This is usually because you don't have enough of the 'From' token ON Arc Testnet in your connected wallet (check MetaMask balance on Arc, not just the Unified Balance card). Get more test USDC from faucet.circle.com (Arc Testnet), use a small amount, and make sure you're on Chrome + MetaMask. Try again in a few minutes if service is busy.");
   }
 
   return new Error(message || "Swap failed. Please try again with a small amount of USDC.");
