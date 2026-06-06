@@ -25,7 +25,7 @@ function getPublicCredential() {
   const value = process.env.NEXT_PUBLIC_KIT_KEY;
 
   if (!value) {
-    throw new Error("Circle App Kit public credential is missing. Add NEXT_PUBLIC_KIT_KEY in Vercel environment variables, then redeploy.");
+    throw new Error("Missing Circle App Kit key. Add NEXT_PUBLIC_KIT_KEY in Vercel env vars.");
   }
 
   return value;
@@ -55,7 +55,7 @@ function errorText(value: unknown) {
   try {
     return JSON.stringify(value);
   } catch {
-    return "Circle App Kit could not complete the exchange.";
+    return "Swap service error.";
   }
 }
 
@@ -64,23 +64,23 @@ function userError(error: unknown) {
   const lower = message.toLowerCase();
 
   if (lower.includes("user rejected") || lower.includes("user denied")) {
-    return new Error("The wallet rejected the exchange. Confirm it in your wallet to continue.");
+    return new Error("Transaction rejected in wallet. Please confirm to continue.");
   }
 
   if (lower.includes("insufficient") || lower.includes("balance") || lower.includes("funds")) {
-    return new Error("Exchange needs enough Arc Testnet token balance and USDC gas. Add test funds, then try again.");
+    return new Error("Insufficient balance or gas (USDC). Get test USDC from faucet.circle.com on Arc Testnet.");
   }
 
   if (lower.includes("not supported") || lower.includes("unsupported") || lower.includes("route") || lower.includes("token")) {
-    return new Error("This pair is not supported right now. Try USDC to EURC on Arc Testnet first.");
+    return new Error("This token pair is not supported yet. Use USDC ↔ EURC on Arc Testnet.");
   }
 
-  if (lower.includes("unauthorized") || lower.includes("401")) {
-    return new Error("Circle App Kit public credential is missing or invalid. Update Vercel environment variables, then redeploy.");
+  if (lower.includes("unauthorized") || lower.includes("401") || lower.includes("kit key")) {
+    return new Error("Invalid or missing App Kit key. Check NEXT_PUBLIC_KIT_KEY in Vercel.");
   }
 
   if (lower.includes("context") || lower.includes("undefined")) {
-    return new Error("Circle App Kit could not read the active wallet context. Disconnect, refresh ArcPay, reconnect your wallet, then try USDC to EURC again.");
+    return new Error("Wallet context issue. Reconnect your wallet and try again.");
   }
 
   if (
@@ -88,12 +88,13 @@ function userError(error: unknown) {
     lower.includes("createswap") ||
     lower.includes("maximum retry") ||
     lower.includes("failed to fetch") ||
-    lower.includes("stablecoin service")
+    lower.includes("stablecoin service") ||
+    lower.includes("could not create this swap")
   ) {
-    return new Error("Circle Swap service could not create this swap right now. Try USDC to EURC again, disable Brave Shields/ad blockers for ArcPay, or retry in Chrome/MetaMask Mobile. If it still fails, the Arc Testnet swap backend is temporarily unreachable.");
+    return new Error("Swap service temporarily unavailable. Try again in a few minutes, use Chrome/MetaMask, or check faucet for test funds.");
   }
 
-  return new Error(message || "Circle App Kit could not complete the exchange.");
+  return new Error(message || "Swap failed. Please try again with a small amount of USDC.");
 }
 
 export async function exchangeArcToken({
@@ -112,7 +113,7 @@ export async function exchangeArcToken({
   }
 
   if (typeof navigator !== "undefined" && !navigator.onLine) {
-    throw new Error("You are offline. Check your internet connection and try again.");
+    throw new Error("You are offline. Check your internet connection.");
   }
 
   const kit = getAppKit() as unknown as {
@@ -121,7 +122,7 @@ export async function exchangeArcToken({
   };
 
   if (typeof kit.swap !== "function") {
-    throw new Error("This App Kit version does not expose exchange support yet.");
+    throw new Error("Swap not available in current App Kit version.");
   }
 
   const params = {
@@ -133,9 +134,8 @@ export async function exchangeArcToken({
     tokenOut: toToken,
     amountIn: normalizeAmount(amount),
     config: {
-      kitKey: getPublicCredential(),
-      slippageBps: 300,
-      allowanceStrategy: "approve" as const
+      kitKey: getPublicCredential()
+      // Only kitKey per official docs. Extra fields were causing createSwap failures.
     }
   };
 
@@ -143,13 +143,13 @@ export async function exchangeArcToken({
     if (typeof kit.estimateSwap === "function") {
       try {
         await kit.estimateSwap(params);
-      } catch (estErr) {
-        // Estimate is optional / best-effort. Log and continue to actual swap.
-        console.warn("[ArcPay exchange] estimateSwap non-fatal:", estErr);
+      } catch {
+        // Non-blocking
       }
     }
 
-    return await kit.swap(params);
+    const result = await kit.swap(params);
+    return result;
   } catch (error) {
     console.error("[ArcPay exchange]", errorText(error));
     throw userError(error);
