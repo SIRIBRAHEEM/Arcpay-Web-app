@@ -31,14 +31,19 @@ export function TokenExchangePanel() {
   const [toToken, setToToken] = useState<ArcStableToken>("EURC");
   const [loading, setLoading] = useState(false);
 
-  // The key is inlined at build time via NEXT_PUBLIC_.
-  // If missing, swap will fail — surface it early in the UI.
-  const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+  // Mirror the fallback logic from exchange-actions.ts so the banner
+  // disappears as soon as any supported key name is present at build time.
+  const kitKey =
+    process.env.NEXT_PUBLIC_KIT_KEY ||
+    process.env.KIT_KEY ||
+    process.env.CIRCLE_KIT_KEY ||
+    process.env.NEXT_PUBLIC_CIRCLE_KIT_KEY;
+
   const keyMissing =
     !kitKey ||
     kitKey.includes("your_") ||
     kitKey.includes("your_real") ||
-    kitKey.length < 20;
+    kitKey.length < 10;
 
   function flipTokens() {
     setFromToken(toToken);
@@ -65,7 +70,7 @@ export function TokenExchangePanel() {
     event.preventDefault();
 
     if (keyMissing) {
-      toast.error("Token Exchange is not configured. Add NEXT_PUBLIC_KIT_KEY in Vercel (see vercel.env.example).");
+      toast.error("Token Exchange is not configured. Add NEXT_PUBLIC_KIT_KEY (or KIT_KEY / CIRCLE_KIT_KEY) in Vercel (see vercel.env.example).");
       return;
     }
 
@@ -135,9 +140,9 @@ export function TokenExchangePanel() {
             <div>
               <div className="font-medium">Token Exchange requires setup</div>
               <div className="mt-1 text-xs opacity-90">
-                Add your real Circle App Kit key as <span className="font-mono">NEXT_PUBLIC_KIT_KEY</span> in Vercel project settings.
+                Add your real Circle App Kit key as <span className="font-mono">NEXT_PUBLIC_KIT_KEY</span> (preferred) or <span className="font-mono">KIT_KEY</span> / <span className="font-mono">CIRCLE_KIT_KEY</span> in Vercel project settings.
                 Use the <span className="font-mono">vercel.env.example</span> file (Settings → Environment Variables → Import).
-                Then redeploy.
+                Make sure it targets Production, then Redeploy the latest production deployment (or push any change to main).
               </div>
             </div>
           </div>
