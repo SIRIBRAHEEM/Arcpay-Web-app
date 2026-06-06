@@ -1,6 +1,6 @@
 # ArcPay
 
-ArcPay is a non-custodial stablecoin payment app for Arc Testnet. It is designed to make testnet stablecoin payments feel simple, clean, and familiar: connect a wallet, view Unified Balance, deposit USDC, bridge USDC, send payments, create QR payment requests, and review local activity from one premium dashboard.
+ArcPay is a non-custodial stablecoin payment app for Arc Testnet. It is designed to make testnet stablecoin payments feel simple, clean, and familiar: connect a wallet, view Unified Balance, deposit USDC, **swap (Token Exchange) USDC ↔ EURC**, bridge USDC, send payments, create QR payment requests, and review local activity from one premium dashboard.
 
 Production app:
 
@@ -14,7 +14,8 @@ https://arcpay-web-app.vercel.app
 
 ArcPay brings the most important payment actions into one interface:
 
-- **Pay**: send USDC to another Arc Testnet wallet.
+- **Pay**: send USDC or EURC to another Arc Testnet wallet.
+- **Token Exchange (Swap)**: swap USDC ↔ EURC directly on Arc Testnet (powered by Circle App Kit).
 - **Request**: create a shareable USDC payment link with an optional amount and memo.
 - **QR Request**: generate a clean QR code that sends people directly to the payment request.
 - **Deposit**: deposit test USDC into Unified Balance through Circle App Kit.
@@ -32,9 +33,9 @@ The goal is to hide unnecessary blockchain complexity and make stablecoin moveme
 - Premium dashboard with clean cards, motion, and dark-mode contrast polish.
 - EVM wallet signup/login with installed browser wallets.
 - Passkey-ready auth flow.
-- Circle App Kit integration.
+- Circle App Kit integration (including Token Exchange / swap).
 - Unified Balance support.
-- Deposit, bridge, send, and request flows.
+- Deposit, bridge, send, request, and **swap** flows.
 - Payment request links with QR code support.
 - Wallet-specific local activity history.
 - Chain selectors with custom SVG chain marks.
@@ -82,9 +83,21 @@ Connect a supported browser wallet such as MetaMask, Rabby, Coinbase Wallet, Bin
 
 ### 4. Open the dashboard
 
-After connection, ArcPay opens the dashboard where you can view balance, deposit, bridge, send, request, and review activity.
+After connection, ArcPay opens the dashboard where you can view balance, **swap tokens**, deposit, bridge, send, request, and review activity.
 
-### 5. Request money with QR
+### 5. Swap / Token Exchange
+
+In the **Token Exchange** section:
+
+1. Enter the amount.
+2. Choose from (USDC or EURC) and to token.
+3. Make sure you have a small amount of gas (USDC on Arc Testnet) + the token you're swapping from.
+4. Click "Exchange tokens".
+5. Confirm in your wallet.
+
+Get test funds from the Circle faucet: https://faucet.circle.com (select Arc Testnet).
+
+### 6. Request money with QR
 
 In the Request section:
 
@@ -93,11 +106,11 @@ In the Request section:
 3. Copy the payment link or share it.
 4. Let the sender scan the QR code or open the request link.
 
-### 6. Send USDC
+### 7. Send USDC
 
 Use the Pay flow to enter a destination wallet address and send USDC from ArcPay.
 
-### 7. Bridge or deposit USDC
+### 8. Bridge or deposit USDC
 
 Use the bridge/deposit tools to move test USDC across supported App Kit chains.
 
@@ -112,6 +125,7 @@ ArcPay uses Circle App Kit flows for stablecoin actions, including:
 - `unifiedBalance.spend`
 - `kit.send`
 - `kit.bridge`
+- **Token Exchange (swap)** via `kit.swap` + `estimateSwap`
 
 ---
 
@@ -135,20 +149,32 @@ ArcPay uses Circle App Kit flows for stablecoin actions, including:
 
 ## Environment Variables
 
-Do not commit real keys. Add secrets locally in `.env.local` and in Vercel environment variables.
+**Critical for Token Exchange / Swap to work:**
+
+Do not commit real keys. Add secrets locally in `.env.local` and (more importantly) in Vercel environment variables.
+
+For Vercel (recommended way):
+
+1. Copy `vercel.env.example`
+2. Replace the placeholder with your real Circle App Kit credential (format usually `KIT_KEY:your-id:your-secret`)
+3. In Vercel Dashboard → Project → Settings → Environment Variables → **Import** the file
+4. Make sure it targets **Production**, Preview, and Development
+5. Trigger a new deploy (or push to main — GitHub is linked)
+
+Example content (see vercel.env.example in the repo):
 
 ```txt
-KIT_KEY=KIT_KEY:your-id:your-secret
+NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
+```
 
-# Existing deployments can also use:
-# CIRCLE_KIT_KEY=KIT_KEY:your-id:your-secret
+Other vars:
 
-# Optional fallback for static/client-only builds:
-# NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
-
-# Optional Privy app ID if enabled:
+```txt
+# Optional Privy app ID
 NEXT_PUBLIC_PRIVY_APP_ID=your-privy-app-id
 ```
+
+The code reads `process.env.NEXT_PUBLIC_KIT_KEY` (client-side, inlined at build).
 
 ---
 
@@ -188,23 +214,19 @@ npm run build
 npm run typecheck
 ```
 
----
-
 ## Arc Testnet Config
 
 ```txt
 Chain ID: 5042002
 RPC: https://rpc.testnet.arc.network
 Explorer: https://testnet.arcscan.app
-Native gas: USDC, 18 decimals
-USDC ERC-20 interface: 0x3600000000000000000000000000000000000000
+Native gas: USDC (18 decimals) on this testnet
+USDC interface: 0x3600000000000000000000000000000000000000
 ```
-
----
 
 ## Deployment
 
-ArcPay is deployed on Vercel. Pushing to `main` triggers a production deployment through the connected GitHub repository.
+ArcPay is deployed on Vercel. **Pushing to `main` on GitHub automatically triggers a production deployment** (GitHub integration is enabled).
 
 Production URL:
 
