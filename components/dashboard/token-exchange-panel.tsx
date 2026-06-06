@@ -31,13 +31,9 @@ export function TokenExchangePanel() {
   const [toToken, setToToken] = useState<ArcStableToken>("EURC");
   const [loading, setLoading] = useState(false);
 
-  // Mirror the fallback logic from exchange-actions.ts so the banner
-  // disappears as soon as any supported key name is present at build time.
-  const kitKey =
-    process.env.NEXT_PUBLIC_KIT_KEY ||
-    process.env.KIT_KEY ||
-    process.env.CIRCLE_KIT_KEY ||
-    process.env.NEXT_PUBLIC_CIRCLE_KIT_KEY;
+  // Only NEXT_PUBLIC_KIT_KEY is available in the client bundle (inlined at build time).
+  // Setting other names or setting the var after a build won't work until a new build/redeploy.
+  const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
 
   const keyMissing =
     !kitKey ||
@@ -70,7 +66,7 @@ export function TokenExchangePanel() {
     event.preventDefault();
 
     if (keyMissing) {
-      toast.error("Token Exchange is not configured. Add NEXT_PUBLIC_KIT_KEY (or KIT_KEY / CIRCLE_KIT_KEY) in Vercel (see vercel.env.example).");
+      toast.error("Token Exchange is not configured. Set NEXT_PUBLIC_KIT_KEY in Vercel (for Production), then Redeploy the latest production deployment.");
       return;
     }
 
@@ -140,9 +136,9 @@ export function TokenExchangePanel() {
             <div>
               <div className="font-medium">Token Exchange requires setup</div>
               <div className="mt-1 text-xs opacity-90">
-                Add your real Circle App Kit key as <span className="font-mono">NEXT_PUBLIC_KIT_KEY</span> (preferred) or <span className="font-mono">KIT_KEY</span> / <span className="font-mono">CIRCLE_KIT_KEY</span> in Vercel project settings.
-                Use the <span className="font-mono">vercel.env.example</span> file (Settings → Environment Variables → Import).
-                Make sure it targets Production, then Redeploy the latest production deployment (or push any change to main).
+                Add your real Circle App Kit key as <span className="font-mono">NEXT_PUBLIC_KIT_KEY</span> in Vercel (Settings → Environment Variables).
+                Make sure it is enabled for <strong>Production</strong> (and Preview/Development).
+                Then go to Deployments tab and Redeploy the latest production deployment (or push any change to main).
               </div>
             </div>
           </div>
@@ -220,7 +216,7 @@ export function TokenExchangePanel() {
             {loading ? (
               "Swapping..."
             ) : keyMissing ? (
-              "Configure Kit key to enable Exchange"
+              "Set NEXT_PUBLIC_KIT_KEY then Redeploy"
             ) : (
               <>
                 <Repeat2 className="mr-2 size-4" />
