@@ -10,6 +10,26 @@ https://arcpay-web-app.vercel.app
 
 ---
 
+## ⚠️ One-time Setup for Swap (Token Exchange) — Do This First
+
+The swap will not work until you complete this (it matches exactly how the working demo at https://elementswap-eta.vercel.app/ is configured).
+
+**Fastest way (recommended):**
+
+1. Copy the file `vercel.env.example` from this repo.
+2. Replace the placeholder with your real Circle key (the full value that starts with `KIT_KEY:...`).
+3. Save it as `vercel.env`.
+4. In Vercel (your arcpay-web-app project) → Settings → Environment Variables → **Import** the file.
+5. Make sure **Production** is selected.
+6. Go to Deployments → latest Production → **Redeploy**.
+7. Hard refresh your site.
+
+The yellow "Swap not configured yet" banner will disappear and the form will enable.
+
+Full details + troubleshooting are inside the `vercel.env.example` file itself.
+
+---
+
 ## What ArcPay Does
 
 ArcPay brings the most important payment actions into one interface:
@@ -87,6 +107,8 @@ After connection, ArcPay opens the dashboard where you can view balance, **swap 
 
 ### 5. Swap / Token Exchange
 
+**Important:** You must complete the "One-time Setup for Swap" section above first.
+
 In the **Token Exchange** section:
 
 1. Enter the amount.
@@ -149,32 +171,7 @@ ArcPay uses Circle App Kit flows for stablecoin actions, including:
 
 ## Environment Variables
 
-**Critical for Token Exchange / Swap to work:**
-
-Do not commit real keys. Add secrets locally in `.env.local` and (more importantly) in Vercel environment variables.
-
-For Vercel (recommended way):
-
-1. Copy `vercel.env.example`
-2. Replace the placeholder with your real Circle App Kit credential (format usually `KIT_KEY:your-id:your-secret`)
-3. In Vercel Dashboard → Project → Settings → Environment Variables → **Import** the file
-4. Make sure it targets **Production**, Preview, and Development
-5. Trigger a new deploy (or push to main — GitHub is linked)
-
-Example content (see vercel.env.example in the repo):
-
-```txt
-NEXT_PUBLIC_KIT_KEY=KIT_KEY:your-id:your-secret
-```
-
-Other vars:
-
-```txt
-# Optional Privy app ID
-NEXT_PUBLIC_PRIVY_APP_ID=your-privy-app-id
-```
-
-The code reads `process.env.NEXT_PUBLIC_KIT_KEY` (client-side, inlined at build).
+See the dedicated "One-time Setup for Swap" section at the top of this README (and the `vercel.env.example` file).
 
 ---
 
