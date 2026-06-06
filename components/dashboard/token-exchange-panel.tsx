@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/select";
 import { exchangeArcToken } from "@/lib/exchange-actions";
 import type { ArcStableToken } from "@/lib/appkit-actions";
-import { getChainParams, getNativeGasBalance, requestSwitchChain } from "@/lib/arc";
+import { ARC_USDC_ADDRESS, getChainParams, getNativeGasBalance, requestSwitchChain } from "@/lib/arc";
 import { createBrowserAdapter } from "@/lib/kit";
 import { validateAmount } from "@/lib/validators";
 import { useWalletStore } from "@/store/wallet-store";
@@ -96,6 +96,21 @@ export function TokenExchangePanel() {
         throw new Error("Need USDC on Arc Testnet for gas. Get test funds from faucet.circle.com.");
       }
 
+      // Pre-check on-chain fromToken balance on Arc (prevents generic service error)
+      if (fromToken === "USDC") {
+        const data = "0x70a08231" + address.toLowerCase().replace("0x", "").padStart(64, "0");
+        const balResult = await provider.request({
+          method: "eth_call",
+          params: [{ to: ARC_USDC_ADDRESS, data }, "latest"],
+        });
+        const fromBal = BigInt(balResult || "0x0");
+        const needed = BigInt(Math.floor(parseFloat(amount) * 1e18));
+        if (fromBal < needed) {
+          throw new Error(`Insufficient ${fromToken} on Arc Testnet for swap amount. Get more from faucet.circle.com (Arc Testnet) or check your MetaMask balance on Arc (not just Unified Balance).`);
+        }
+      }
+      // For EURC, rely on service error (or add address later)
+
       const freshAdapter = await createBrowserAdapter(provider);
 
       await exchangeArcToken({
@@ -126,7 +141,7 @@ export function TokenExchangePanel() {
           Token Exchange
         </CardTitle>
         <p className="text-sm leading-6 text-slate-600 dark:text-white/68">
-          Same-chain swap USDC ↔ EURC on Arc Testnet. (cirBTC coming soon)
+          Same-chain swap USDC ↔ EURC on Arc Testnet. Requires the tokens in your wallet ON Arc Testnet (faucet → MetaMask on Arc).
         </p>
       </CardHeader>
       <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
@@ -205,7 +220,7 @@ export function TokenExchangePanel() {
           </div>
 
           <div className="w-full min-w-0 rounded-2xl border border-primary/20 bg-primary/10 p-3.5 text-sm leading-6 text-slate-700 dark:text-white/78 sm:p-4">
-            Arc Testnet only. Need USDC + gas. Get test funds at faucet.circle.com
+            Requires on-chain balance of the 'From' token + gas (USDC) directly on Arc Testnet in your MetaMask. Unified Balance is separate — use faucet for direct Arc funds.
           </div>
 
           <Button
