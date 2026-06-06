@@ -116,7 +116,7 @@ export async function exchangeArcToken({
   }
 
   const kit = getAppKit() as unknown as {
-    estimateSwap: (params: unknown) => Promise<unknown>;
+    estimateSwap?: (params: unknown) => Promise<unknown>;
     swap: (params: unknown) => Promise<unknown>;
   };
 
@@ -135,13 +135,18 @@ export async function exchangeArcToken({
     config: {
       kitKey: getPublicCredential(),
       slippageBps: 300,
-      allowanceStrategy: "approve"
+      allowanceStrategy: "approve" as const
     }
   };
 
   try {
     if (typeof kit.estimateSwap === "function") {
-      await kit.estimateSwap(params);
+      try {
+        await kit.estimateSwap(params);
+      } catch (estErr) {
+        // Estimate is optional / best-effort. Log and continue to actual swap.
+        console.warn("[ArcPay exchange] estimateSwap non-fatal:", estErr);
+      }
     }
 
     return await kit.swap(params);
