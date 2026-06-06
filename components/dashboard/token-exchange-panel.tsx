@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowDownUp, Repeat2 } from "lucide-react";
+import { ArrowDownUp, Repeat2, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,6 +31,15 @@ export function TokenExchangePanel() {
   const [toToken, setToToken] = useState<ArcStableToken>("EURC");
   const [loading, setLoading] = useState(false);
 
+  // The key is inlined at build time via NEXT_PUBLIC_.
+  // If missing, swap will fail — surface it early in the UI.
+  const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
+  const keyMissing =
+    !kitKey ||
+    kitKey.includes("your_") ||
+    kitKey.includes("your_real") ||
+    kitKey.length < 20;
+
   function flipTokens() {
     setFromToken(toToken);
     setToToken(fromToken);
@@ -54,6 +63,11 @@ export function TokenExchangePanel() {
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (keyMissing) {
+      toast.error("Token Exchange is not configured. Add NEXT_PUBLIC_KIT_KEY in Vercel (see vercel.env.example).");
+      return;
+    }
 
     const amountError = validateAmount(amount);
     if (amountError) {
@@ -101,6 +115,8 @@ export function TokenExchangePanel() {
     }
   }
 
+  const canSubmit = !loading && !keyMissing && !!provider && !!address;
+
   return (
     <Card className="glass arcpay-shine w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
       <CardHeader className="space-y-3 p-3.5 sm:p-5">
@@ -113,6 +129,20 @@ export function TokenExchangePanel() {
         </p>
       </CardHeader>
       <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
+        {keyMissing && (
+          <div className="mb-4 flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-sm text-amber-700 dark:text-amber-300">
+            <AlertTriangle className="mt-0.5 size-4 shrink-0" />
+            <div>
+              <div className="font-medium">Token Exchange requires setup</div>
+              <div className="mt-1 text-xs opacity-90">
+                Add your real Circle App Kit key as <span className="font-mono">NEXT_PUBLIC_KIT_KEY</span> in Vercel project settings.
+                Use the <span className="font-mono">vercel.env.example</span> file (Settings → Environment Variables → Import).
+                Then redeploy.
+              </div>
+            </div>
+          </div>
+        )}
+
         <form onSubmit={submit} className="grid w-full min-w-0 gap-4">
           <div className="grid min-w-0 gap-2">
             <Label htmlFor="exchange-amount">Amount</Label>
@@ -122,13 +152,14 @@ export function TokenExchangePanel() {
               placeholder="1.00"
               value={amount}
               onChange={(event) => setAmount(event.target.value)}
+              disabled={keyMissing}
             />
           </div>
 
           <div className="grid w-full min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] sm:items-end">
             <div className="grid min-w-0 gap-2">
               <Label>From</Label>
-              <Select value={fromToken} onValueChange={handleFromToken}>
+              <Select value={fromToken} onValueChange={handleFromToken} disabled={keyMissing}>
                 <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
                   <SelectValue />
                 </SelectTrigger>
@@ -149,13 +180,14 @@ export function TokenExchangePanel() {
               className="mx-auto size-10 rounded-2xl"
               onClick={flipTokens}
               aria-label="Flip tokens"
+              disabled={keyMissing}
             >
               <ArrowDownUp className="size-4" />
             </Button>
 
             <div className="grid min-w-0 gap-2">
               <Label>To</Label>
-              <Select value={toToken} onValueChange={handleToToken}>
+              <Select value={toToken} onValueChange={handleToToken} disabled={keyMissing}>
                 <SelectTrigger className="h-12 rounded-[1.25rem] px-3">
                   <SelectValue />
                 </SelectTrigger>
@@ -177,11 +209,13 @@ export function TokenExchangePanel() {
           <Button
             type="submit"
             size="lg"
-            disabled={loading}
-            className="h-12 w-full rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600"
+            disabled={!canSubmit}
+            className="h-12 w-full rounded-2xl bg-gradient-to-r from-blue-700 to-orange-500 shadow-[0_18px_45px_rgba(11,99,229,0.22)] hover:from-blue-800 hover:to-orange-600 disabled:opacity-60"
           >
             {loading ? (
               "Swapping..."
+            ) : keyMissing ? (
+              "Configure Kit key to enable Exchange"
             ) : (
               <>
                 <Repeat2 className="mr-2 size-4" />
