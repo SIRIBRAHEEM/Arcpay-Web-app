@@ -31,8 +31,8 @@ export function TokenExchangePanel() {
   const [toToken, setToToken] = useState<ArcStableToken>("EURC");
   const [loading, setLoading] = useState(false);
 
-  // Only NEXT_PUBLIC_KIT_KEY is available in the client bundle (inlined at build time).
-  // Setting other names or setting the var after a build won't work until a new build/redeploy.
+  // Only NEXT_PUBLIC_KIT_KEY works for the client.
+  // The value must be present at build time.
   const kitKey = process.env.NEXT_PUBLIC_KIT_KEY;
 
   const keyMissing =
@@ -66,7 +66,7 @@ export function TokenExchangePanel() {
     event.preventDefault();
 
     if (keyMissing) {
-      toast.error("Token Exchange is not configured. Set NEXT_PUBLIC_KIT_KEY in Vercel (for Production), then Redeploy the latest production deployment.");
+      toast.error("Follow the steps in vercel.env.example (copy → replace key → Import in Vercel → Redeploy)");
       return;
     }
 
@@ -131,15 +131,16 @@ export function TokenExchangePanel() {
       </CardHeader>
       <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
         {keyMissing && (
-          <div className="mb-4 flex items-start gap-3 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-sm text-amber-700 dark:text-amber-300">
-            <AlertTriangle className="mt-0.5 size-4 shrink-0" />
-            <div>
-              <div className="font-medium">Token Exchange requires setup</div>
-              <div className="mt-1 text-xs opacity-90">
-                Add your real Circle App Kit key as <span className="font-mono">NEXT_PUBLIC_KIT_KEY</span> in Vercel (Settings → Environment Variables).
-                Make sure it is enabled for <strong>Production</strong> (and Preview/Development).
-                Then go to Deployments tab and Redeploy the latest production deployment (or push any change to main).
-              </div>
+          <div className="mb-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 p-3.5 text-sm text-amber-700 dark:text-amber-300">
+            <div className="flex items-center gap-2 font-medium">
+              <AlertTriangle className="size-4" /> Swap not configured yet
+            </div>
+            <div className="mt-1 text-xs leading-relaxed opacity-90">
+              1. Copy <span className="font-mono">vercel.env.example</span><br />
+              2. Replace the placeholder with your full key (starts with <span className="font-mono">KIT_KEY:</span>)<br />
+              3. In Vercel → Settings → Environment Variables → <strong>Import</strong> the file (check Production)<br />
+              4. Go to Deployments → latest Production → <strong>Redeploy</strong><br />
+              5. Hard refresh. Done.
             </div>
           </div>
         )}
@@ -204,7 +205,7 @@ export function TokenExchangePanel() {
           </div>
 
           <div className="w-full min-w-0 rounded-2xl border border-primary/20 bg-primary/10 p-3.5 text-sm leading-6 text-slate-700 dark:text-white/78 sm:p-4">
-            Arc Testnet only. Need USDC balance + gas. Get test funds at faucet.circle.com
+            Arc Testnet only. Need USDC + gas. Get test funds at faucet.circle.com
           </div>
 
           <Button
@@ -216,7 +217,7 @@ export function TokenExchangePanel() {
             {loading ? (
               "Swapping..."
             ) : keyMissing ? (
-              "Set NEXT_PUBLIC_KIT_KEY then Redeploy"
+              "Follow steps in vercel.env.example"
             ) : (
               <>
                 <Repeat2 className="mr-2 size-4" />
