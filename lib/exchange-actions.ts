@@ -22,14 +22,10 @@ function normalizeAmount(value: string) {
 }
 
 function getPublicCredential() {
-  // Must be NEXT_PUBLIC_KIT_KEY because this runs in the browser (client bundle).
-  // Non-prefixed vars are not exposed to the client.
   const value = process.env.NEXT_PUBLIC_KIT_KEY;
 
   if (!value || value.length < 10) {
-    throw new Error(
-      "Missing or invalid Circle App Kit key. Set NEXT_PUBLIC_KIT_KEY in Vercel (value should start with KIT_KEY:...) for Production, then Redeploy."
-    );
+    throw new Error("Missing Circle App Kit key. Follow the steps in vercel.env.example (copy the file → replace placeholder with your key → Import in Vercel → Redeploy).");
   }
 
   return value;
@@ -79,8 +75,8 @@ function userError(error: unknown) {
     return new Error("This token pair is not supported yet. Use USDC ↔ EURC on Arc Testnet.");
   }
 
-  if (lower.includes("unauthorized") || lower.includes("401") || lower.includes("kit key") || lower.includes("missing") || lower.includes("invalid")) {
-    return new Error("Invalid or missing App Kit key. Make sure NEXT_PUBLIC_KIT_KEY is set correctly in Vercel for Production, then click Redeploy on the latest production deployment.");
+  if (lower.includes("kit key") || lower.includes("missing") || lower.includes("invalid")) {
+    return new Error("Invalid or missing App Kit key. Follow the steps in vercel.env.example (copy → replace key → Import in Vercel → Redeploy).");
   }
 
   if (lower.includes("context") || lower.includes("undefined")) {
@@ -139,7 +135,6 @@ export async function exchangeArcToken({
     amountIn: normalizeAmount(amount),
     config: {
       kitKey: getPublicCredential()
-      // Only kitKey per official docs.
     }
   };
 
