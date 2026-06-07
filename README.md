@@ -1,6 +1,6 @@
 # ArcPay
 
-ArcPay is a non-custodial stablecoin payment app for Arc Testnet. It is designed to make testnet stablecoin payments feel simple, clean, and familiar: connect a wallet, view Unified Balance, deposit USDC, **swap (Token Exchange) USDC ↔ EURC**, bridge USDC, send payments, create QR payment requests, and review local activity from one premium dashboard.
+ArcPay is a non-custodial stablecoin payment app for Arc Testnet. It is designed to make testnet stablecoin payments feel simple, clean, and familiar: connect a wallet, view Unified Balance, deposit USDC, bridge USDC, send payments, create QR payment requests, and review local activity from one premium dashboard.
 
 Production app:
 
@@ -10,32 +10,11 @@ https://arcpay-web-app.vercel.app
 
 ---
 
-## ⚠️ One-time Setup for Swap (Token Exchange) — Do This First
-
-The swap will not work until you complete this (it matches exactly how the working demo at https://elementswap-eta.vercel.app/ is configured).
-
-**Fastest way (recommended):**
-
-1. Copy the file `vercel.env.example` from this repo.
-2. Replace the placeholder with your real Circle key (the full value that starts with `KIT_KEY:...`).
-3. Save it as `vercel.env`.
-4. In Vercel (your arcpay-web-app project) → Settings → Environment Variables → **Import** the file.
-5. Make sure **Production** is selected.
-6. Go to Deployments → latest Production → **Redeploy**.
-7. Hard refresh your site.
-
-The yellow "Swap not configured yet" banner will disappear and the form will enable.
-
-Full details + troubleshooting are inside the `vercel.env.example` file itself.
-
----
-
 ## What ArcPay Does
 
 ArcPay brings the most important payment actions into one interface:
 
 - **Pay**: send USDC or EURC to another Arc Testnet wallet.
-- **Token Exchange (Swap)**: swap USDC ↔ EURC directly on Arc Testnet (powered by Circle App Kit).
 - **Request**: create a shareable USDC payment link with an optional amount and memo.
 - **QR Request**: generate a clean QR code that sends people directly to the payment request.
 - **Deposit**: deposit test USDC into Unified Balance through Circle App Kit.
@@ -53,9 +32,8 @@ The goal is to hide unnecessary blockchain complexity and make stablecoin moveme
 - Premium dashboard with clean cards, motion, and dark-mode contrast polish.
 - EVM wallet signup/login with installed browser wallets.
 - Passkey-ready auth flow.
-- Circle App Kit integration (including Token Exchange / swap).
+- Circle App Kit integration for deposit, bridge, send, and request flows.
 - Unified Balance support.
-- Deposit, bridge, send, request, and **swap** flows.
 - Payment request links with QR code support.
 - Wallet-specific local activity history.
 - Chain selectors with custom SVG chain marks.
@@ -103,23 +81,9 @@ Connect a supported browser wallet such as MetaMask, Rabby, Coinbase Wallet, Bin
 
 ### 4. Open the dashboard
 
-After connection, ArcPay opens the dashboard where you can view balance, **swap tokens**, deposit, bridge, send, request, and review activity.
+After connection, ArcPay opens the dashboard where you can view balance, deposit, bridge, send, request, and review activity.
 
-### 5. Swap / Token Exchange
-
-**Important:** You must complete the "One-time Setup for Swap" section above first.
-
-In the **Token Exchange** section:
-
-1. Enter the amount.
-2. Choose from (USDC or EURC) and to token.
-3. Make sure you have a small amount of gas (USDC on Arc Testnet) + the token you're swapping from.
-4. Click "Exchange tokens".
-5. Confirm in your wallet.
-
-Get test funds from the Circle faucet: https://faucet.circle.com (select Arc Testnet).
-
-### 6. Request money with QR
+### 5. Request money with QR
 
 In the Request section:
 
@@ -128,11 +92,11 @@ In the Request section:
 3. Copy the payment link or share it.
 4. Let the sender scan the QR code or open the request link.
 
-### 7. Send USDC
+### 6. Send USDC
 
 Use the Pay flow to enter a destination wallet address and send USDC from ArcPay.
 
-### 8. Bridge or deposit USDC
+### 7. Bridge or deposit USDC
 
 Use the bridge/deposit tools to move test USDC across supported App Kit chains.
 
@@ -147,7 +111,6 @@ ArcPay uses Circle App Kit flows for stablecoin actions, including:
 - `unifiedBalance.spend`
 - `kit.send`
 - `kit.bridge`
-- **Token Exchange (swap)** via `kit.swap` + `estimateSwap`
 
 ---
 
@@ -171,9 +134,7 @@ ArcPay uses Circle App Kit flows for stablecoin actions, including:
 
 ## Environment Variables
 
-See the dedicated "One-time Setup for Swap" section at the top of this README (and the `vercel.env.example` file).
-
----
+See `.env.example` for required variables (mainly for Privy auth integration).
 
 ## Local Development
 
@@ -230,8 +191,6 @@ Production URL:
 ```txt
 https://arcpay-web-app.vercel.app
 ```
-
----
 
 ## Disclaimer
 
