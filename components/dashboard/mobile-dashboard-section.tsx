@@ -3,7 +3,6 @@
 import { ReactNode, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from "framer-motion";
 
 type MobileDashboardSectionProps = {
   title: string;
@@ -52,25 +51,17 @@ export function MobileDashboardSection({
         </div>
       </button>
 
-      <AnimatePresence initial={false}>
-        {(open || true) && ( // true for sm:block logic via class
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-            className={cn(
-              "overflow-hidden border-t border-slate-100 dark:border-white/10",
-              open ? "block" : "hidden",
-              "sm:!h-auto sm:!opacity-100 sm:!overflow-visible"
-            )}
-          >
-            <div className="p-5 pt-4 sm:p-6 sm:pt-5">
-              {children}
-            </div>
-          </motion.div>
+      <div
+        className={cn(
+          "overflow-hidden border-t border-slate-100 dark:border-white/10 transition-all duration-200 ease-out",
+          open ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0",
+          "sm:max-h-none sm:opacity-100 sm:overflow-visible"
         )}
-      </AnimatePresence>
+      >
+        <div className="p-5 pt-4 sm:p-6 sm:pt-5">
+          {children}
+        </div>
+      </div>
     </section>
   );
 }
