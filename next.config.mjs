@@ -2,37 +2,33 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Lightning-fast optimizations (framer-motion excluded - it breaks AnimatePresence / motion named exports in type checking under Next 15)
+  // NOTE: framer-motion is intentionally NOT in optimizePackageImports.
+  // It was causing "Module 'framer-motion' has no exported member 'AnimatePresence'"
+  // during type checking in the Vercel build worker (even after removal, due to sticky cache).
+  // We also removed all AnimatePresence usage from the codebase (mobile-dashboard-section).
   experimental: {
     optimizePackageImports: [
       "lucide-react",
-      // "framer-motion" intentionally omitted (causes 'no exported member AnimatePresence' in type check)
       "gsap",
       "lottie-react",
       "@radix-ui/react-dialog",
       "@radix-ui/react-select",
       "sonner"
     ],
-    // Enable React 19 + Next.js 15 performance features
     serverActions: {
       bodySizeLimit: "2mb"
     }
   },
 
-  // Optimize images & assets
   images: {
     formats: ["image/avif", "image/webp"],
-    minimumCacheTTL: 60 * 60 * 24 * 30 // 30 days
+    minimumCacheTTL: 60 * 60 * 24 * 30
   },
 
-  // Reduce bundle size and handle optional Privy deps
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      // Client-side only optimizations
       config.resolve.alias = {
         ...config.resolve.alias,
-        // Ignore optional Privy integrations that aren't installed (Farcaster mini-app, etc.)
-        // These are pulled in by @privy-io/react-auth but not used in this app
         '@farcaster/mini-app-solana': false,
       };
     }
