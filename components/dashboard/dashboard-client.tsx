@@ -124,6 +124,7 @@ export function DashboardClient() {
             <MobileDashboardSection
               title="Pay"
               description="Send USDC or EURC to another Arc wallet"
+              defaultOpen
             >
               <SendPanel />
             </MobileDashboardSection>
@@ -133,6 +134,7 @@ export function DashboardClient() {
             <MobileDashboardSection
               title="Unified Balance"
               description="View deposits and balance sources"
+              defaultOpen
             >
               <BalanceCard />
             </MobileDashboardSection>
