@@ -2,20 +2,65 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { BalanceCard } from "@/components/dashboard/balance-card";
-import { BridgePanel } from "@/components/dashboard/bridge-panel";
+import dynamic from "next/dynamic";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { MobileDashboardSection } from "@/components/dashboard/mobile-dashboard-section";
 import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
-import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
-import { ReceivePanel } from "@/components/dashboard/receive-panel";
-import { SendPanel } from "@/components/dashboard/send-panel";
-import { TxHistory } from "@/components/dashboard/tx-history";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
 import { useAuthStore } from "@/store/auth-store";
 import { useWalletStore } from "@/store/wallet-store";
+
+// Lazy load heavy dashboard panels for lightning-fast initial load
+// Each panel is code-split into its own chunk
+const SendPanel = dynamic(
+  () => import("@/components/dashboard/send-panel"),
+  {
+    loading: () => <div className="h-[320px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
+    ssr: false
+  }
+);
+
+const BalanceCard = dynamic(
+  () => import("@/components/dashboard/balance-card"),
+  {
+    loading: () => <div className="h-[220px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
+    ssr: false
+  }
+);
+
+const ReceivePanel = dynamic(
+  () => import("@/components/dashboard/receive-panel"),
+  {
+    loading: () => <div className="h-[280px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
+    ssr: false
+  }
+);
+
+const BridgePanel = dynamic(
+  () => import("@/components/dashboard/bridge-panel"),
+  {
+    loading: () => <div className="h-[260px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
+    ssr: false
+  }
+);
+
+const TxHistory = dynamic(
+  () => import("@/components/dashboard/tx-history"),
+  {
+    loading: () => <div className="h-[380px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
+    ssr: false
+  }
+);
+
+const ProtocolStatusCard = dynamic(
+  () => import("@/components/dashboard/protocol-status-card"),
+  {
+    loading: () => <div className="h-[180px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
+    ssr: false
+  }
+);
 
 export function DashboardClient() {
   const router = useRouter();
