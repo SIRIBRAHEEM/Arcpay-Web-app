@@ -1,8 +1,10 @@
 "use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
-import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
 import { MobileDashboardSection } from "@/components/dashboard/mobile-dashboard-section";
-import { SendPanel } from "@/components/dashboard/send-panel";
-import { ReceivePanel } from "@/components/dashboard/receive-panel";
-import { BridgePanel } from "@/components/dashboard/bridge-panel"
+import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero"
