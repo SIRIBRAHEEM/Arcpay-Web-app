@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
 import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { MobileDashboardSection } from "@/components/dashboard/mobile-dashboard-section";
@@ -108,29 +109,34 @@ export function DashboardClient() {
     );
   }
 
+  const sectionVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { delay: i * 0.05, duration: 0.4, ease: [0.23, 1, 0.32, 1] }
+    })
+  };
+
   return (
-    <main className="premium-dashboard-bg min-h-screen overflow-x-clip px-2.5 pb-10 pt-2 text-foreground sm:px-6 sm:pb-14 sm:pt-3 lg:px-8">
+    <main className="premium-dashboard-bg min-h-screen overflow-x-clip px-4 pb-12 pt-4 text-foreground sm:px-6 sm:pb-16 sm:pt-6 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto w-full max-w-7xl min-w-0">
+      <div className="mx-auto w-full max-w-6xl min-w-0">
         <DashboardHeader />
 
-        <div className="mt-3 sm:mt-4">
+        <div className="mt-4 sm:mt-6">
           <PremiumDashboardHero />
         </div>
 
-        <section className="dashboard-masonry mt-3 w-full min-w-0 sm:mt-4">
-          <div className="dashboard-masonry-item">
-            <MobileDashboardSection
-              title="Pay"
-              description="Send USDC or EURC to another Arc wallet"
-              defaultOpen
-            >
-              <SendPanel />
-            </MobileDashboardSection>
-          </div>
-
-          <div className="dashboard-masonry-item">
+        <section className="dashboard-masonry mt-6 w-full min-w-0 sm:mt-8">
+          <motion.div
+            custom={0}
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+            className="dashboard-masonry-item"
+          >
             <MobileDashboardSection
               title="Unified Balance"
               description="View deposits and balance sources"
@@ -138,43 +144,83 @@ export function DashboardClient() {
             >
               <BalanceCard />
             </MobileDashboardSection>
-          </div>
+          </motion.div>
 
-          <div className="dashboard-masonry-item">
-            <MobileDashboardSection
-              title="Request Money"
-              description="Unwrap to create QR invoice links"
-            >
-              <ReceivePanel />
-            </MobileDashboardSection>
-          </div>
-
-          <div className="dashboard-masonry-item">
-            <MobileDashboardSection
-              title="Bridge USDC"
-              description="Unwrap to move USDC across supported chains"
-            >
-              <BridgePanel />
-            </MobileDashboardSection>
-          </div>
-
-          <div className="dashboard-masonry-item">
-            <MobileDashboardSection
-              title="Activity"
-              description="Unwrap to view local payment history"
-            >
-              <TxHistory />
-            </MobileDashboardSection>
-          </div>
-
-          <div className="dashboard-masonry-item">
+          <motion.div
+            custom={1}
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+            className="dashboard-masonry-item"
+          >
             <MobileDashboardSection
               title="Protocol Status"
               description="Network, gas, and custody details"
             >
               <ProtocolStatusCard />
             </MobileDashboardSection>
-          </div>
+          </motion.div>
+
+          <motion.div
+            custom={2}
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+            className="dashboard-masonry-item"
+          >
+            <MobileDashboardSection
+              title="Pay"
+              description="Send USDC or EURC to another Arc wallet"
+              defaultOpen
+            >
+              <SendPanel />
+            </MobileDashboardSection>
+          </motion.div>
+
+          <motion.div
+            custom={3}
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+            className="dashboard-masonry-item"
+          >
+            <MobileDashboardSection
+              title="Request Money"
+              description="Unwrap to create QR invoice links"
+            >
+              <ReceivePanel />
+            </MobileDashboardSection>
+          </motion.div>
+
+          <motion.div
+            custom={4}
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+            className="dashboard-masonry-item"
+          >
+            <MobileDashboardSection
+              title="Bridge USDC"
+              description="Unwrap to move USDC across supported chains"
+            >
+              <BridgePanel />
+            </MobileDashboardSection>
+          </motion.div>
+
+          <motion.div
+            custom={5}
+            initial="hidden"
+            animate="visible"
+            variants={sectionVariants}
+            className="dashboard-masonry-item"
+          >
+            <MobileDashboardSection
+              title="Activity"
+              description="Unwrap to view local payment history"
+            >
+              <TxHistory />
+            </MobileDashboardSection>
+          </motion.div>
         </section>
       </div>
     </main>
