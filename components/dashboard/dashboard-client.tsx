@@ -119,10 +119,10 @@ export function DashboardClient() {
   };
 
   return (
-    <main className="premium-dashboard-bg min-h-screen overflow-x-clip px-4 pb-12 pt-4 text-foreground sm:px-6 sm:pb-16 sm:pt-6 lg:px-8">
+    <main className="premium-dashboard-bg min-h-screen overflow-x-clip px-4 pb-12 pt-4 text-foreground sm:px-6 sm:pb-16 sm:pt-6 lg:px-6">
       <EventWatcher />
 
-      <div className="mx-auto w-full max-w-6xl min-w-0">
+      <div className="mx-auto w-full max-w-7xl min-w-0">
         <DashboardHeader />
 
         <div className="mt-4 sm:mt-6">
