@@ -25,7 +25,7 @@ export function MobileDashboardSection({
         type="button"
         aria-expanded={open}
         onClick={() => setOpen((current) => !current)}
-        className="flex w-full min-w-0 items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-slate-50/50 active:bg-slate-100/50 dark:hover:bg-white/[0.04] sm:cursor-default sm:pointer-events-none sm:hover:bg-transparent sm:active:bg-transparent"
+        className="flex w-full min-w-0 items-center justify-between gap-4 px-4 py-4 text-left transition-colors hover:bg-slate-50/50 active:bg-slate-100/50 dark:hover:bg-white/[0.04] sm:cursor-default sm:pointer-events-none sm:hover:bg-transparent sm:active:bg-transparent"
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-3">
@@ -35,7 +35,7 @@ export function MobileDashboardSection({
             </span>
           </div>
           {description && (
-            <p className="mt-1.5 pl-6 text-sm text-slate-600 dark:text-white/70">
+            <p className="mt-1.5 pl-4 text-sm text-slate-600 dark:text-white/70">
               {description}
             </p>
           )}
@@ -58,7 +58,7 @@ export function MobileDashboardSection({
           "sm:max-h-none sm:opacity-100 sm:overflow-visible"
         )}
       >
-        <div className="p-5 pt-4 sm:p-6 sm:pt-5">
+        <div className="p-4 pt-4 sm:p-5 sm:pt-5">
           {children}
         </div>
       </div>
