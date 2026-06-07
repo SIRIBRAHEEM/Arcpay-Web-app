@@ -12,55 +12,37 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
 import { useAuthStore } from "@/store/auth-store";
 import { useWalletStore } from "@/store/wallet-store";
+import { ErrorBoundary } from "@/components/error-boundary";
 
 // Lazy load heavy dashboard panels for lightning-fast initial load
-// Each panel is code-split into its own chunk
 const SendPanel = dynamic(
   () => import("@/components/dashboard/send-panel").then((mod) => mod.SendPanel),
-  {
-    loading: () => <div className="h-[320px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
-    ssr: false
-  }
+  { loading: () => <div className="h-[320px] animate-pulse rounded-[1.25rem] bg-muted/40" /> }
 );
 
 const BalanceCard = dynamic(
   () => import("@/components/dashboard/balance-card").then((mod) => mod.BalanceCard),
-  {
-    loading: () => <div className="h-[220px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
-    ssr: false
-  }
+  { loading: () => <div className="h-[220px] animate-pulse rounded-[1.25rem] bg-muted/40" /> }
 );
 
 const ReceivePanel = dynamic(
   () => import("@/components/dashboard/receive-panel").then((mod) => mod.ReceivePanel),
-  {
-    loading: () => <div className="h-[280px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
-    ssr: false
-  }
+  { loading: () => <div className="h-[280px] animate-pulse rounded-[1.25rem] bg-muted/40" /> }
 );
 
 const BridgePanel = dynamic(
   () => import("@/components/dashboard/bridge-panel").then((mod) => mod.BridgePanel),
-  {
-    loading: () => <div className="h-[260px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
-    ssr: false
-  }
+  { loading: () => <div className="h-[260px] animate-pulse rounded-[1.25rem] bg-muted/40" /> }
 );
 
 const TxHistory = dynamic(
   () => import("@/components/dashboard/tx-history").then((mod) => mod.TxHistory),
-  {
-    loading: () => <div className="h-[380px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
-    ssr: false
-  }
+  { loading: () => <div className="h-[380px] animate-pulse rounded-[1.25rem] bg-muted/40" /> }
 );
 
 const ProtocolStatusCard = dynamic(
   () => import("@/components/dashboard/protocol-status-card").then((mod) => mod.ProtocolStatusCard),
-  {
-    loading: () => <div className="h-[180px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
-    ssr: false
-  }
+  { loading: () => <div className="h-[180px] animate-pulse rounded-[1.25rem] bg-muted/40" /> }
 );
 
 export function DashboardClient() {
@@ -129,99 +111,101 @@ export function DashboardClient() {
           <PremiumDashboardHero />
         </div>
 
-        <section className="dashboard-masonry mt-6 w-full min-w-0 sm:mt-8">
-          <motion.div
-            custom={0}
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            className="dashboard-masonry-item"
-          >
-            <MobileDashboardSection
-              title="Unified Balance"
-              description="View deposits and balance sources"
-              defaultOpen
+        <ErrorBoundary>
+          <section className="dashboard-masonry mt-6 w-full min-w-0 sm:mt-8">
+            <motion.div
+              custom={0}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="dashboard-masonry-item"
             >
-              <BalanceCard />
-            </MobileDashboardSection>
-          </motion.div>
+              <MobileDashboardSection
+                title="Unified Balance"
+                description="View deposits and balance sources"
+                defaultOpen
+              >
+                <BalanceCard />
+              </MobileDashboardSection>
+            </motion.div>
 
-          <motion.div
-            custom={1}
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            className="dashboard-masonry-item"
-          >
-            <MobileDashboardSection
-              title="Protocol Status"
-              description="Network, gas, and custody details"
+            <motion.div
+              custom={1}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="dashboard-masonry-item"
             >
-              <ProtocolStatusCard />
-            </MobileDashboardSection>
-          </motion.div>
+              <MobileDashboardSection
+                title="Protocol Status"
+                description="Network, gas, and custody details"
+              >
+                <ProtocolStatusCard />
+              </MobileDashboardSection>
+            </motion.div>
 
-          <motion.div
-            custom={2}
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            className="dashboard-masonry-item"
-          >
-            <MobileDashboardSection
-              title="Pay"
-              description="Send USDC or EURC to another Arc wallet"
-              defaultOpen
+            <motion.div
+              custom={2}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="dashboard-masonry-item"
             >
-              <SendPanel />
-            </MobileDashboardSection>
-          </motion.div>
+              <MobileDashboardSection
+                title="Pay"
+                description="Send USDC or EURC to another Arc wallet"
+                defaultOpen
+              >
+                <SendPanel />
+              </MobileDashboardSection>
+            </motion.div>
 
-          <motion.div
-            custom={3}
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            className="dashboard-masonry-item"
-          >
-            <MobileDashboardSection
-              title="Request Money"
-              description="Unwrap to create QR invoice links"
+            <motion.div
+              custom={3}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="dashboard-masonry-item"
             >
-              <ReceivePanel />
-            </MobileDashboardSection>
-          </motion.div>
+              <MobileDashboardSection
+                title="Request Money"
+                description="Unwrap to create QR invoice links"
+              >
+                <ReceivePanel />
+              </MobileDashboardSection>
+            </motion.div>
 
-          <motion.div
-            custom={4}
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            className="dashboard-masonry-item"
-          >
-            <MobileDashboardSection
-              title="Bridge USDC"
-              description="Unwrap to move USDC across supported chains"
+            <motion.div
+              custom={4}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="dashboard-masonry-item"
             >
-              <BridgePanel />
-            </MobileDashboardSection>
-          </motion.div>
+              <MobileDashboardSection
+                title="Bridge USDC"
+                description="Unwrap to move USDC across supported chains"
+              >
+                <BridgePanel />
+              </MobileDashboardSection>
+            </motion.div>
 
-          <motion.div
-            custom={5}
-            initial="hidden"
-            animate="visible"
-            variants={sectionVariants}
-            className="dashboard-masonry-item"
-          >
-            <MobileDashboardSection
-              title="Activity"
-              description="Unwrap to view local payment history"
+            <motion.div
+              custom={5}
+              initial="hidden"
+              animate="visible"
+              variants={sectionVariants}
+              className="dashboard-masonry-item"
             >
-              <TxHistory />
-            </MobileDashboardSection>
-          </motion.div>
-        </section>
+              <MobileDashboardSection
+                title="Activity"
+                description="Unwrap to view local payment history"
+              >
+                <TxHistory />
+              </MobileDashboardSection>
+            </motion.div>
+          </section>
+        </ErrorBoundary>
       </div>
     </main>
   );
