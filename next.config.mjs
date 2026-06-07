@@ -2,11 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
 
-  // Lightning-fast optimizations
+  // Lightning-fast optimizations (framer-motion excluded - it breaks AnimatePresence / motion named exports in type checking under Next 15)
   experimental: {
     optimizePackageImports: [
       "lucide-react",
-      "framer-motion",
+      // "framer-motion" intentionally omitted (causes 'no exported member AnimatePresence' in type check)
       "gsap",
       "lottie-react",
       "@radix-ui/react-dialog",
