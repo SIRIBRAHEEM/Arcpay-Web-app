@@ -143,7 +143,7 @@ export function DashboardClient() {
           <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Request Money"
-              description="Create QR invoice links"
+              description="Unwrap to create QR invoice links"
             >
               <ReceivePanel />
             </MobileDashboardSection>
@@ -152,7 +152,7 @@ export function DashboardClient() {
           <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Bridge USDC"
-              description="Move USDC across supported chains"
+              description="Unwrap to move USDC across supported chains"
             >
               <BridgePanel />
             </MobileDashboardSection>
@@ -161,7 +161,7 @@ export function DashboardClient() {
           <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Activity"
-              description="View local payment history"
+              description="Unwrap to view local payment history"
             >
               <TxHistory />
             </MobileDashboardSection>
