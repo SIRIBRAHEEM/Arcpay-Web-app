@@ -16,7 +16,7 @@ import { useWalletStore } from "@/store/wallet-store";
 // Lazy load heavy dashboard panels for lightning-fast initial load
 // Each panel is code-split into its own chunk
 const SendPanel = dynamic(
-  () => import("@/components/dashboard/send-panel"),
+  () => import("@/components/dashboard/send-panel").then((mod) => mod.SendPanel),
   {
     loading: () => <div className="h-[320px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
     ssr: false
@@ -24,7 +24,7 @@ const SendPanel = dynamic(
 );
 
 const BalanceCard = dynamic(
-  () => import("@/components/dashboard/balance-card"),
+  () => import("@/components/dashboard/balance-card").then((mod) => mod.BalanceCard),
   {
     loading: () => <div className="h-[220px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
     ssr: false
@@ -32,7 +32,7 @@ const BalanceCard = dynamic(
 );
 
 const ReceivePanel = dynamic(
-  () => import("@/components/dashboard/receive-panel"),
+  () => import("@/components/dashboard/receive-panel").then((mod) => mod.ReceivePanel),
   {
     loading: () => <div className="h-[280px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
     ssr: false
@@ -40,7 +40,7 @@ const ReceivePanel = dynamic(
 );
 
 const BridgePanel = dynamic(
-  () => import("@/components/dashboard/bridge-panel"),
+  () => import("@/components/dashboard/bridge-panel").then((mod) => mod.BridgePanel),
   {
     loading: () => <div className="h-[260px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
     ssr: false
@@ -48,7 +48,7 @@ const BridgePanel = dynamic(
 );
 
 const TxHistory = dynamic(
-  () => import("@/components/dashboard/tx-history"),
+  () => import("@/components/dashboard/tx-history").then((mod) => mod.TxHistory),
   {
     loading: () => <div className="h-[380px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
     ssr: false
@@ -56,7 +56,7 @@ const TxHistory = dynamic(
 );
 
 const ProtocolStatusCard = dynamic(
-  () => import("@/components/dashboard/protocol-status-card"),
+  () => import("@/components/dashboard/protocol-status-card").then((mod) => mod.ProtocolStatusCard),
   {
     loading: () => <div className="h-[180px] animate-pulse rounded-[1.25rem] bg-muted/40" />,
     ssr: false
