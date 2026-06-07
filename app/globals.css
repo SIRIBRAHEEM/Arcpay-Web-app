@@ -11,7 +11,7 @@
     --card-foreground: 220 70% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 70% 12%;
+    --popover-foreground: 210 100% 96%;
 
     --primary: 216 91% 47%;
     --primary-foreground: 0 0% 100%;
@@ -258,21 +258,22 @@
 
   .dashboard-masonry {
     display: grid;
-    gap: 1.5rem;
+    gap: 1rem;
     grid-template-columns: 1fr;
+    width: 100%;
   }
 
   @media (min-width: 768px) {
     .dashboard-masonry {
       grid-template-columns: repeat(2, 1fr);
-      gap: 2rem;
+      gap: 1.25rem;
     }
   }
 
   @media (min-width: 1024px) {
     .dashboard-masonry {
       grid-template-columns: repeat(2, 1fr);
-      gap: 2.25rem;
+      gap: 1.5rem;
     }
   }
 
