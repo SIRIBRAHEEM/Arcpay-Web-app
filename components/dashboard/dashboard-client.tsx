@@ -11,7 +11,6 @@ import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-h
 import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
 import { ReceivePanel } from "@/components/dashboard/receive-panel";
 import { SendPanel } from "@/components/dashboard/send-panel";
-import { TokenExchangePanel } from "@/components/dashboard/token-exchange-panel";
 import { TxHistory } from "@/components/dashboard/tx-history";
 import { Card, CardContent } from "@/components/ui/card";
 import { ConnectButton } from "@/components/connect-button";
@@ -102,15 +101,6 @@ export function DashboardClient() {
               description="Unwrap to create QR invoice links"
             >
               <ReceivePanel />
-            </MobileDashboardSection>
-          </div>
-
-          <div className="dashboard-masonry-item">
-            <MobileDashboardSection
-              title="Token Exchange"
-              description="Unwrap to swap USDC and EURC on Arc Testnet"
-            >
-              <TokenExchangePanel />
             </MobileDashboardSection>
           </div>
 
