@@ -135,7 +135,7 @@
     --card: 0 0% 100%;
     --card-foreground: 220 70% 12%;
     --popover: 0 0% 100%;
-    --popover-foreground: 220 70% 12%;
+    --popover-foreground: 210 100% 96%;
     --primary: 216 91% 47%;
     --primary-foreground: 0 0% 100%;
     --secondary: 32 100% 94%;
@@ -266,14 +266,17 @@
     min-width: 0;
   }
 
-  .premium-dashboard-bg section[class*="rounded-"] > button {
-    min-height: 54px;
-    padding-top: 0.65rem !important;
-    padding-bottom: 0.65rem !important;
-  }
+  /* Mobile-only styles for the collapsible section headers (the button) */
+  @media (max-width: 639px) {
+    .premium-dashboard-bg section[class*="rounded-"] > button {
+      min-height: 54px;
+      padding-top: 0.65rem !important;
+      padding-bottom: 0.65rem !important;
+    }
 
-  .premium-dashboard-bg section[class*="rounded-"] > button + div {
-    padding: 0 !important;
+    .premium-dashboard-bg section[class*="rounded-"] > button + div {
+      padding: 0 !important;
+    }
   }
 
   .premium-dashboard-bg .stable-money-qr-card {
