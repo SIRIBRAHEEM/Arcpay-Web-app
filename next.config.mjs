@@ -25,12 +25,15 @@ const nextConfig = {
     minimumCacheTTL: 60 * 60 * 24 * 30 // 30 days
   },
 
-  // Reduce bundle size
+  // Reduce bundle size and handle optional Privy deps
   webpack: (config, { isServer }) => {
     if (!isServer) {
       // Client-side only optimizations
       config.resolve.alias = {
-        ...config.resolve.alias
+        ...config.resolve.alias,
+        // Ignore optional Privy integrations that aren't installed (Farcaster mini-app, etc.)
+        // These are pulled in by @privy-io/react-auth but not used in this app
+        '@farcaster/mini-app-solana': false,
       };
     }
     return config;
