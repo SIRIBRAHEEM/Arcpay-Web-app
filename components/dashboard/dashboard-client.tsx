@@ -124,7 +124,6 @@ export function DashboardClient() {
             <MobileDashboardSection
               title="Pay"
               description="Send USDC or EURC to another Arc wallet"
-              defaultOpen
             >
               <SendPanel />
             </MobileDashboardSection>
@@ -134,7 +133,6 @@ export function DashboardClient() {
             <MobileDashboardSection
               title="Unified Balance"
               description="View deposits and balance sources"
-              defaultOpen
             >
               <BalanceCard />
             </MobileDashboardSection>
@@ -143,7 +141,7 @@ export function DashboardClient() {
           <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Request Money"
-              description="Unwrap to create QR invoice links"
+              description="Create QR invoice links"
             >
               <ReceivePanel />
             </MobileDashboardSection>
@@ -152,7 +150,7 @@ export function DashboardClient() {
           <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Bridge USDC"
-              description="Unwrap to move USDC across supported chains"
+              description="Move USDC across supported chains"
             >
               <BridgePanel />
             </MobileDashboardSection>
@@ -161,7 +159,7 @@ export function DashboardClient() {
           <div className="dashboard-masonry-item">
             <MobileDashboardSection
               title="Activity"
-              description="Unwrap to view local payment history"
+              description="View local payment history"
             >
               <TxHistory />
             </MobileDashboardSection>
