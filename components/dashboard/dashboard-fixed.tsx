@@ -1,7 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ShieldCheck, WalletCards } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle2,
+  LayoutDashboard,
+  ShieldCheck,
+  WalletCards
+} from "lucide-react";
 import { BalanceCard } from "@/components/dashboard/balance-card";
 import { BridgePanel } from "@/components/dashboard/bridge-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
@@ -15,17 +21,39 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
+function RowLabel({
+  title,
+  description
+}: {
+  title: string;
+  description: string;
+}) {
+  return (
+    <div className="flex min-w-0 flex-col justify-center rounded-[1.25rem] border border-slate-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.05] lg:min-h-[8.5rem]">
+      <div className="mb-3 flex size-10 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
+        <LayoutDashboard className="size-5" />
+      </div>
+      <p className="text-sm font-black uppercase tracking-[0.16em] text-primary/80">
+        {title}
+      </p>
+      <p className="mt-2 text-sm leading-6 text-teal-950/62 dark:text-lime-50/68">
+        {description}
+      </p>
+    </div>
+  );
+}
+
 function QuickGuideCard() {
   return (
-    <Card className="glass w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
-      <CardContent className="grid gap-4 p-4 sm:p-5">
+    <Card className="glass h-full w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
+      <CardContent className="grid h-full content-start gap-4 p-4 sm:p-5">
         <div className="flex min-w-0 items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-sm font-black text-teal-950 dark:text-lime-50">
-              Payment app flow
+              Payment flow
             </p>
             <p className="mt-1 text-xs leading-5 text-teal-950/62 dark:text-lime-50/68">
-              Balance first, then pay, request, bridge, and activity.
+              Built like a payment app: balance, actions, movement, history.
             </p>
           </div>
           <Badge variant="secondary" className="shrink-0">
@@ -61,8 +89,8 @@ function QuickGuideCard() {
 
 function FaucetCard() {
   return (
-    <Card className="glass w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
-      <CardContent className="p-4 sm:p-5">
+    <Card className="glass h-full w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
+      <CardContent className="flex h-full flex-col p-4 sm:p-5">
         <div className="flex min-w-0 items-start gap-3">
           <div className="grid size-11 shrink-0 place-items-center rounded-2xl bg-orange-100 text-orange-700 dark:bg-orange-400/10 dark:text-orange-200">
             <WalletCards className="size-5" />
@@ -76,7 +104,7 @@ function FaucetCard() {
           </div>
         </div>
 
-        <Button asChild className="mt-4 h-11 w-full rounded-2xl">
+        <Button asChild className="mt-auto h-11 w-full rounded-2xl">
           <Link href="https://faucet.circle.com" target="_blank" rel="noreferrer">
             Open faucet
             <ArrowRight className="ml-2 size-4" />
@@ -87,58 +115,92 @@ function FaucetCard() {
   );
 }
 
+function LayoutRuleCard() {
+  return (
+    <Card className="glass h-full w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
+      <CardContent className="flex h-full flex-col justify-center p-4 text-sm leading-6 text-teal-950/65 dark:text-lime-50/68 sm:p-5">
+        <div className="mb-3 flex items-center gap-2 font-black text-teal-950 dark:text-lime-50">
+          <ShieldCheck className="size-4 text-primary" />
+          PC grid rule
+        </div>
+        12-column desktop grid, equal gaps, row-based sections, and no sticky sidebar.
+      </CardContent>
+    </Card>
+  );
+}
+
 export function DashboardFixed() {
   return (
     <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-16 pt-3 text-foreground sm:px-5 sm:pb-20 sm:pt-4 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto grid w-full max-w-[1180px] gap-4 sm:gap-5">
+      <div className="mx-auto grid w-full max-w-[1240px] gap-4 sm:gap-5 lg:gap-6">
         <DashboardHeader />
 
-        <PremiumDashboardHero />
+        <section
+          aria-label="Dashboard overview"
+          className="grid w-full min-w-0 gap-4 lg:grid-cols-12 lg:items-stretch lg:gap-5"
+        >
+          <div className="min-w-0 lg:col-span-8">
+            <PremiumDashboardHero />
+          </div>
+          <div className="min-w-0 lg:col-span-4">
+            <BalanceCard />
+          </div>
+        </section>
 
         <section
-          aria-label="ArcPay payment dashboard"
-          className="grid w-full min-w-0 gap-4 lg:grid-cols-[minmax(0,1fr)_360px] xl:grid-cols-[minmax(0,1fr)_390px] lg:items-start"
+          aria-label="Primary payment actions"
+          className="grid w-full min-w-0 gap-4 lg:grid-cols-12 lg:items-start lg:gap-5"
         >
-          <div className="order-2 grid w-full min-w-0 gap-4 lg:order-1">
-            <div className="grid w-full min-w-0 gap-4 xl:grid-cols-2 xl:items-start">
-              <div className="min-w-0">
-                <SendPanel />
-              </div>
-              <div className="min-w-0">
-                <ReceivePanel />
-              </div>
-            </div>
-
-            <div className="grid w-full min-w-0 gap-4 xl:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)] xl:items-start">
-              <div className="min-w-0">
-                <BridgePanel />
-              </div>
-              <div className="min-w-0">
-                <TxHistory />
-              </div>
-            </div>
+          <div className="hidden min-w-0 lg:col-span-2 lg:block">
+            <RowLabel
+              title="Actions"
+              description="Send and request stay in one clear payment row."
+            />
           </div>
+          <div className="min-w-0 lg:col-span-4">
+            <SendPanel />
+          </div>
+          <div className="min-w-0 lg:col-span-6">
+            <ReceivePanel />
+          </div>
+        </section>
 
-          <aside className="order-1 grid w-full min-w-0 gap-4 lg:sticky lg:top-24 lg:order-2 lg:self-start">
-            <BalanceCard />
+        <section
+          aria-label="Money movement and activity"
+          className="grid w-full min-w-0 gap-4 lg:grid-cols-12 lg:items-start lg:gap-5"
+        >
+          <div className="hidden min-w-0 lg:col-span-2 lg:block">
+            <RowLabel
+              title="Movement"
+              description="Bridge and history are grouped for tracking."
+            />
+          </div>
+          <div className="min-w-0 lg:col-span-4">
+            <BridgePanel />
+          </div>
+          <div className="min-w-0 lg:col-span-6">
+            <TxHistory />
+          </div>
+        </section>
 
-            <div className="grid w-full min-w-0 gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              <ProtocolStatusCard />
-              <QuickGuideCard />
-            </div>
-
+        <section
+          aria-label="Dashboard support cards"
+          className="grid w-full min-w-0 gap-4 md:grid-cols-2 lg:grid-cols-12 lg:items-stretch lg:gap-5"
+        >
+          <div className="min-w-0 lg:col-span-4">
+            <ProtocolStatusCard />
+          </div>
+          <div className="min-w-0 lg:col-span-4">
+            <QuickGuideCard />
+          </div>
+          <div className="min-w-0 lg:col-span-2">
             <FaucetCard />
-
-            <div className="hidden rounded-[1.25rem] border border-slate-950/10 bg-white/60 p-4 text-sm leading-6 text-teal-950/65 dark:border-white/10 dark:bg-white/[0.045] dark:text-lime-50/68 lg:block">
-              <div className="mb-2 flex items-center gap-2 font-black text-teal-950 dark:text-lime-50">
-                <ShieldCheck className="size-4 text-primary" />
-                Layout rule
-              </div>
-              One clean sidebar for status and balance. One main column for actions and history.
-            </div>
-          </aside>
+          </div>
+          <div className="min-w-0 lg:col-span-2">
+            <LayoutRuleCard />
+          </div>
         </section>
       </div>
     </main>
