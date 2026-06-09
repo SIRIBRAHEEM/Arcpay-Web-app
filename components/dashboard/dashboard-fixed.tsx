@@ -1,13 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import {
-  ArrowRight,
-  CheckCircle2,
-  LayoutDashboard,
-  ShieldCheck,
-  WalletCards
-} from "lucide-react";
+import { ArrowRight, CheckCircle2, Link2, WalletCards } from "lucide-react";
 import { BalanceCard } from "@/components/dashboard/balance-card";
 import { BridgePanel } from "@/components/dashboard/bridge-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
@@ -20,8 +14,9 @@ import { TxHistory } from "@/components/dashboard/tx-history";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { useWalletStore } from "@/store/wallet-store";
 
-function RowLabel({
+function SectionTitle({
   title,
   description
 }: {
@@ -29,17 +24,58 @@ function RowLabel({
   description: string;
 }) {
   return (
-    <div className="flex min-w-0 flex-col justify-center rounded-[1.25rem] border border-slate-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.05] lg:min-h-[8.5rem]">
-      <div className="mb-3 flex size-10 items-center justify-center rounded-2xl bg-blue-100 text-blue-700 dark:bg-blue-400/10 dark:text-blue-200">
-        <LayoutDashboard className="size-5" />
+    <div className="mb-3 flex min-w-0 items-end justify-between gap-3 sm:mb-4">
+      <div className="min-w-0">
+        <h2 className="text-lg font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-xl">
+          {title}
+        </h2>
+        <p className="mt-1 text-sm leading-6 text-teal-950/62 dark:text-lime-50/68">
+          {description}
+        </p>
       </div>
-      <p className="text-sm font-black uppercase tracking-[0.16em] text-primary/80">
-        {title}
-      </p>
-      <p className="mt-2 text-sm leading-6 text-teal-950/62 dark:text-lime-50/68">
-        {description}
-      </p>
     </div>
+  );
+}
+
+function RequestSlot() {
+  const address = useWalletStore((state) => state.address);
+
+  if (address) {
+    return <ReceivePanel />;
+  }
+
+  return (
+    <Card className="glass h-full min-h-[22rem] w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+      <CardContent className="flex h-full flex-col justify-between p-4 sm:p-5">
+        <div>
+          <div className="flex items-center justify-between gap-3">
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/15 bg-blue-50 px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-blue-700 dark:border-blue-300/15 dark:bg-blue-400/10 dark:text-blue-200">
+              <Link2 className="size-3.5" />
+              Request Money
+            </div>
+            <Badge variant="secondary">QR ready</Badge>
+          </div>
+
+          <h3 className="mt-5 text-2xl font-black tracking-tight text-teal-950 dark:text-lime-50">
+            Create a payment link or QR invoice
+          </h3>
+          <p className="mt-3 max-w-md text-sm leading-6 text-teal-950/64 dark:text-lime-50/70">
+            Connect your wallet to generate a clean ArcPay invoice with amount, memo, merchant name, share link, and scannable QR code.
+          </p>
+        </div>
+
+        <div className="mt-6 rounded-[1.25rem] border border-slate-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.06]">
+          <div className="grid gap-2.5">
+            {["QR invoice", "Shareable payment link", "USDC request on Arc"].map((item) => (
+              <div key={item} className="flex items-center gap-2 text-sm font-semibold text-teal-950 dark:text-lime-50">
+                <CheckCircle2 className="size-4 shrink-0 text-primary" />
+                {item}
+              </div>
+            ))}
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -53,7 +89,7 @@ function QuickGuideCard() {
               Payment flow
             </p>
             <p className="mt-1 text-xs leading-5 text-teal-950/62 dark:text-lime-50/68">
-              Built like a payment app: balance, actions, movement, history.
+              The dashboard now follows a simple payment-app order.
             </p>
           </div>
           <Badge variant="secondary" className="shrink-0">
@@ -115,92 +151,63 @@ function FaucetCard() {
   );
 }
 
-function LayoutRuleCard() {
-  return (
-    <Card className="glass h-full w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
-      <CardContent className="flex h-full flex-col justify-center p-4 text-sm leading-6 text-teal-950/65 dark:text-lime-50/68 sm:p-5">
-        <div className="mb-3 flex items-center gap-2 font-black text-teal-950 dark:text-lime-50">
-          <ShieldCheck className="size-4 text-primary" />
-          PC grid rule
-        </div>
-        12-column desktop grid, equal gaps, row-based sections, and no sticky sidebar.
-      </CardContent>
-    </Card>
-  );
-}
-
 export function DashboardFixed() {
   return (
     <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-16 pt-3 text-foreground sm:px-5 sm:pb-20 sm:pt-4 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto grid w-full max-w-[1240px] gap-4 sm:gap-5 lg:gap-6">
+      <div className="mx-auto grid w-full max-w-[1120px] gap-5 lg:gap-6">
         <DashboardHeader />
 
         <section
           aria-label="Dashboard overview"
-          className="grid w-full min-w-0 gap-4 lg:grid-cols-12 lg:items-stretch lg:gap-5"
+          className="grid w-full min-w-0 gap-4 lg:grid-cols-[minmax(0,1.55fr)_minmax(340px,0.85fr)] lg:items-stretch lg:gap-5"
         >
-          <div className="min-w-0 lg:col-span-8">
+          <div className="min-w-0">
             <PremiumDashboardHero />
           </div>
-          <div className="min-w-0 lg:col-span-4">
+          <div className="min-w-0">
             <BalanceCard />
           </div>
         </section>
 
-        <section
-          aria-label="Primary payment actions"
-          className="grid w-full min-w-0 gap-4 lg:grid-cols-12 lg:items-start lg:gap-5"
-        >
-          <div className="hidden min-w-0 lg:col-span-2 lg:block">
-            <RowLabel
-              title="Actions"
-              description="Send and request stay in one clear payment row."
-            />
-          </div>
-          <div className="min-w-0 lg:col-span-4">
-            <SendPanel />
-          </div>
-          <div className="min-w-0 lg:col-span-6">
-            <ReceivePanel />
+        <section aria-label="Primary payment actions" className="grid w-full min-w-0 gap-4">
+          <SectionTitle
+            title="Payments"
+            description="Send money or create a QR payment request from one clean row."
+          />
+          <div className="grid w-full min-w-0 gap-4 lg:grid-cols-2 lg:items-start lg:gap-5">
+            <div className="min-w-0">
+              <SendPanel />
+            </div>
+            <div className="min-w-0">
+              <RequestSlot />
+            </div>
           </div>
         </section>
 
-        <section
-          aria-label="Money movement and activity"
-          className="grid w-full min-w-0 gap-4 lg:grid-cols-12 lg:items-start lg:gap-5"
-        >
-          <div className="hidden min-w-0 lg:col-span-2 lg:block">
-            <RowLabel
-              title="Movement"
-              description="Bridge and history are grouped for tracking."
-            />
-          </div>
-          <div className="min-w-0 lg:col-span-4">
-            <BridgePanel />
-          </div>
-          <div className="min-w-0 lg:col-span-6">
-            <TxHistory />
+        <section aria-label="Money movement and activity" className="grid w-full min-w-0 gap-4">
+          <SectionTitle
+            title="Movement & activity"
+            description="Bridge funds and review transaction history without jumping around the page."
+          />
+          <div className="grid w-full min-w-0 gap-4 lg:grid-cols-2 lg:items-start lg:gap-5">
+            <div className="min-w-0">
+              <BridgePanel />
+            </div>
+            <div className="min-w-0">
+              <TxHistory />
+            </div>
           </div>
         </section>
 
         <section
           aria-label="Dashboard support cards"
-          className="grid w-full min-w-0 gap-4 md:grid-cols-2 lg:grid-cols-12 lg:items-stretch lg:gap-5"
+          className="grid w-full min-w-0 gap-4 md:grid-cols-2 lg:grid-cols-3 lg:items-stretch lg:gap-5"
         >
-          <div className="min-w-0 lg:col-span-4">
-            <ProtocolStatusCard />
-          </div>
-          <div className="min-w-0 lg:col-span-4">
-            <QuickGuideCard />
-          </div>
-          <div className="min-w-0 lg:col-span-2">
-            <FaucetCard />
-          </div>
-          <div className="min-w-0 lg:col-span-2">
-            <LayoutRuleCard />
-          </div>
+          <ProtocolStatusCard />
+          <QuickGuideCard />
+          <FaucetCard />
         </section>
       </div>
     </main>
