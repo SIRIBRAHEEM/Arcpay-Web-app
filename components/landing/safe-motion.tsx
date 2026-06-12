@@ -1,24 +1,24 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
-import { motion, type HTMLMotionProps } from "framer-motion";
+import { useEffect, useState, type ComponentProps } from "react";
+import { motion } from "framer-motion";
 
-type SafeMotionDivProps = HTMLMotionProps<"div"> & {
-  children: ReactNode;
-};
+type Props = ComponentProps<typeof motion.div>;
 
-export function SafeMotionDiv({ children, ...props }: SafeMotionDivProps) {
-  const [isMounted, setIsMounted] = useState(false);
+export function SafeMotionDiv(props: Props) {
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    setMounted(true);
   }, []);
 
-  if (!isMounted) {
-    const { initial, animate, whileInView, viewport, transition, ...rest } = props;
-
-    return <div {...rest}>{children}</div>;
+  if (!mounted) {
+    return (
+      <div className={props.className} style={props.style}>
+        {props.children}
+      </div>
+    );
   }
 
-  return <motion.div {...props}>{children}</motion.div>;
+  return <motion.div {...props} />;
 }
