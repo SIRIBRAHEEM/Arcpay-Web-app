@@ -9,6 +9,41 @@
   }
 }
 
+@keyframes arcpayLandingRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes arcpayLandingScale {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.arcpay-hero-copy {
+  animation: arcpayLandingRise 0.7s ease both;
+}
+
+.arcpay-hero-card {
+  animation: arcpayLandingScale 0.75s ease 0.12s both;
+}
+
+.arcpay-reveal-card,
+.arcpay-reveal-row {
+  animation: arcpayLandingRise 0.55s ease both;
+}
+
 .premium-dashboard-bg .dashboard-grid > section {
   animation: arcpayDashboardRise 0.5s ease both;
 }
@@ -63,6 +98,10 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .arcpay-hero-copy,
+  .arcpay-hero-card,
+  .arcpay-reveal-card,
+  .arcpay-reveal-row,
   .premium-dashboard-bg .dashboard-grid > section {
     animation: none;
   }
