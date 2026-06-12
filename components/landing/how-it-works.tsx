@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -8,6 +10,7 @@ import {
   ShieldCheck,
   WalletCards
 } from "lucide-react";
+import { SafeMotionDiv } from "@/components/landing/safe-motion";
 
 const steps = [
   [WalletCards, "Connect", "Use your existing browser wallet and switch to Arc Testnet when ArcPay asks."],
@@ -36,7 +39,12 @@ export function HowItWorks() {
       <section id="how-it-works" className="bg-white px-4 py-16 dark:bg-[#080d10] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div className="arcpay-reveal-card">
+            <SafeMotionDiv
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+            >
               <p className="text-sm font-black uppercase tracking-[0.22em] text-teal-800 dark:text-lime-200">
                 How it works
               </p>
@@ -48,14 +56,17 @@ export function HowItWorks() {
                 pay, request, and review. The chain work is still there, but it
                 does not dominate the screen.
               </p>
-            </div>
+            </SafeMotionDiv>
 
             <div className="grid gap-4">
               {steps.map(([Icon, title, description], index) => (
-                <div
+                <SafeMotionDiv
                   key={title}
-                  className="arcpay-reveal-row grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-slate-950/10 bg-[#eff5f2] p-4 dark:border-white/10 dark:bg-white/[0.06]"
-                  style={{ animationDelay: `${index * 0.08}s` }}
+                  initial={{ opacity: 0, x: 24 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ delay: index * 0.08, duration: 0.5, ease: "easeOut" }}
+                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-slate-950/10 bg-[#eff5f2] p-4 dark:border-white/10 dark:bg-white/[0.06]"
                 >
                   <div className="grid size-11 place-items-center rounded-full bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
                     <Icon className="size-5" />
@@ -72,7 +83,7 @@ export function HowItWorks() {
                     </p>
                   </div>
                   <ArrowRight className="hidden size-5 text-teal-950/35 dark:text-lime-50/35 sm:block" />
-                </div>
+                </SafeMotionDiv>
               ))}
             </div>
           </div>
@@ -82,21 +93,29 @@ export function HowItWorks() {
       <section id="use-cases" className="bg-[#eff5f2] px-4 py-16 dark:bg-[#0a1112] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-            <div className="arcpay-reveal-card">
+            <SafeMotionDiv
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+            >
               <p className="text-sm font-black uppercase tracking-[0.22em] text-teal-800 dark:text-lime-200">
                 The missing link for
               </p>
               <h2 className="mt-3 text-4xl font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-5xl">
                 Useful crypto payments.
               </h2>
-            </div>
+            </SafeMotionDiv>
 
             <div className="grid gap-4 md:grid-cols-2">
               {useCases.map(([Icon, title, description], index) => (
-                <div
+                <SafeMotionDiv
                   key={title}
-                  className="arcpay-reveal-card min-h-48 rounded-[1.5rem] border border-slate-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.06] sm:p-6"
-                  style={{ animationDelay: `${index * 0.06}s` }}
+                  initial={{ opacity: 0, y: 22 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-80px" }}
+                  transition={{ delay: index * 0.06, duration: 0.5, ease: "easeOut" }}
+                  className="min-h-48 rounded-[1.5rem] border border-slate-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.06] sm:p-6"
                 >
                   <div className="grid size-12 place-items-center rounded-[1rem] bg-lime-200 text-teal-950">
                     <Icon className="size-6" />
@@ -107,7 +126,7 @@ export function HowItWorks() {
                   <p className="mt-3 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
                     {description}
                   </p>
-                </div>
+                </SafeMotionDiv>
               ))}
             </div>
           </div>
