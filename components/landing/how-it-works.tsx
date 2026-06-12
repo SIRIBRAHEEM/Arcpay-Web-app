@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -13,52 +10,17 @@ import {
 } from "lucide-react";
 
 const steps = [
-  {
-    icon: WalletCards,
-    title: "Connect",
-    description:
-      "Use your existing browser wallet and switch to Arc Testnet when ArcPay asks."
-  },
-  {
-    icon: HandCoins,
-    title: "Fund",
-    description:
-      "Deposit or bridge test USDC into a balance that is ready for payments."
-  },
-  {
-    icon: Send,
-    title: "Pay",
-    description:
-      "Send USDC, create requests, and keep the payment activity easy to understand."
-  }
-];
+  [WalletCards, "Connect", "Use your existing browser wallet and switch to Arc Testnet when ArcPay asks."],
+  [HandCoins, "Fund", "Deposit or bridge test USDC into a balance that is ready for payments."],
+  [Send, "Pay", "Send USDC, create requests, and keep the payment activity easy to understand."]
+] as const;
 
 const useCases = [
-  {
-    icon: HandCoins,
-    title: "Use stablecoins like cash",
-    description:
-      "Send money to friends or split bills with a payment flow that feels direct."
-  },
-  {
-    icon: Landmark,
-    title: "Send remittances",
-    description:
-      "Move funds across borders quickly while staying in assets people recognize."
-  },
-  {
-    icon: BriefcaseBusiness,
-    title: "Process payroll",
-    description:
-      "Pay contractors, employees, or suppliers without exposing the entire wallet flow."
-  },
-  {
-    icon: ShieldCheck,
-    title: "Make business payments",
-    description:
-      "Keep counterparties, balances, and payment context cleaner than a raw explorer trail."
-  }
-];
+  [HandCoins, "Use stablecoins like cash", "Send money to friends or split bills with a payment flow that feels direct."],
+  [Landmark, "Send remittances", "Move funds across borders quickly while staying in assets people recognize."],
+  [BriefcaseBusiness, "Process payroll", "Pay contractors, employees, or suppliers without exposing the entire wallet flow."],
+  [ShieldCheck, "Make business payments", "Keep counterparties, balances, and payment context cleaner than a raw explorer trail."]
+] as const;
 
 const benefits = [
   "Pay with preferred assets",
@@ -74,7 +36,7 @@ export function HowItWorks() {
       <section id="how-it-works" className="bg-white px-4 py-16 dark:bg-[#080d10] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-            <div>
+            <div className="arcpay-reveal-card">
               <p className="text-sm font-black uppercase tracking-[0.22em] text-teal-800 dark:text-lime-200">
                 How it works
               </p>
@@ -89,31 +51,28 @@ export function HowItWorks() {
             </div>
 
             <div className="grid gap-4">
-              {steps.map((step, index) => (
-                <motion.div
-                  key={step.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08, duration: 0.45 }}
-                  className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-slate-950/10 bg-[#eff5f2] p-4 dark:border-white/10 dark:bg-white/[0.06]"
+              {steps.map(([Icon, title, description], index) => (
+                <div
+                  key={title}
+                  className="arcpay-reveal-row grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-slate-950/10 bg-[#eff5f2] p-4 dark:border-white/10 dark:bg-white/[0.06]"
+                  style={{ animationDelay: `${index * 0.08}s` }}
                 >
                   <div className="grid size-11 place-items-center rounded-full bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
-                    <step.icon className="size-5" />
+                    <Icon className="size-5" />
                   </div>
                   <div>
                     <p className="text-sm font-black uppercase tracking-[0.18em] text-teal-950/45 dark:text-lime-50/45">
                       0{index + 1}
                     </p>
                     <h3 className="mt-1 text-lg font-black text-teal-950 dark:text-lime-50">
-                      {step.title}
+                      {title}
                     </h3>
                     <p className="mt-1 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
-                      {step.description}
+                      {description}
                     </p>
                   </div>
                   <ArrowRight className="hidden size-5 text-teal-950/35 dark:text-lime-50/35 sm:block" />
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -123,7 +82,7 @@ export function HowItWorks() {
       <section id="use-cases" className="bg-[#eff5f2] px-4 py-16 dark:bg-[#0a1112] sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-            <div>
+            <div className="arcpay-reveal-card">
               <p className="text-sm font-black uppercase tracking-[0.22em] text-teal-800 dark:text-lime-200">
                 The missing link for
               </p>
@@ -133,25 +92,22 @@ export function HowItWorks() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              {useCases.map((item, index) => (
-                <motion.div
-                  key={item.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.45 }}
-                  className="min-h-48 rounded-[1.5rem] border border-slate-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.06] sm:p-6"
+              {useCases.map(([Icon, title, description], index) => (
+                <div
+                  key={title}
+                  className="arcpay-reveal-card min-h-48 rounded-[1.5rem] border border-slate-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.06] sm:p-6"
+                  style={{ animationDelay: `${index * 0.06}s` }}
                 >
                   <div className="grid size-12 place-items-center rounded-[1rem] bg-lime-200 text-teal-950">
-                    <item.icon className="size-6" />
+                    <Icon className="size-6" />
                   </div>
                   <h3 className="mt-6 text-xl font-black text-teal-950 dark:text-lime-50">
-                    {item.title}
+                    {title}
                   </h3>
                   <p className="mt-3 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
-                    {item.description}
+                    {description}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
