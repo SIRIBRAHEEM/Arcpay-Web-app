@@ -1,0 +1,75 @@
+@keyframes arcpayDashboardRise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.premium-dashboard-bg .dashboard-grid > section {
+  animation: arcpayDashboardRise 0.5s ease both;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(1) {
+  animation-delay: 0.03s;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(4) {
+  animation-delay: 0.16s;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(6) {
+  animation-delay: 0.24s;
+}
+
+.premium-dashboard-bg .dashboard-grid > section:nth-child(7),
+.premium-dashboard-bg .dashboard-grid > section:nth-child(8),
+.premium-dashboard-bg .dashboard-grid > section:nth-child(9),
+.premium-dashboard-bg .dashboard-grid > section:nth-child(10),
+.premium-dashboard-bg .dashboard-grid > section:nth-child(11) {
+  animation-delay: 0.28s;
+}
+
+.premium-dashboard-bg .glass,
+.premium-dashboard-bg .premium-card,
+.premium-dashboard-bg .silver-card {
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .premium-dashboard-bg .glass:hover,
+  .premium-dashboard-bg .premium-card:hover,
+  .premium-dashboard-bg .silver-card:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-dashboard-bg .dashboard-grid > section {
+    animation: none;
+  }
+
+  .premium-dashboard-bg .glass,
+  .premium-dashboard-bg .premium-card,
+  .premium-dashboard-bg .silver-card {
+    transition: none;
+  }
+}
