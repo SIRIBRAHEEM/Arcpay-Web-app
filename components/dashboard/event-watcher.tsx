@@ -22,6 +22,8 @@ export function EventWatcher() {
     const idleWindow = window as IdleWindow;
     const unwatchers: Array<() => void> = [];
     let isCleanedUp = false;
+    let idleId: number;
+    let usedIdleCallback = false;
 
     function startWatching() {
       if (isCleanedUp) return;
@@ -100,15 +102,18 @@ export function EventWatcher() {
       unwatchers.push(unwatchSent, unwatchReceived);
     }
 
-    const idleId = idleWindow.requestIdleCallback
-      ? idleWindow.requestIdleCallback(startWatching, { timeout: 5000 })
-      : window.setTimeout(startWatching, 3000);
+    if (idleWindow.requestIdleCallback) {
+      usedIdleCallback = true;
+      idleId = idleWindow.requestIdleCallback(startWatching, { timeout: 5000 });
+    } else {
+      idleId = window.setTimeout(startWatching, 3000);
+    }
 
     return () => {
       isCleanedUp = true;
 
-      if (idleWindow.cancelIdleCallback && idleWindow.requestIdleCallback) {
-        idleWindow.cancelIdleCallback(idleId);
+      if (usedIdleCallback) {
+        idleWindow.cancelIdleCallback?.(idleId);
       } else {
         window.clearTimeout(idleId);
       }
