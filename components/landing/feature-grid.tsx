@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Banknote, Globe2, Link2, ShieldCheck } from "lucide-react";
+import { SafeMotionDiv } from "@/components/landing/safe-motion";
 
 const features = [
   {
@@ -53,13 +53,13 @@ export function FeatureGrid() {
 
         <div className="mt-9 grid gap-px overflow-hidden rounded-[1.5rem] border border-slate-950/10 bg-slate-950/10 dark:border-white/10 dark:bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
           {features.map((feature, index) => (
-            <motion.div
+            <SafeMotionDiv
               key={feature.title}
-              initial={false}
+              initial={{ opacity: 0, y: 22 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
-              transition={{ delay: index * 0.05, duration: 0.5 }}
-              className="arcpay-reveal-card bg-white p-5 dark:bg-white/[0.055] sm:p-6"
+              transition={{ delay: index * 0.07, duration: 0.5, ease: "easeOut" }}
+              className="bg-white p-5 dark:bg-white/[0.055] sm:p-6"
             >
               <div className="grid size-11 place-items-center rounded-full bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
                 <feature.icon className="size-5" />
@@ -70,7 +70,7 @@ export function FeatureGrid() {
               <p className="mt-3 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
                 {feature.description}
               </p>
-            </motion.div>
+            </SafeMotionDiv>
           ))}
         </div>
       </div>
