@@ -55,11 +55,11 @@ export function FeatureGrid() {
           {features.map((feature, index) => (
             <motion.div
               key={feature.title}
-              initial={{ opacity: 0, y: 18 }}
+              initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-80px" }}
               transition={{ delay: index * 0.05, duration: 0.5 }}
-              className="bg-white p-5 dark:bg-white/[0.055] sm:p-6"
+              className="arcpay-reveal-card bg-white p-5 dark:bg-white/[0.055] sm:p-6"
             >
               <div className="grid size-11 place-items-center rounded-full bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
                 <feature.icon className="size-5" />
