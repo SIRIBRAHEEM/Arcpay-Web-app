@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   BriefcaseBusiness,
@@ -90,12 +87,8 @@ export function HowItWorks() {
 
             <div className="grid gap-4">
               {steps.map((step, index) => (
-                <motion.div
+                <div
                   key={step.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.08, duration: 0.45 }}
                   className="grid grid-cols-[auto_1fr_auto] items-center gap-4 rounded-[1.25rem] border border-slate-950/10 bg-[#eff5f2] p-4 dark:border-white/10 dark:bg-white/[0.06]"
                 >
                   <div className="grid size-11 place-items-center rounded-full bg-teal-950 text-lime-100 dark:bg-lime-200 dark:text-teal-950">
@@ -113,7 +106,7 @@ export function HowItWorks() {
                     </p>
                   </div>
                   <ArrowRight className="hidden size-5 text-teal-950/35 dark:text-lime-50/35 sm:block" />
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
@@ -133,13 +126,9 @@ export function HowItWorks() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
-              {useCases.map((item, index) => (
-                <motion.div
+              {useCases.map((item) => (
+                <div
                   key={item.title}
-                  initial={{ opacity: 0, y: 16 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05, duration: 0.45 }}
                   className="min-h-48 rounded-[1.5rem] border border-slate-950/10 bg-white p-5 dark:border-white/10 dark:bg-white/[0.06] sm:p-6"
                 >
                   <div className="grid size-12 place-items-center rounded-[1rem] bg-lime-200 text-teal-950">
@@ -151,7 +140,7 @@ export function HowItWorks() {
                   <p className="mt-3 text-sm leading-6 text-teal-950/65 dark:text-lime-50/65">
                     {item.description}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
           </div>
