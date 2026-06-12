@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   BadgeCheck,
@@ -17,6 +16,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { ArcPayLogoMark } from "@/components/arcpay-logo";
+import { SafeMotionDiv } from "@/components/landing/safe-motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -83,11 +83,11 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto grid max-w-7xl gap-8 pb-8 pt-12 lg:pt-14">
-        <motion.div
-          initial={false}
+        <SafeMotionDiv
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7 }}
-          className="arcpay-hero-copy mx-auto max-w-4xl text-center"
+          transition={{ duration: 0.7, ease: "easeOut" }}
+          className="mx-auto max-w-4xl text-center"
         >
           <Badge className="mb-5 gap-2 rounded-full border-slate-950/10 bg-white/75 px-4 py-2 text-teal-950 shadow-sm dark:border-lime-200/20 dark:bg-white/[0.07] dark:text-lime-100">
             <ShieldCheck className="size-3.5" />
@@ -138,13 +138,13 @@ export function Hero() {
               </Badge>
             ))}
           </div>
-        </motion.div>
+        </SafeMotionDiv>
 
-        <motion.div
-          initial={false}
+        <SafeMotionDiv
+          initial={{ opacity: 0, scale: 0.96, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ delay: 0.15, duration: 0.7 }}
-          className="arcpay-hero-card mx-auto w-full max-w-6xl"
+          transition={{ delay: 0.15, duration: 0.7, ease: "easeOut" }}
+          className="mx-auto w-full max-w-6xl"
         >
           <div className="grid overflow-hidden rounded-[1.5rem] border border-slate-950/10 bg-white shadow-[0_34px_120px_rgba(15,23,42,0.15)] dark:border-white/10 dark:bg-white/[0.06] lg:grid-cols-[0.68fr_1fr]">
             <div className="border-b border-slate-950/10 bg-teal-950 p-5 text-white dark:border-white/10 dark:bg-[#071114] lg:border-b-0 lg:border-r sm:p-6">
@@ -296,7 +296,7 @@ export function Hero() {
               </div>
             </div>
           </div>
-        </motion.div>
+        </SafeMotionDiv>
       </div>
     </section>
   );
