@@ -1,20 +1,54 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Link2, WalletCards } from "lucide-react";
 import { BalanceCard } from "@/components/dashboard/balance-card";
-import { BridgePanel } from "@/components/dashboard/bridge-panel";
 import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { EventWatcher } from "@/components/dashboard/event-watcher";
 import { PremiumDashboardHero } from "@/components/dashboard/premium-dashboard-hero";
 import { ProtocolStatusCard } from "@/components/dashboard/protocol-status-card";
-import { ReceivePanel } from "@/components/dashboard/receive-panel";
-import { SendPanel } from "@/components/dashboard/send-panel";
-import { TxHistory } from "@/components/dashboard/tx-history";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useWalletStore } from "@/store/wallet-store";
+
+function PanelLoader() {
+  return (
+    <Card className="glass h-full min-h-[18rem] w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
+      <CardContent className="grid h-full place-items-center p-5">
+        <div className="grid gap-3 text-center">
+          <div className="mx-auto size-10 animate-pulse rounded-2xl bg-primary/15" />
+          <p className="text-sm font-semibold text-muted-foreground">Loading section...</p>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+const EventWatcher = dynamic(
+  () => import("@/components/dashboard/event-watcher").then((mod) => mod.EventWatcher),
+  { ssr: false }
+);
+
+const SendPanel = dynamic(
+  () => import("@/components/dashboard/send-panel").then((mod) => mod.SendPanel),
+  { ssr: false, loading: PanelLoader }
+);
+
+const ReceivePanel = dynamic(
+  () => import("@/components/dashboard/receive-panel").then((mod) => mod.ReceivePanel),
+  { ssr: false, loading: PanelLoader }
+);
+
+const BridgePanel = dynamic(
+  () => import("@/components/dashboard/bridge-panel").then((mod) => mod.BridgePanel),
+  { ssr: false, loading: PanelLoader }
+);
+
+const TxHistory = dynamic(
+  () => import("@/components/dashboard/tx-history").then((mod) => mod.TxHistory),
+  { ssr: false, loading: PanelLoader }
+);
 
 function SectionTitle({
   title,
@@ -159,7 +193,7 @@ export function DashboardFixed() {
       <div className="mx-auto grid w-full max-w-[1280px] gap-5 lg:gap-6">
         <DashboardHeader />
 
-        <div className="grid w-full min-w-0 grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
+        <div className="dashboard-grid grid w-full min-w-0 grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
           <section
             aria-label="Dashboard overview"
             className="grid min-w-0 md:col-span-2 lg:col-span-8"
