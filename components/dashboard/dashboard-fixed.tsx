@@ -193,7 +193,7 @@ export function DashboardFixed() {
       <div className="mx-auto grid w-full max-w-[1280px] gap-5 lg:gap-6">
         <DashboardHeader />
 
-        <div className="dashboard-grid grid w-full min-w-0 grid-cols-1 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
+        <div className="dashboard-grid grid w-full min-w-0 grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
           <section
             aria-label="Dashboard overview"
             className="grid min-w-0 md:col-span-2 lg:col-span-8"
@@ -220,14 +220,14 @@ export function DashboardFixed() {
 
           <section
             aria-label="Pay"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6 [&>*]:h-full"
+            className="grid min-w-0 md:col-span-1 lg:col-span-5 lg:justify-items-start"
           >
             <SendPanel />
           </section>
 
           <section
             aria-label="Request money"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6 [&>*]:h-full"
+            className="grid min-w-0 md:col-span-1 lg:col-span-7 [&>*]:h-full"
           >
             <RequestSlot />
           </section>
