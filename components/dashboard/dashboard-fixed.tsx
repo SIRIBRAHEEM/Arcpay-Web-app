@@ -71,6 +71,14 @@ function SectionTitle({
   );
 }
 
+function DashboardRow({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid w-full min-w-0 items-start gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
+      {children}
+    </div>
+  );
+}
+
 function RequestSlot() {
   const address = useWalletStore((state) => state.address);
 
@@ -193,89 +201,70 @@ export function DashboardFixed() {
       <div className="mx-auto grid w-full max-w-[1280px] gap-5 lg:gap-6">
         <DashboardHeader />
 
-        <div className="dashboard-grid grid w-full min-w-0 grid-cols-1 items-start gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5">
-          <section
-            aria-label="Dashboard overview"
-            className="grid min-w-0 md:col-span-2 lg:col-span-8"
-          >
-            <PremiumDashboardHero />
-          </section>
+        <div className="dashboard-grid grid w-full min-w-0 gap-4 lg:gap-5">
+          <DashboardRow>
+            <section
+              aria-label="Dashboard overview"
+              className="grid min-w-0 md:col-span-2 lg:col-span-8"
+            >
+              <PremiumDashboardHero />
+            </section>
 
-          <section
-            aria-label="Unified balance"
-            className="grid min-w-0 md:col-span-2 lg:col-span-4"
-          >
-            <BalanceCard />
-          </section>
+            <section
+              aria-label="Unified balance"
+              className="grid min-w-0 md:col-span-2 lg:col-span-4"
+            >
+              <BalanceCard />
+            </section>
+          </DashboardRow>
 
-          <section
-            aria-label="Primary payment actions heading"
-            className="min-w-0 md:col-span-2 lg:col-span-12 lg:pt-1"
-          >
+          <section aria-label="Primary payment actions heading" className="min-w-0 lg:pt-1">
             <SectionTitle
               title="Payments"
               description="Send money or create a QR payment request from one clean row."
             />
           </section>
 
-          <section
-            aria-label="Pay"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6"
-          >
-            <SendPanel />
-          </section>
+          <DashboardRow>
+            <section aria-label="Pay" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+              <SendPanel />
+            </section>
 
-          <section
-            aria-label="Request money"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6"
-          >
-            <RequestSlot />
-          </section>
+            <section aria-label="Request money" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+              <RequestSlot />
+            </section>
+          </DashboardRow>
 
-          <section
-            aria-label="Money movement and activity heading"
-            className="min-w-0 md:col-span-2 lg:col-span-12 lg:pt-1"
-          >
+          <section aria-label="Money movement and activity heading" className="min-w-0 lg:pt-1">
             <SectionTitle
               title="Movement & activity"
               description="Bridge funds and review transaction history without jumping around the page."
             />
           </section>
 
-          <section
-            aria-label="Bridge funds"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6"
-          >
-            <BridgePanel />
-          </section>
+          <DashboardRow>
+            <section aria-label="Bridge funds" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+              <BridgePanel />
+            </section>
 
-          <section
-            aria-label="Transaction activity"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6"
-          >
-            <TxHistory />
-          </section>
+            <section aria-label="Transaction activity" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+              <TxHistory />
+            </section>
+          </DashboardRow>
 
-          <section
-            aria-label="Protocol status"
-            className="grid min-w-0 md:col-span-1 lg:col-span-4"
-          >
-            <ProtocolStatusCard />
-          </section>
+          <DashboardRow>
+            <section aria-label="Protocol status" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+              <ProtocolStatusCard />
+            </section>
 
-          <section
-            aria-label="Payment guide"
-            className="grid min-w-0 md:col-span-1 lg:col-span-4"
-          >
-            <QuickGuideCard />
-          </section>
+            <section aria-label="Payment guide" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+              <QuickGuideCard />
+            </section>
 
-          <section
-            aria-label="Test funds"
-            className="grid min-w-0 md:col-span-2 lg:col-span-4"
-          >
-            <FaucetCard />
-          </section>
+            <section aria-label="Test funds" className="grid min-w-0 md:col-span-2 lg:col-span-4">
+              <FaucetCard />
+            </section>
+          </DashboardRow>
         </div>
       </div>
     </main>
