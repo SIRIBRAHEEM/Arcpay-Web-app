@@ -104,16 +104,16 @@ export function SendPanel() {
 
   return (
     <>
-      <Card className="glass h-full w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
-        <CardHeader className="space-y-3 p-3.5 sm:p-5">
-          <CardTitle className="flex min-w-0 items-center gap-2">
+      <Card className="glass w-full min-w-0 self-start overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem] lg:max-w-[560px]">
+        <CardHeader className="space-y-3 p-3.5 sm:p-4">
+          <CardTitle className="flex min-w-0 items-center gap-2 text-base">
             <Send className="size-5 shrink-0 text-primary" />
             Pay
           </CardTitle>
 
-          <div className="w-full min-w-0 rounded-[1.25rem] border border-slate-950/10 bg-slate-950/[0.035] p-3.5 dark:border-white/10 dark:bg-white/[0.06] sm:p-4">
-            <p className="text-sm text-muted-foreground">Fast payment route</p>
-            <div className="mt-3 flex min-w-0 flex-wrap items-center gap-2 text-sm font-semibold">
+          <div className="w-full min-w-0 rounded-[1rem] border border-slate-950/10 bg-slate-950/[0.035] p-3 dark:border-white/10 dark:bg-white/[0.06]">
+            <p className="text-xs font-medium text-muted-foreground">Fast payment route</p>
+            <div className="mt-2 flex min-w-0 flex-wrap items-center gap-2 text-xs font-semibold sm:text-sm">
               <WalletCards className="size-4 shrink-0 text-primary" />
               <span>Unified Balance</span>
               <ArrowRight className="size-4 shrink-0 text-muted-foreground" />
@@ -122,23 +122,24 @@ export function SendPanel() {
           </div>
         </CardHeader>
 
-        <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
-          <form onSubmit={submit} className="grid w-full min-w-0 gap-4">
+        <CardContent className="p-3.5 pt-0 sm:p-4 sm:pt-0">
+          <form onSubmit={submit} className="grid w-full min-w-0 gap-3.5">
             <div className="grid min-w-0 gap-2">
               <Label htmlFor="send-amount">Amount</Label>
-              <div className="grid w-full min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_132px]">
+              <div className="grid w-full min-w-0 gap-2 sm:grid-cols-[minmax(0,1fr)_118px]">
                 <Input
                   id="send-amount"
                   inputMode="decimal"
                   placeholder="125.00"
                   value={amount}
                   onChange={(event) => setAmount(event.target.value)}
+                  className="h-11"
                 />
                 <Select
                   value={token}
                   onValueChange={(value) => setToken(value as ArcStableToken)}
                 >
-                  <SelectTrigger aria-label="Payment token">
+                  <SelectTrigger aria-label="Payment token" className="h-11">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -156,6 +157,7 @@ export function SendPanel() {
                 placeholder="0x..."
                 value={recipient}
                 onChange={(event) => setRecipient(event.target.value)}
+                className="h-11"
               />
             </div>
 
