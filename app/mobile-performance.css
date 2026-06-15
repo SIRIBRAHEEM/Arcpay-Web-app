@@ -15,7 +15,7 @@
     background: linear-gradient(180deg, #061833 0%, #07101f 52%, #05070d 100%) !important;
   }
 
-  .premium-dashboard-bg .dashboard-grid > section {
+  .premium-dashboard-bg .dashboard-grid section {
     content-visibility: auto;
     contain-intrinsic-size: 280px;
   }
