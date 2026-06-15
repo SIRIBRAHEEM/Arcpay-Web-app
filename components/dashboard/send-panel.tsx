@@ -104,7 +104,7 @@ export function SendPanel() {
 
   return (
     <>
-      <Card className="glass w-full min-w-0 self-start overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem] lg:max-w-[560px]">
+      <Card className="glass w-full min-w-0 self-start overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
         <CardHeader className="space-y-3 p-3.5 sm:p-4">
           <CardTitle className="flex min-w-0 items-center gap-2 text-base">
             <Send className="size-5 shrink-0 text-primary" />
