@@ -14,7 +14,7 @@ import { useWalletStore } from "@/store/wallet-store";
 
 function PanelLoader() {
   return (
-    <Card className="glass h-full min-h-[18rem] w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
+    <Card className="glass min-h-[16rem] w-full min-w-0 overflow-hidden rounded-[1.25rem] sm:rounded-[1.5rem]">
       <CardContent className="grid h-full place-items-center p-5">
         <div className="grid gap-3 text-center">
           <div className="mx-auto size-10 animate-pulse rounded-2xl bg-primary/15" />
@@ -79,8 +79,8 @@ function RequestSlot() {
   }
 
   return (
-    <Card className="glass h-full min-h-[22rem] w-full min-w-0 overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
-      <CardContent className="flex h-full flex-col justify-between p-4 sm:p-5">
+    <Card className="glass w-full min-w-0 self-start overflow-hidden rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+      <CardContent className="grid gap-5 p-4 sm:p-5">
         <div>
           <div className="flex items-center justify-between gap-3">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/15 bg-blue-50 px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-blue-700 dark:border-blue-300/15 dark:bg-blue-400/10 dark:text-blue-200">
@@ -98,7 +98,7 @@ function RequestSlot() {
           </p>
         </div>
 
-        <div className="mt-6 rounded-[1.25rem] border border-slate-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.06]">
+        <div className="rounded-[1.25rem] border border-slate-950/10 bg-white/70 p-4 dark:border-white/10 dark:bg-white/[0.06]">
           <div className="grid gap-2.5">
             {["QR invoice", "Shareable payment link", "USDC request on Arc"].map((item) => (
               <div key={item} className="flex items-center gap-2 text-sm font-semibold text-teal-950 dark:text-lime-50">
@@ -220,14 +220,14 @@ export function DashboardFixed() {
 
           <section
             aria-label="Pay"
-            className="grid min-w-0 md:col-span-1 lg:col-span-5 lg:justify-items-start"
+            className="grid min-w-0 md:col-span-1 lg:col-span-6"
           >
             <SendPanel />
           </section>
 
           <section
             aria-label="Request money"
-            className="grid min-w-0 md:col-span-1 lg:col-span-7 [&>*]:h-full"
+            className="grid min-w-0 md:col-span-1 lg:col-span-6"
           >
             <RequestSlot />
           </section>
@@ -244,14 +244,14 @@ export function DashboardFixed() {
 
           <section
             aria-label="Bridge funds"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6 [&>*]:h-full"
+            className="grid min-w-0 md:col-span-1 lg:col-span-6"
           >
             <BridgePanel />
           </section>
 
           <section
             aria-label="Transaction activity"
-            className="grid min-w-0 md:col-span-1 lg:col-span-6 [&>*]:h-full"
+            className="grid min-w-0 md:col-span-1 lg:col-span-6"
           >
             <TxHistory />
           </section>
