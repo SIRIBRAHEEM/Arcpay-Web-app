@@ -58,7 +58,7 @@ function SectionTitle({
   description: string;
 }) {
   return (
-    <div className="flex min-w-0 items-end justify-between gap-3 pb-1">
+    <div className="flex min-w-0 items-end justify-between gap-3 pb-0.5">
       <div className="min-w-0">
         <h2 className="text-lg font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-xl">
           {title}
@@ -198,10 +198,10 @@ export function DashboardFixed() {
     <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-16 pt-3 text-foreground sm:px-5 sm:pb-20 sm:pt-4 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto grid w-full max-w-[1280px] gap-4 lg:gap-5">
+      <div className="mx-auto grid w-full max-w-[1280px] gap-3 lg:gap-4">
         <DashboardHeader />
 
-        {/* Top: Hero + Balance — strong connected opening */}
+        {/* Top: Hero + Balance */}
         <DashboardRow className="items-stretch">
           <section
             aria-label="Dashboard overview"
@@ -218,41 +218,44 @@ export function DashboardFixed() {
           </section>
         </DashboardRow>
 
-        {/* Payments module — unified */}
-        <div className="space-y-2">
-          <SectionTitle
-            title="Payments"
-            description="Send instantly or create beautiful QR invoices & payment links in one clean flow."
-          />
-          <DashboardRow>
-            <section aria-label="Send money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
-              <SendPanel />
-            </section>
+        {/* Payments + Bridge & Activity — ZERO gap between them for completely invisible space */}
+        <div className="space-y-1">
+          {/* Payments */}
+          <div>
+            <SectionTitle
+              title="Payments"
+              description="Send instantly or create beautiful QR invoices & payment links in one clean flow."
+            />
+            <DashboardRow className="mt-1">
+              <section aria-label="Send money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
+                <SendPanel />
+              </section>
 
-            <section aria-label="Request money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
-              <RequestSlot />
-            </section>
-          </DashboardRow>
+              <section aria-label="Request money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
+                <RequestSlot />
+              </section>
+            </DashboardRow>
+          </div>
+
+          {/* Bridge & Activity — directly follows with almost zero gap */}
+          <div className="mt-0">
+            <SectionTitle
+              title="Bridge & Activity"
+              description="Move funds across chains and review your complete transaction history."
+            />
+            <DashboardRow className="mt-1">
+              <section aria-label="Bridge funds" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
+                <BridgePanel />
+              </section>
+
+              <section aria-label="Transaction history" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
+                <TxHistory />
+              </section>
+            </DashboardRow>
+          </div>
         </div>
 
-        {/* Bridge & Activity module — unified, much tighter gap to Payments above */}
-        <div className="space-y-2">
-          <SectionTitle
-            title="Bridge & Activity"
-            description="Move funds across chains and review your complete transaction history."
-          />
-          <DashboardRow>
-            <section aria-label="Bridge funds" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
-              <BridgePanel />
-            </section>
-
-            <section aria-label="Transaction history" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
-              <TxHistory />
-            </section>
-          </DashboardRow>
-        </div>
-
-        {/* Bottom supporting cards — consistent grid */}
+        {/* Bottom supporting cards */}
         <div className="space-y-2">
           <SectionTitle
             title="More"
