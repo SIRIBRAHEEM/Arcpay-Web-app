@@ -73,7 +73,7 @@ function SectionTitle({
 
 function DashboardRow({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={`grid w-full min-w-0 items-start gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5 ${className}`}>
+    <div className={`grid w-full min-w-0 items-stretch gap-4 md:grid-cols-2 lg:grid-cols-12 lg:gap-5 ${className}`}>
       {children}
     </div>
   );
@@ -205,14 +205,14 @@ export function DashboardFixed() {
         <DashboardRow className="items-stretch">
           <section
             aria-label="Dashboard overview"
-            className="grid min-w-0 md:col-span-2 lg:col-span-8"
+            className="grid min-w-0 h-full md:col-span-2 lg:col-span-8"
           >
             <PremiumDashboardHero />
           </section>
 
           <section
             aria-label="Unified balance"
-            className="grid min-w-0 md:col-span-2 lg:col-span-4"
+            className="grid min-w-0 h-full md:col-span-2 lg:col-span-4"
           >
             <BalanceCard />
           </section>
@@ -225,49 +225,49 @@ export function DashboardFixed() {
             description="Send instantly or create beautiful QR invoices & payment links in one clean flow."
           />
           <DashboardRow className="mt-3">
-            <section aria-label="Send money" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+            <section aria-label="Send money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
               <SendPanel />
             </section>
 
-            <section aria-label="Request money" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+            <section aria-label="Request money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
               <RequestSlot />
             </section>
           </DashboardRow>
         </div>
 
-        {/* Bridge & Activity module — unified */}
+        {/* Bridge & Activity module — unified with equal height cards */}
         <div>
           <SectionTitle
             title="Bridge & Activity"
             description="Move funds across chains and review your complete transaction history."
           />
           <DashboardRow className="mt-3">
-            <section aria-label="Bridge funds" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+            <section aria-label="Bridge funds" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
               <BridgePanel />
             </section>
 
-            <section aria-label="Transaction history" className="grid min-w-0 md:col-span-1 lg:col-span-6">
+            <section aria-label="Transaction history" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
               <TxHistory />
             </section>
           </DashboardRow>
         </div>
 
-        {/* Bottom supporting cards — now consistent 12-col grid on PC for aligned, non-scattered look */}
+        {/* Bottom supporting cards — consistent grid */}
         <div>
           <SectionTitle
             title="More"
             description="Protocol status, quick guide, and test funds."
           />
           <DashboardRow className="mt-3">
-            <section aria-label="Protocol status" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+            <section aria-label="Protocol status" className="grid min-w-0 h-full md:col-span-1 lg:col-span-4">
               <ProtocolStatusCard />
             </section>
 
-            <section aria-label="Payment guide" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+            <section aria-label="Payment guide" className="grid min-w-0 h-full md:col-span-1 lg:col-span-4">
               <QuickGuideCard />
             </section>
 
-            <section aria-label="Test funds" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+            <section aria-label="Test funds" className="grid min-w-0 h-full md:col-span-1 lg:col-span-4">
               <FaucetCard />
             </section>
           </DashboardRow>

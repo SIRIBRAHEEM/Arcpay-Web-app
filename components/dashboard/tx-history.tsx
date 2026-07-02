@@ -97,7 +97,7 @@ export function TxHistory() {
   }
 
   return (
-    <Card className="glass w-full min-w-0 rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
+    <Card className="glass flex h-full w-full min-w-0 flex-col rounded-[1.25rem] shadow-card sm:rounded-[1.5rem]">
       <CardHeader className="flex flex-col gap-3 space-y-0 p-3.5 sm:flex-row sm:items-center sm:justify-between sm:p-5">
         <div className="min-w-0">
           <CardTitle>Activity</CardTitle>
@@ -126,7 +126,7 @@ export function TxHistory() {
         </div>
       </CardHeader>
 
-      <CardContent className="p-3.5 pt-0 sm:p-5 sm:pt-0">
+      <CardContent className="flex flex-1 flex-col p-3.5 pt-0 sm:p-5 sm:pt-0">
         {activityError ? (
           <div className="mb-4 w-full min-w-0 rounded-2xl border border-amber-500/20 bg-amber-100 p-3.5 text-sm leading-6 text-amber-900 dark:bg-amber-400/10 dark:text-amber-100 sm:p-4">
             {activityError}
@@ -135,7 +135,7 @@ export function TxHistory() {
 
         {transactions.length ? (
           <>
-            <div className="grid w-full min-w-0 gap-2.5 sm:gap-3">
+            <div className="grid w-full min-w-0 flex-1 gap-2.5 sm:gap-3">
               {visibleTransactions.map((tx) => {
                 const Icon = iconByType[tx.type];
 
@@ -152,46 +152,46 @@ export function TxHistory() {
                             ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
                             : tx.type === "bridge"
                               ? "bg-violet-100 text-violet-700 dark:bg-violet-400/10 dark:text-violet-200"
-                              : tx.type === "request"
-                                ? "bg-sky-100 text-sky-800 dark:bg-sky-400/10 dark:text-sky-200"
-                                : "bg-primary/10 text-primary"
+                            : tx.type === "request"
+                              ? "bg-sky-100 text-sky-800 dark:bg-sky-400/10 dark:text-sky-200"
+                            : "bg-primary/10 text-primary"
                         )}
                       >
                         <Icon className="size-4" />
                       </div>
 
-                      <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold capitalize">
-                          {tx.type} {tx.amount} {tx.token}
-                        </p>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold capitalize">
+                            {tx.type} {tx.amount} {tx.token}
+                          </p>
 
-                        <p className="truncate text-xs text-muted-foreground">
-                          {tx.recipient ? `To ${shortAddress(tx.recipient)}` : tx.chain}
-                          {tx.memo ? ` - ${tx.memo}` : ""}
-                        </p>
+                          <p className="truncate text-xs text-muted-foreground">
+                            {tx.recipient ? `To ${shortAddress(tx.recipient)}` : tx.chain}
+                            {tx.memo ? ` - ${tx.memo}` : ""}
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex w-full min-w-0 shrink-0 items-center justify-between gap-2 sm:w-auto sm:justify-end">
+                        <Badge variant="outline" className="rounded-full">
+                          {tx.state}
+                        </Badge>
+
+                        {tx.explorerUrl ? (
+                          <a
+                            href={tx.explorerUrl}
+                            target="_blank"
+                            rel="noreferrer"
+                            aria-label="Open transaction on explorer"
+                            className="rounded-full p-2 text-muted-foreground hover:bg-slate-950/5 hover:text-foreground dark:hover:bg-white/10"
+                          >
+                            <ExternalLink className="size-4" />
+                          </a>
+                        ) : null}
                       </div>
                     </div>
-
-                    <div className="flex w-full min-w-0 shrink-0 items-center justify-between gap-2 sm:w-auto sm:justify-end">
-                      <Badge variant="outline" className="rounded-full">
-                        {tx.state}
-                      </Badge>
-
-                      {tx.explorerUrl ? (
-                        <a
-                          href={tx.explorerUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          aria-label="Open transaction on explorer"
-                          className="rounded-full p-2 text-muted-foreground hover:bg-slate-950/5 hover:text-foreground dark:hover:bg-white/10"
-                        >
-                          <ExternalLink className="size-4" />
-                        </a>
-                      ) : null}
-                    </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
 
             {canViewMore || canCollapse ? (
@@ -226,10 +226,10 @@ export function TxHistory() {
             ) : null}
           </>
         ) : (
-          <div className="w-full min-w-0 rounded-2xl border border-dashed border-slate-950/15 bg-white/55 p-5 text-center dark:border-white/10 dark:bg-white/[0.04] sm:p-6">
-            <p className="font-semibold">No local activity yet</p>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Sends, deposits, bridge transfers, requests, and detected transfers will stay in this browser.
+          <div className="flex flex-1 w-full min-w-0 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-950/15 bg-white/55 p-6 text-center dark:border-white/10 dark:bg-white/[0.04] sm:p-8">
+            <p className="font-semibold text-lg">No local activity yet</p>
+            <p className="mt-3 max-w-xs text-sm text-muted-foreground">
+              Sends, deposits, bridge transfers, requests, and detected transfers will stay in this browser. Your history appears here automatically.
             </p>
           </div>
         )}
