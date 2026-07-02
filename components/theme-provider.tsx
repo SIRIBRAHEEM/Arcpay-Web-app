@@ -46,20 +46,20 @@ function resolveTheme(preference: ThemePreference): Theme {
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [preference, setPreference] = useState<ThemePreference>("system");
-  const [theme, setTheme] = useState<Theme>("light");
-  const [ready, setReady] = useState(false);
+  const [preference, setPreference] = useState<ThemePreference>(() => {
+    if (typeof window === "undefined") return "system";
+    return getStoredPreference();
+  });
+
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === "undefined") return "light";
+    const pref = getStoredPreference();
+    return resolveTheme(pref);
+  });
+
+  // No need for ready state anymore — initial values are resolved immediately on client
 
   useEffect(() => {
-    const nextPreference = getStoredPreference();
-    setPreference(nextPreference);
-    setTheme(resolveTheme(nextPreference));
-    setReady(true);
-  }, []);
-
-  useEffect(() => {
-    if (!ready) return;
-
     const mediaQuery = window.matchMedia(SYSTEM_THEME_QUERY);
 
     function handleSystemThemeChange() {
@@ -68,26 +68,28 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    setTheme(resolveTheme(preference));
-
+    // Ensure theme is in sync when preference changes (e.g. toggle to/from system)
     if (preference === "system") {
+      setTheme(resolveTheme(preference));
       mediaQuery.addEventListener("change", handleSystemThemeChange);
+    } else {
+      // Explicit preference — ensure theme matches it
+      setTheme(preference as Theme);
     }
 
     return () => {
       mediaQuery.removeEventListener("change", handleSystemThemeChange);
     };
-  }, [preference, ready]);
+  }, [preference]);
 
+  // Apply theme changes to DOM immediately (script handles initial paint)
   useEffect(() => {
-    if (!ready) return;
-
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
     root.style.colorScheme = theme;
     root.dataset.themePreference = preference;
     window.localStorage.setItem(THEME_STORAGE_KEY, preference);
-  }, [preference, ready, theme]);
+  }, [preference, theme]);
 
   const value = useMemo(
     () => ({

@@ -1,3 +1,4 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./brand-overrides.css";
@@ -51,6 +52,43 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* 
+          Inline script to set the correct theme class IMMEDIATELY before any paint.
+          This eliminates the flash of the wrong (default light) theme on initial load
+          or when user has dark/system preference in localStorage.
+          The React ThemeProvider will then take over for state management.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var key = 'arcpay:theme-preference';
+                  var stored = localStorage.getItem(key);
+                  var theme;
+                  if (stored === 'dark' || stored === 'light') {
+                    theme = stored;
+                  } else {
+                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  var root = document.documentElement;
+                  if (theme === 'dark') {
+                    root.classList.add('dark');
+                    root.style.colorScheme = 'dark';
+                  } else {
+                    root.classList.remove('dark');
+                    root.style.colorScheme = 'light';
+                  }
+                  root.dataset.themePreference = stored || 'system';
+                } catch (e) {
+                  // Fail silently — theme will be handled by React provider
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body>
         <Providers>{children}</Providers>
       </body>
