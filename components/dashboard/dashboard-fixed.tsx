@@ -198,10 +198,10 @@ export function DashboardFixed() {
     <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-16 pt-3 text-foreground sm:px-5 sm:pb-20 sm:pt-4 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto grid w-full max-w-[1280px] gap-6 lg:gap-7">
+      <div className="mx-auto grid w-full max-w-[1280px] gap-5 lg:gap-6">
         <DashboardHeader />
 
-        {/* Top unified hero + balance row — prominent and connected */}
+        {/* Top: Hero + Balance — strong connected opening */}
         <DashboardRow className="items-stretch">
           <section
             aria-label="Dashboard overview"
@@ -218,14 +218,13 @@ export function DashboardFixed() {
           </section>
         </DashboardRow>
 
-        {/* === PAYMENTS MODULE (unified feel) === */}
-        <div className="space-y-3">
+        {/* Payments module — unified */}
+        <div>
           <SectionTitle
             title="Payments"
             description="Send instantly or create beautiful QR invoices & payment links in one clean flow."
           />
-
-          <DashboardRow>
+          <DashboardRow className="mt-3">
             <section aria-label="Send money" className="grid min-w-0 md:col-span-1 lg:col-span-6">
               <SendPanel />
             </section>
@@ -236,14 +235,13 @@ export function DashboardFixed() {
           </DashboardRow>
         </div>
 
-        {/* === MOVEMENT & ACTIVITY MODULE (unified) === */}
-        <div className="space-y-3">
+        {/* Bridge & Activity module — unified */}
+        <div>
           <SectionTitle
             title="Bridge & Activity"
             description="Move funds across chains and review your complete transaction history."
           />
-
-          <DashboardRow>
+          <DashboardRow className="mt-3">
             <section aria-label="Bridge funds" className="grid min-w-0 md:col-span-1 lg:col-span-6">
               <BridgePanel />
             </section>
@@ -254,19 +252,25 @@ export function DashboardFixed() {
           </DashboardRow>
         </div>
 
-        {/* Bottom supporting cards — nice responsive masonry / grid for cool visual balance */}
-        <div className="dashboard-masonry pt-2">
-          <section aria-label="Protocol status" className="dashboard-masonry-item">
-            <ProtocolStatusCard />
-          </section>
+        {/* Bottom supporting cards — now consistent 12-col grid on PC for aligned, non-scattered look */}
+        <div>
+          <SectionTitle
+            title="More"
+            description="Protocol status, quick guide, and test funds."
+          />
+          <DashboardRow className="mt-3">
+            <section aria-label="Protocol status" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+              <ProtocolStatusCard />
+            </section>
 
-          <section aria-label="Payment guide" className="dashboard-masonry-item">
-            <QuickGuideCard />
-          </section>
+            <section aria-label="Payment guide" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+              <QuickGuideCard />
+            </section>
 
-          <section aria-label="Test funds" className="dashboard-masonry-item">
-            <FaucetCard />
-          </section>
+            <section aria-label="Test funds" className="grid min-w-0 md:col-span-1 lg:col-span-4">
+              <FaucetCard />
+            </section>
+          </DashboardRow>
         </div>
       </div>
     </main>
