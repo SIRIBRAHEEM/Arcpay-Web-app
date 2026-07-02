@@ -58,12 +58,12 @@ function SectionTitle({
   description: string;
 }) {
   return (
-    <div className="flex min-w-0 items-end justify-between gap-3">
+    <div className="flex min-w-0 items-end justify-between gap-3 pb-1">
       <div className="min-w-0">
         <h2 className="text-lg font-black tracking-tight text-teal-950 dark:text-lime-50 sm:text-xl">
           {title}
         </h2>
-        <p className="mt-1 max-w-3xl text-sm leading-6 text-teal-950/62 dark:text-lime-50/68">
+        <p className="mt-0.5 max-w-3xl text-sm leading-6 text-teal-950/62 dark:text-lime-50/68">
           {description}
         </p>
       </div>
@@ -198,7 +198,7 @@ export function DashboardFixed() {
     <main className="premium-dashboard-bg min-h-screen overflow-x-hidden px-3 pb-16 pt-3 text-foreground sm:px-5 sm:pb-20 sm:pt-4 lg:px-8">
       <EventWatcher />
 
-      <div className="mx-auto grid w-full max-w-[1280px] gap-5 lg:gap-6">
+      <div className="mx-auto grid w-full max-w-[1280px] gap-4 lg:gap-5">
         <DashboardHeader />
 
         {/* Top: Hero + Balance — strong connected opening */}
@@ -219,12 +219,12 @@ export function DashboardFixed() {
         </DashboardRow>
 
         {/* Payments module — unified */}
-        <div>
+        <div className="space-y-2">
           <SectionTitle
             title="Payments"
             description="Send instantly or create beautiful QR invoices & payment links in one clean flow."
           />
-          <DashboardRow className="mt-3">
+          <DashboardRow>
             <section aria-label="Send money" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
               <SendPanel />
             </section>
@@ -235,13 +235,13 @@ export function DashboardFixed() {
           </DashboardRow>
         </div>
 
-        {/* Bridge & Activity module — unified with equal height cards */}
-        <div>
+        {/* Bridge & Activity module — unified, much tighter gap to Payments above */}
+        <div className="space-y-2">
           <SectionTitle
             title="Bridge & Activity"
             description="Move funds across chains and review your complete transaction history."
           />
-          <DashboardRow className="mt-3">
+          <DashboardRow>
             <section aria-label="Bridge funds" className="grid min-w-0 h-full md:col-span-1 lg:col-span-6">
               <BridgePanel />
             </section>
@@ -253,12 +253,12 @@ export function DashboardFixed() {
         </div>
 
         {/* Bottom supporting cards — consistent grid */}
-        <div>
+        <div className="space-y-2">
           <SectionTitle
             title="More"
             description="Protocol status, quick guide, and test funds."
           />
-          <DashboardRow className="mt-3">
+          <DashboardRow>
             <section aria-label="Protocol status" className="grid min-w-0 h-full md:col-span-1 lg:col-span-4">
               <ProtocolStatusCard />
             </section>
